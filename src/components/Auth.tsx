@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 function AuthInputField({
@@ -10,7 +11,19 @@ function AuthInputField({
   id: string;
 }) {
   return (
-    <label htmlFor={id}>
+    <label htmlFor={id} className="relative">
+      {type === "password" && (
+        // TODO toggle password visibility
+        <button>
+          <Image
+            src="/toggle-password.png"
+            width={18}
+            height={18}
+            alt="Toggle password visibility"
+            className="absolute right-2 top-3"
+          />
+        </button>
+      )}
       <input
         type={type}
         placeholder={placeholder}
@@ -32,11 +45,10 @@ function Auth({ authType }: AuthType) {
         {authType === "signup" && (
           <AuthInputField type="text" placeholder="Full name" id="fullname" />
         )}
-
         <AuthInputField type="email" placeholder="Your email" id="email" />
-
         <AuthInputField type="password" placeholder="Password" id="password" />
-        <button className="rounded-md text-white bg-gradient-to-tl from-[#4B36CC] to-[#9C93D4] py-2 capitalize">
+        {/* //change gradient when clicked */}
+        <button className="rounded-md text-white bg-gradient-to-t from-[#7166B2] to-[#867BCB] active:from-[#342592] active:to-[#5747B9] py-2 capitalize">
           {authType}
         </button>
       </form>
