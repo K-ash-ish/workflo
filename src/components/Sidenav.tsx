@@ -1,39 +1,11 @@
 "use client";
+import { navElements } from "@/constant";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 function Sidenav() {
-  const navElements = [
-    {
-      to: "/dashboard",
-      name: "home",
-      icon: "/home.png",
-    },
-    {
-      to: "/dashboard/boards",
-      name: "boards",
-
-      icon: "/chart.png",
-    },
-    {
-      to: "/dashboard/settings",
-      icon: "/settings.png",
-      name: "settings",
-    },
-    {
-      to: "/dashboard/teams",
-      name: "teams",
-      icon: "/teams.png",
-    },
-    {
-      to: "/dashboard/analytics",
-      icon: "/analytics.png",
-      name: "analytics",
-    },
-  ];
   const pathname = usePathname();
-  console.log(pathname);
   return (
     <nav className="w-[280px] bg-white border-r border-[#DEDEDE] py-3 px-4 flex flex-col gap-2">
       <div className="flex gap-2">
