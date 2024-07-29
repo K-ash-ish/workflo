@@ -50,3 +50,34 @@ export const navElements = [
     name: "analytics",
   },
 ];
+
+export const taskData = [
+  {
+    status: "to do",
+    priority: "low",
+    deadline: "2024-08-15",
+    description: "Enable cloud storage for note backup and synchronization.",
+    title: "integrate cloud storage",
+  },
+  {
+    status: "to do",
+    priority: "urgent",
+    deadline: "2024-08-15",
+    description: "Enable cloud storage for note backup and synchronization.",
+    title: "integrate cloud storage",
+  },
+  {
+    status: "under review",
+    priority: "low",
+    deadline: "2024-08-15",
+    description: "Enable cloud storage for note backup and synchronization.",
+    title: "integrate cloud storage",
+  },
+  {
+    status: "finished",
+    priority: "low",
+    deadline: "2024-08-15",
+    description: "Enable cloud storage for note backup and synchronization.",
+    title: "integrate cloud storage",
+  },
+];
