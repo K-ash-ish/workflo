@@ -1,11 +1,13 @@
 "use client";
 import { navElements } from "@/constant";
+import { useModal } from "@/context/ModalContext";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 function Sidenav() {
   const pathname = usePathname();
+  const { isOpen, openModal, closeModal } = useModal();
   return (
     <nav className="w-[280px] bg-white border-r border-[#DEDEDE] py-3 px-4 flex flex-col gap-2">
       <div className="flex items-center gap-2 ">
@@ -83,7 +85,13 @@ function Sidenav() {
           );
         })}
       </ul>
-      <button className="text-xl rounded-md text-white bg-gradient-to-t from-[#342592] to-[#5747B9] py-2 capitalize flex justify-center items-center gap-2">
+      <button
+        className="text-xl rounded-md text-white bg-gradient-to-t from-[#342592] to-[#5747B9] py-2 capitalize flex justify-center items-center gap-2"
+        onClick={() => {
+          console.log("called ", isOpen);
+          openModal();
+        }}
+      >
         Create new task
         <span className="rounded-full bg-white text-black  w-5 h-5 flex justify-center items-center">
           +

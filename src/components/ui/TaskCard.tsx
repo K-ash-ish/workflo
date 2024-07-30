@@ -37,13 +37,15 @@ function TaskCard({ index, task }: { index: number; task: Tasks }) {
         )}
 
         <p className="flex gap-2 text-[#606060] font-medium text-sm">
-          <Image
-            src="/clock.png"
-            width={20}
-            height={20}
-            alt="Deadline"
-            className="object-contain"
-          />
+          {deadline && (
+            <Image
+              src="/clock.png"
+              width={20}
+              height={20}
+              alt="Deadline"
+              className="object-contain"
+            />
+          )}
           <span className="">{deadline}</span>
         </p>
       </div>

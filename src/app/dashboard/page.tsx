@@ -1,12 +1,15 @@
+"use client";
 import TaskBoard from "@/components/TaskBoard";
 import ActionItem from "@/components/ui/ActionItem";
 import FeatureCard from "@/components/ui/FeatureCard";
 import TaskModal from "@/components/ui/TaskModal";
 import { features } from "@/constant";
+import { useModal } from "@/context/ModalContext";
 import Image from "next/image";
 import Link from "next/link";
 
 function page() {
+  const { isOpen, openModal } = useModal();
   return (
     <section className="w-full py-3 px-4 flex flex-col gap-2 relative">
       <div className="flex  items-center justify-between">
@@ -57,7 +60,10 @@ function page() {
           <ActionItem icon="/double-star.png" actionName="Automation" />
           <ActionItem icon="/filter.png" actionName="Filter" />
           <ActionItem icon="/share.png" actionName="Share" />
-          <button className=" rounded-md text-white bg-gradient-to-t from-[#342592] to-[#5747B9] py-2 px-2 capitalize flex justify-center items-center gap-2">
+          <button
+            onClick={openModal}
+            className=" rounded-md text-white bg-gradient-to-t from-[#342592] to-[#5747B9] py-2 px-2 capitalize flex justify-center items-center gap-2"
+          >
             Create new
             <span className="rounded-full bg-white text-black  w-5 h-5 flex justify-center items-center">
               +
@@ -66,6 +72,7 @@ function page() {
         </ul>
       </div>
       <TaskBoard />
+      {isOpen && <TaskModal />}
     </section>
   );
 }

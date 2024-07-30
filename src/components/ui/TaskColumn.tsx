@@ -39,7 +39,7 @@ function TaskColumn({ title, tasks }: { title: string; tasks: Tasks[] }) {
     taskList = tasksFinished;
   }
   return (
-    <div ref={dropRef} className="w-full bg-red-300">
+    <div ref={dropRef} className="w-full ">
       <div className="flex justify-between items-center my-2">
         <h4 className="text-lg text-[#555555] capitalize">{title}</h4>
 

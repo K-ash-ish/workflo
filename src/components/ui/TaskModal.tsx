@@ -7,6 +7,7 @@ import { Dropdown } from "./dropdown";
 import { Tasks } from "@/types/taskdata";
 import { useAppDispatch } from "@/lib/hooks";
 import { addTask } from "@/lib/features/taskSlice";
+import { useModal } from "@/context/ModalContext";
 
 function ActionBtn({
   title,
@@ -52,7 +53,7 @@ function ActionBtn({
 function TaskModal() {
   const [task, setTask] = useState<Tasks>({} as Tasks);
   const dispatch = useAppDispatch();
-
+  const { closeModal } = useModal();
   function createTask() {
     dispatch(addTask({ ...task, id: Date.now() }));
   }
@@ -77,11 +78,11 @@ function TaskModal() {
   }
 
   return (
-    <div className="absolute bg-white/40  w-full h-full flex justify-end">
+    <div className="absolute bg-white/40  w-full h-full flex justify-end z-40">
       <div className="flex flex-col gap-3 bg-white w-9/12 py-4  px-6">
         <div className="flex items-center justify-between">
           <ul className="flex items-center gap-4">
-            <li>
+            <li onClick={closeModal} className="cursor-pointer ">
               <Image
                 src="/cross.png"
                 width={0}
