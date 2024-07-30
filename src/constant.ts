@@ -1,3 +1,5 @@
+import { Tasks } from "./types/taskdata";
+
 export const features = [
   {
     image: "/undraw_opinion_re_jix4.svg",
@@ -51,8 +53,9 @@ export const navElements = [
   },
 ];
 
-export const taskData = [
+export const taskData: Tasks[] = [
   {
+    id: "1",
     status: "to do",
     priority: "low",
     deadline: "2024-08-15",
@@ -60,6 +63,7 @@ export const taskData = [
     title: "integrate cloud storage",
   },
   {
+    id: "2",
     status: "to do",
     priority: "urgent",
     deadline: "2024-08-15",
@@ -67,13 +71,15 @@ export const taskData = [
     title: "integrate cloud storage",
   },
   {
+    id: "3",
     status: "under review",
-    priority: "low",
+    priority: "medium",
     deadline: "2024-08-15",
     description: "Enable cloud storage for note backup and synchronization.",
     title: "integrate cloud storage",
   },
   {
+    id: "4",
     status: "finished",
     priority: "low",
     deadline: "2024-08-15",
@@ -81,3 +87,9 @@ export const taskData = [
     title: "integrate cloud storage",
   },
 ];
+type Priority = "low" | "medium" | "urgent";
+export const priorityColors: Record<Priority, string> = {
+  low: "#0ECC5A",
+  medium: "#FFA235",
+  urgent: "#FF6B6B",
+};

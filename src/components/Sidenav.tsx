@@ -8,27 +8,50 @@ function Sidenav() {
   const pathname = usePathname();
   return (
     <nav className="w-[280px] bg-white border-r border-[#DEDEDE] py-3 px-4 flex flex-col gap-2">
-      <div className="flex gap-2">
+      <div className="flex items-center gap-2 ">
         {/* TODO adjust picture */}
         <Image
-          src="/profile-image.png"
-          width={20}
-          height={20}
+          src="/profile-picture.png"
+          width={0}
+          height={0}
           alt="Profile Picture"
-          className="rounded-md"
+          unoptimized
+          className="rounded-xl w-8 h-8 object-cover"
         />
         <h3 className="font-medium">Joe Gardner</h3>
       </div>
       <div className="flex justify-between items-center">
         <ul className="flex gap-4">
           <li>
-            <Image src="/notification.png" width={20} height={20} alt="HOME" />
+            <Image
+              src="/notification.png"
+              width={0}
+              height={0}
+              className="w-5 h-5 object-cover"
+              alt="HOME"
+              unoptimized
+            />
+          </li>
+          <li className="relative">
+            <Image
+              src="/loading.png"
+              width={0}
+              height={0}
+              className="w-5 h-5 object-cover"
+              alt="HOME"
+              unoptimized
+            />
+            <span className="bg-[#FFB800] w-2 h-2 absolute rounded-full top-0 right-0"></span>
           </li>
           <li>
-            <Image src="/loading.png" width={20} height={20} alt="HOME" />
-          </li>
-          <li>
-            <Image src="/double-arrow.png" width={20} height={20} alt="HOME" />
+            <Image
+              src="/double-arrow.png"
+              width={0}
+              height={0}
+              className="w-5 h-5 object-cover"
+              alt="HOME"
+              unoptimized
+            />
           </li>
         </ul>
         <button className=" text-sm text-[#797979] px-2 py-2 bg-[#F4F4F4] rounded-md">
@@ -44,15 +67,15 @@ function Sidenav() {
                 className={`capitalize flex gap-2  p-2 rounded text-[#797979] ${
                   pathname === navItem.to ? "bg-[#f4f4f4]" : ""
                 }
-  console.log(navElements[0].to.split("/"));
-                }`}
+                `}
               >
                 <Image
                   src={navItem.icon}
-                  width={20}
-                  height={20}
+                  width={0}
+                  height={0}
                   alt="HOME"
-                  className="object-contain "
+                  className="object-cover h-5 w-5 "
+                  unoptimized
                 />
                 {navItem.name}
               </Link>

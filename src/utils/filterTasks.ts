@@ -1,7 +1,9 @@
-import { taskData } from "@/constant";
+import { Tasks } from "@/types/taskdata";
 
-export function filterTasks() {
-  const tasksToDo = taskData?.filter((tasks) => tasks.status === "to do");
+export function filterTasks({ taskData }: { taskData: Tasks[] }) {
+  const tasksToDo: Tasks[] = taskData?.filter(
+    (tasks) => tasks.status === "to do"
+  );
 
   const tasksInProgress = taskData?.filter(
     (tasks) => tasks.status === "in progresss"
