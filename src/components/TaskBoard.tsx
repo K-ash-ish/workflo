@@ -3,7 +3,6 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import TaskColumn from "./ui/TaskColumn";
 import { useAppSelector } from "@/lib/hooks";
-import { useEffect } from "react";
 
 function TaskBoard() {
   const tasks = useAppSelector((state) => state.task);
