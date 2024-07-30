@@ -1,14 +1,14 @@
 import TaskBoard from "@/components/TaskBoard";
 import ActionItem from "@/components/ui/ActionItem";
 import FeatureCard from "@/components/ui/FeatureCard";
+import TaskModal from "@/components/ui/TaskModal";
 import { features } from "@/constant";
 import Image from "next/image";
 import Link from "next/link";
 
 function page() {
-  console.log("hello");
   return (
-    <section className="w-full py-3 px-4 flex flex-col gap-2">
+    <section className="w-full py-3 px-4 flex flex-col gap-2 relative">
       <div className="flex  items-center justify-between">
         <h2 className="font-barlow font-semibold text-3xl">
           Good morning, Joe!

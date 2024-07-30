@@ -8,6 +8,7 @@ export type Tasks = {
   priority?: Priority;
   description?: string;
   customFields?: CustomField[];
+  [key: string]: any;
 };
 export type CustomField = {
   title: string;

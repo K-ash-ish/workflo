@@ -93,3 +93,34 @@ export const priorityColors: Record<Priority, string> = {
   medium: "#FFA235",
   urgent: "#FF6B6B",
 };
+
+type Field = {
+  icon?: string;
+  title: string;
+  type: "dropdown" | "text";
+  options?: string[];
+};
+export const fields: Field[] = [
+  {
+    icon: "/loading.png",
+    title: "status",
+    type: "dropdown",
+    options: ["to do", "in progress", "finished", "under review"],
+  },
+  {
+    icon: "/priority.png",
+    title: "priority",
+    type: "dropdown",
+    options: ["urgent", "low", "medium"],
+  },
+  {
+    icon: "/calender.png",
+    title: "deadline",
+    type: "text",
+  },
+  {
+    icon: "/pencil.png",
+    title: "description",
+    type: "text",
+  },
+];
