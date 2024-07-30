@@ -27,7 +27,7 @@ function TaskCard({ index, task }: { index: number; task: Tasks }) {
         <p className="text-sm text-[#797979]">{description}</p>
         {/* Check for other ways to write it */}
 
-        {priorityColors[priority] && (
+        {priority && (
           <span
             className={`text-white text-xs p-2 rounded-xl`}
             style={{ backgroundColor: `${priorityColors[priority]}` }}

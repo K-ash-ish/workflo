@@ -4,9 +4,9 @@ export type Tasks = {
   id: number;
   title: string;
   status: string;
-  deadline: string;
-  priority: Priority;
-  description: string;
+  deadline?: string;
+  priority?: Priority;
+  description?: string;
   customFields?: CustomField[];
 };
 export type CustomField = {

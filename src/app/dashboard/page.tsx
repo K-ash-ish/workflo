@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 function page() {
+  console.log("hello");
   return (
     <section className="w-full py-3 px-4 flex flex-col gap-2">
       <div className="flex  items-center justify-between">

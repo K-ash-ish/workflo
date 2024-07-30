@@ -1,38 +1,33 @@
+"use client";
 import Image from "next/image";
 import TaskCard from "./TaskCard";
 import { TaskColumnProps, Tasks } from "@/types/taskdata";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useDrop } from "react-dnd";
 import { filterTasks } from "@/utils/filterTasks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { updateStatus } from "@/lib/features/taskSlice";
 
-function TaskColumn({ title, tasks, setTasks }: TaskColumnProps) {
+function TaskColumn({ title, tasks }: { title: string; tasks: Tasks[] }) {
   let taskList: Tasks[];
+  const dispatch = useAppDispatch();
   const { tasksToDo, tasksFinished, tasksInProgress, tasksUnderReview } =
     filterTasks(tasks);
-  console.log(tasksFinished);
   const dropRef = useRef<HTMLDivElement | null>(null);
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "task",
     drop: (item: { id: number; mvFrom: string }) =>
-      addItemToList(item.id, item.mvFrom, tasks),
+      updateTaskStatus(item.id, item.mvFrom, tasks),
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
     }),
   }));
   drop(dropRef);
-  function addItemToList(id: number, mvFrom: string, data: Tasks[]) {
-    setTasks((prev) => {
-      const updatedTask = prev.map((task) => {
-        if (task.id === id) {
-          return { ...task, status: title };
-        }
-        return task;
-      });
-
-      return updatedTask;
-    });
-    console.log(`Dropped ${id} from ${mvFrom} to ${title}`);
+  function updateTaskStatus(id: number, mvFrom: string, data: Tasks[]) {
+    if (mvFrom !== title) {
+      dispatch(updateStatus({ id, changeStatusTo: title }));
+    }
   }
   if (title === "to do") {
     taskList = tasksToDo;
