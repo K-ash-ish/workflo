@@ -25,8 +25,9 @@ function page() {
         </Link>
       </div>
       <div className="flex justify-between gap-2 my-">
-        {features?.map((feature) => (
+        {features?.map((feature, index) => (
           <FeatureCard
+            key={index}
             src={feature.image}
             title={feature.title}
             description={feature.description}

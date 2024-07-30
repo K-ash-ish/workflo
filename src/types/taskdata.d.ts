@@ -1,7 +1,7 @@
 export type Priority = "low" | "medium" | "urgent";
 
 export type Tasks = {
-  id: string;
+  id: number;
   title: string;
   status: string;
   deadline: string;
@@ -16,4 +16,5 @@ export type CustomField = {
 export type TaskColumnProps = {
   title: string;
   tasks: Tasks[];
+  setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
 };

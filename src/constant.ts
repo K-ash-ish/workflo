@@ -55,7 +55,7 @@ export const navElements = [
 
 export const taskData: Tasks[] = [
   {
-    id: "1",
+    id: 187,
     status: "to do",
     priority: "low",
     deadline: "2024-08-15",
@@ -63,7 +63,7 @@ export const taskData: Tasks[] = [
     title: "integrate cloud storage",
   },
   {
-    id: "2",
+    id: 234,
     status: "to do",
     priority: "urgent",
     deadline: "2024-08-15",
@@ -71,7 +71,7 @@ export const taskData: Tasks[] = [
     title: "integrate cloud storage",
   },
   {
-    id: "3",
+    id: 334,
     status: "under review",
     priority: "medium",
     deadline: "2024-08-15",
@@ -79,7 +79,7 @@ export const taskData: Tasks[] = [
     title: "integrate cloud storage",
   },
   {
-    id: "4",
+    id: 412,
     status: "finished",
     priority: "low",
     deadline: "2024-08-15",
