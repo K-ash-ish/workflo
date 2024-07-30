@@ -7,9 +7,11 @@ import { useDrop } from "react-dnd";
 import { filterTasks } from "@/utils/filterTasks";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { updateStatus } from "@/lib/features/taskSlice";
+import { useModal } from "@/context/ModalContext";
 
 function TaskColumn({ title, tasks }: { title: string; tasks: Tasks[] }) {
   let taskList: Tasks[];
+  const { openModal } = useModal();
   const dispatch = useAppDispatch();
   const { tasksToDo, tasksFinished, tasksInProgress, tasksUnderReview } =
     filterTasks(tasks);
@@ -58,7 +60,12 @@ function TaskColumn({ title, tasks }: { title: string; tasks: Tasks[] }) {
             return <TaskCard key={task.id} task={task} index={index} />;
           })}
         </div>
-        <button className="bg-gradient-to-t from-[#202020] to-[#3A3A3A] text-[#E3E1E1] w-full p-2  rounded-md flex justify-between items-center my-2">
+        <button
+          onClick={() => {
+            openModal();
+          }}
+          className="bg-gradient-to-t from-[#202020] to-[#3A3A3A] text-[#E3E1E1] w-full p-2  rounded-md flex justify-between items-center my-2"
+        >
           Add new <span className="text-2xl ">+</span>
         </button>
       </div>

@@ -78,8 +78,8 @@ function TaskModal() {
   }
 
   return (
-    <div className="absolute bg-white/40  w-full h-full flex justify-end z-40">
-      <div className="flex flex-col gap-3 bg-white w-9/12 py-4  px-6">
+    <div className="absolute top-0 right-0 bg-white/40 w-full h-full  flex  justify-center z-40 ">
+      <div className="flex flex-col gap-3 bg-white w-9/12 py-4  px-6 shadow-xl">
         <div className="flex items-center justify-between">
           <ul className="flex items-center gap-4">
             <li onClick={closeModal} className="cursor-pointer ">
@@ -119,7 +119,7 @@ function TaskModal() {
               type="text"
               id="title"
               placeholder="Title"
-              className="text-5xl placeholder:text-[#CCCCCC] placeholder:font-barlow placeholder:font-semibold placeholder:pl-2 focus:outline-none focus:border-none font-barlow text-[#989898]"
+              className="text-5xl w-5/6  placeholder:text-[#CCCCCC] placeholder:font-barlow placeholder:font-semibold placeholder:pl-2 focus:outline-none focus:border-none font-barlow text-[#989898]"
             />
           </label>
           <div className="flex flex-col items-start gap-4 w-3/5">
