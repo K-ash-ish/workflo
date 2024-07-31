@@ -13,11 +13,11 @@ function Auth({ authType }: { authType: string }) {
     {} as Credentials
   );
 
-  // if (success) {
-  //   console.log("redirecting");
-  //   setCredentials({} as Credentials);
-  //   redirect("/dashboard");
-  // }
+  if (success) {
+    console.log("redirecting from auth compe");
+    setCredentials({} as Credentials);
+    redirect("/dashboard");
+  }
   function handleInput(inputValue: string, valueToUpdate: string) {
     setCredentials((prevValue) => {
       return { ...prevValue, [valueToUpdate]: inputValue };
@@ -29,6 +29,7 @@ function Auth({ authType }: { authType: string }) {
   ) {
     e.preventDefault();
     if (authType === "login") {
+      console.log("login");
       login(credentials.email, credentials.password);
     } else {
       signup(credentials.email, credentials.password, credentials.text);

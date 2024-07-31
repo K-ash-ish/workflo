@@ -17,6 +17,7 @@ function useAuth() {
           body: JSON.stringify({ email, password }),
         }
       ).then((res) => res.json());
+      console.log(response, success);
       if (response.success) {
         setSuccess(true);
       }
