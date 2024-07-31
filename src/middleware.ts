@@ -18,16 +18,15 @@ async function isAuthenticated(req: NextRequest) {
 export async function middleware(request: NextRequest) {
   const url = request.url;
   const isAuth = await isAuthenticated(request);
-  console.log(process.env.ACCESS_TOKEN_SECRET);
   console.log(url.includes("/"));
   if (!isAuth) {
-    if (url.includes("login") || url.includes("signup")) {
+    if (url.includes("login")) {
       return NextResponse.next();
     }
 
     return NextResponse.redirect(new URL("/login", request.url));
   }
-  if (url.includes("login" || url.includes("signup"))) {
+  if (url.includes("login")) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
   return NextResponse.next();
