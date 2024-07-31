@@ -5,15 +5,18 @@ function useAuth() {
   const login = async (email: string, password: string) => {
     if (!email || !password) return;
     try {
-      const response = await fetch("http://localhost:8000/api/user/login", {
-        method: "POST",
-        credentials: "include",
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}api/user/login`,
+        {
+          method: "POST",
+          credentials: "include",
 
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      }).then((res) => res.json());
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        }
+      ).then((res) => res.json());
       if (response.success) {
         setSuccess(true);
       }
@@ -24,15 +27,18 @@ function useAuth() {
   const signup = async (email: string, password: string, name: string) => {
     if (!email || !name || !password) return;
     try {
-      const response = await fetch("http://localhost:8000/api/user/signup", {
-        method: "POST",
-        credentials: "include",
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/user/signup`,
+        {
+          method: "POST",
+          credentials: "include",
 
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password, name }),
-      }).then((res) => res.json());
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password, name }),
+        }
+      ).then((res) => res.json());
       if (response.success) {
         setSuccess(true);
       }
@@ -42,13 +48,16 @@ function useAuth() {
   };
   const logout = async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/user/logout", {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }).then((res) => res.json());
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}api/user/logout`,
+        {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      ).then((res) => res.json());
       if (response.success) {
         setSuccess(true);
       }
