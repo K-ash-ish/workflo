@@ -17,7 +17,8 @@ function Auth({ authType }: { authType: string }) {
   if (success) {
     console.log("redirecting from auth compe");
     setCredentials({} as Credentials);
-    redirect("/dashboard");
+    // redirect("/dashboard");
+    router.push("/dashboard");
   }
   function handleInput(inputValue: string, valueToUpdate: string) {
     setCredentials((prevValue) => {
