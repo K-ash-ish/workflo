@@ -18,6 +18,7 @@ async function isAuthenticated(req: NextRequest) {
 export async function middleware(request: NextRequest) {
   const url = request.url;
   const isAuth = await isAuthenticated(request);
+  console.log(process.env.ACCESS_TOKEN_SECRET);
   console.log(url.includes("/"));
   if (!isAuth) {
     if (url.includes("login") || url.includes("signup")) {
