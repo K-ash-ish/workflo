@@ -24,19 +24,11 @@ export async function middleware(request: NextRequest) {
   //   console.log("redirecting");
   //   return NextResponse.redirect(new URL("/login", request.url));
   // }
-  if (
-    (request.nextUrl.pathname === "/login" ||
-      request.nextUrl.pathname === "/signup") &&
-    isAuth
-  ) {
+  if (request.nextUrl.pathname === "/login" && isAuth) {
     console.log("whatddodo");
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
-  if (
-    (request.nextUrl.pathname === "/login" ||
-      request.nextUrl.pathname === "/signup") &&
-    !isAuth
-  ) {
+  if (request.nextUrl.pathname === "/login" && !isAuth) {
     return response;
   }
   if (!isAuth) {
