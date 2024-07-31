@@ -20,10 +20,10 @@ export async function middleware(request: NextRequest) {
   const response = NextResponse.next();
   const isAuth = await isAuthenticated(request);
   console.log(isAuth);
-  if (request.nextUrl.pathname === "/") {
-    console.log("redirecting");
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
+  // if (request.nextUrl.pathname === "/") {
+  //   console.log("redirecting");
+  //   return NextResponse.redirect(new URL("/login", request.url));
+  // }
   if (
     (request.nextUrl.pathname === "/login" ||
       request.nextUrl.pathname === "/signup") &&
