@@ -19,7 +19,9 @@ async function isAuthenticated(req: NextRequest) {
 export async function middleware(request: NextRequest) {
   const response = NextResponse.next();
   const isAuth = await isAuthenticated(request);
+  console.log(isAuth);
   if (request.nextUrl.pathname === "/") {
+    console.log("redirecting");
     return NextResponse.redirect(new URL("/login", request.url));
   }
   if (
@@ -27,6 +29,7 @@ export async function middleware(request: NextRequest) {
       request.nextUrl.pathname === "/signup") &&
     isAuth
   ) {
+    console.log("whatddodo");
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
   if (

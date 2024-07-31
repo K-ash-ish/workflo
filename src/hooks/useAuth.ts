@@ -17,7 +17,9 @@ function useAuth() {
           body: JSON.stringify({ email, password }),
         }
       ).then((res) => res.json());
+      console.log(response);
       if (response.success) {
+        console.log("login success");
         setSuccess(true);
       }
     } catch (error) {
@@ -26,6 +28,7 @@ function useAuth() {
   };
   const signup = async (email: string, password: string, name: string) => {
     if (!email || !name || !password) return;
+
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}api/user/signup`,
@@ -39,7 +42,9 @@ function useAuth() {
           body: JSON.stringify({ email, password, name }),
         }
       ).then((res) => res.json());
+      console.log(response);
       if (response.success) {
+        console.log("success");
         setSuccess(true);
       }
     } catch (error) {

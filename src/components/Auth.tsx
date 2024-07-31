@@ -14,6 +14,7 @@ function Auth({ authType }: { authType: string }) {
   );
 
   if (success) {
+    console.log("redirecting");
     setCredentials({} as Credentials);
     redirect("/dashboard");
   }
