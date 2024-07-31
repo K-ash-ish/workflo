@@ -6,8 +6,10 @@ import { Credentials } from "@/types/credentials";
 import { useState } from "react";
 import useAuth from "@/hooks/useAuth";
 import { redirect } from "next/navigation";
+import { useRouter } from "next/router";
 
 function Auth({ authType }: { authType: string }) {
+  const router = useRouter();
   const { login, signup, success } = useAuth();
   const [credentials, setCredentials] = useState<Credentials>(
     {} as Credentials
@@ -82,16 +84,26 @@ function Auth({ authType }: { authType: string }) {
         {authType === "login" ? (
           <>
             Don't have an account? Create a
-            <Link href="/signup" className="text-blue-600">
+            <button
+              onClick={() => {
+                router.push("/signup");
+              }}
+              className="text-blue-600"
+            >
               new account
-            </Link>
+            </button>
           </>
         ) : (
           <>
             Already have an account?
-            <Link href="/login" className="text-blue-600">
+            <button
+              className="text-blue-600"
+              onClick={() => {
+                router.push("/login");
+              }}
+            >
               Log in
-            </Link>
+            </button>
           </>
         )}
         .
