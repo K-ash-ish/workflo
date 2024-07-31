@@ -53,7 +53,7 @@ function useAuth() {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}api/user/logout`,
         {
-          method: "GET",
+          method: "POST",
           credentials: "include",
           headers: {
             "Content-Type": "application/json",

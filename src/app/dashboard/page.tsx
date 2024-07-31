@@ -7,9 +7,14 @@ import { features } from "@/constant";
 import { useModal } from "@/context/ModalContext";
 import Image from "next/image";
 import Link from "next/link";
+import { useAppDispatch } from "@/lib/hooks";
+import { useEffect } from "react";
+import useTask from "@/hooks/useTasks";
+import { addTask } from "@/lib/features/taskSlice";
 
 function page() {
   const { isOpen, openModal } = useModal();
+ 
   return (
     <section className="w-full py-3 px-4 flex flex-col gap-2 relative">
       <div className="flex  items-center justify-between">
