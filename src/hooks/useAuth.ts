@@ -60,6 +60,7 @@ function useAuth() {
           },
         }
       ).then((res) => res.json());
+      console.log(response);
       if (response.success) {
         setSuccess(true);
       }
