@@ -82,10 +82,11 @@ function Auth({ authType }: { authType: string }) {
       <p className="text-center text-[#606060] md:text-base text-sm">
         {authType === "login" ? (
           <>
-            Don't have an account? Create a
+            Don't have an account? Create a{" "}
             <button
               onClick={() => {
-                router.push("/signup");
+                // router.push("/signup");
+                redirect("/signup");
               }}
               className="text-blue-600"
             >
