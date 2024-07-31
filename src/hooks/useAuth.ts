@@ -17,9 +17,7 @@ function useAuth() {
           body: JSON.stringify({ email, password }),
         }
       ).then((res) => res.json());
-      console.log(response);
       if (response.success) {
-        console.log("login success");
         setSuccess(true);
       }
     } catch (error) {
@@ -42,9 +40,7 @@ function useAuth() {
           body: JSON.stringify({ email, password, name }),
         }
       ).then((res) => res.json());
-      console.log(response);
       if (response.success) {
-        console.log("success");
         setSuccess(true);
       }
     } catch (error) {
