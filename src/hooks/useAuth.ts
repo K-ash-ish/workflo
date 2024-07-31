@@ -28,7 +28,7 @@ function useAuth() {
     if (!email || !name || !password) return;
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/user/signup`,
+        `${process.env.NEXT_PUBLIC_API_URL}api/user/signup`,
         {
           method: "POST",
           credentials: "include",
