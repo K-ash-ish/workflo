@@ -8,6 +8,7 @@ import { Tasks } from "@/types/taskdata";
 import { useAppDispatch } from "@/lib/hooks";
 import { addTask } from "@/lib/features/taskSlice";
 import { useModal } from "@/context/ModalContext";
+import useTask from "@/hooks/useTasks";
 
 function ActionBtn({
   title,
@@ -53,9 +54,11 @@ function ActionBtn({
 function TaskModal() {
   const [task, setTask] = useState<Tasks>({} as Tasks);
   const dispatch = useAppDispatch();
+  const { create } = useTask();
   const { closeModal } = useModal();
-  function createTask() {
-    dispatch(addTask({ ...task, id: Date.now() }));
+  async function createTask() {
+    const createdTask = await create({ ...task });
+    dispatch(addTask({ ...createdTask, id: createdTask._id }));
   }
   function deleteTask() {
     // dispatch()

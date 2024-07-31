@@ -8,8 +8,6 @@ export const taskSlice = createSlice({
   initialState,
   reducers: {
     addTask: (state, action: PayloadAction<Tasks>) => {
-      // console.log(action.payload);
-      console.log(action.payload);
       state.push(action.payload);
     },
     updateStatus: (
@@ -17,14 +15,19 @@ export const taskSlice = createSlice({
       action: PayloadAction<{ id: number; changeStatusTo: string }>
     ) => {
       const { id, changeStatusTo } = action.payload;
+      console.log("TASK SLCE UPDATW : ", id, changeStatusTo);
       state.map((task, index) => {
         if (task.id === id) {
           state[index].status = changeStatusTo;
         }
       });
+      return state;
+    },
+    renderTasks: (state, action: PayloadAction<Tasks[]>) => {
+      return action.payload;
     },
   },
 });
 
-export const { addTask, updateStatus } = taskSlice.actions;
+export const { addTask, updateStatus, renderTasks } = taskSlice.actions;
 export default taskSlice.reducer;
