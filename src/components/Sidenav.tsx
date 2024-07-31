@@ -1,13 +1,16 @@
 "use client";
 import { navElements } from "@/constant";
 import { useModal } from "@/context/ModalContext";
+import useAuth from "@/hooks/useAuth";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 
 function Sidenav() {
   const pathname = usePathname();
   const { isOpen, openModal, closeModal } = useModal();
+  const { logout, success } = useAuth();
+  if (success) redirect("/login");
   return (
     <nav className="w-[280px] bg-white border-r border-[#DEDEDE] py-3 px-4 flex flex-col gap-2">
       <div className="flex items-center gap-2 ">
@@ -56,7 +59,10 @@ function Sidenav() {
             />
           </li>
         </ul>
-        <button className=" text-sm text-[#797979] px-2 py-2 bg-[#F4F4F4] rounded-md">
+        <button
+          className=" text-sm text-[#797979] px-2 py-2 bg-[#F4F4F4] rounded-md"
+          onClick={logout}
+        >
           Logout
         </button>
       </div>

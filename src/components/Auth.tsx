@@ -1,41 +1,39 @@
-import Image from "next/image";
+"use client";
 import Link from "next/link";
+import { AuthInputField } from "./ui/AuthInputField";
+import { Credentials } from "@/types/credentials";
 
-function AuthInputField({
-  type,
-  placeholder,
-  id,
-}: {
-  type: string;
-  placeholder: string;
-  id: string;
-}) {
-  return (
-    <label htmlFor={id} className="relative">
-      {type === "password" && (
-        // TODO toggle password visibility
-        <button>
-          <Image
-            src="/toggle-password.png"
-            width={18}
-            height={18}
-            alt="Toggle password visibility"
-            className="absolute right-2 top-3"
-          />
-        </button>
-      )}
-      <input
-        type={type}
-        placeholder={placeholder}
-        id={id}
-        className="py-2 px-3 bg-[#EBEBEB] rounded-md focus:outline-1 focus:border-none focus:outline-[#d2d2d2] w-full text-[#606060] placeholder-gray-400 placeholder:pl-1  caret-gray-400 "
-      />
-    </label>
+import { useState } from "react";
+import useAuth from "@/hooks/useAuth";
+import { redirect } from "next/navigation";
+
+function Auth({ authType }: { authType: string }) {
+  const { login, signup, success } = useAuth();
+  const [credentials, setCredentials] = useState<Credentials>(
+    {} as Credentials
   );
-}
-type AuthType = { authType: "login" | "signup" };
 
-function Auth({ authType }: AuthType) {
+  if (success) {
+    setCredentials({} as Credentials);
+    redirect("/dashboard");
+  }
+  function handleInput(inputValue: string, valueToUpdate: string) {
+    setCredentials((prevValue) => {
+      return { ...prevValue, [valueToUpdate]: inputValue };
+    });
+  }
+  function handleClick(
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    authType: string
+  ) {
+    e.preventDefault();
+    if (authType === "login") {
+      login(credentials.email, credentials.password);
+    } else {
+      signup(credentials.email, credentials.password, credentials.text);
+      console.log("signup");
+    }
+  }
   return (
     <div className="md:w-[480px] w-5/6 min-h-[360px] bg-white rounded-md border-2 flex flex-col justify-center gap-6 p-10 ">
       <h1 className=" text-2xl md:text-3xl font-semibold text-center ">
@@ -43,12 +41,37 @@ function Auth({ authType }: AuthType) {
       </h1>
       <form className="flex flex-col gap-6 ">
         {authType === "signup" && (
-          <AuthInputField type="text" placeholder="Full name" id="fullname" />
+          <AuthInputField
+            type="text"
+            placeholder="Full name"
+            id="fullname"
+            handleInput={handleInput}
+            credentials={credentials}
+            setCredentials={setCredentials}
+          />
         )}
-        <AuthInputField type="email" placeholder="Your email" id="email" />
-        <AuthInputField type="password" placeholder="Password" id="password" />
+        <AuthInputField
+          type="email"
+          placeholder="Your email"
+          id="email"
+          handleInput={handleInput}
+          credentials={credentials}
+          setCredentials={setCredentials}
+        />
+        <AuthInputField
+          type="password"
+          placeholder="Password"
+          id="password"
+          handleInput={handleInput}
+          credentials={credentials}
+          setCredentials={setCredentials}
+        />
         {/* //change gradient when clicked */}
-        <button className="rounded-md text-white bg-gradient-to-t from-[#7166B2] to-[#867BCB] active:from-[#342592] active:to-[#5747B9] py-2 capitalize">
+        <button
+          type="submit"
+          className="rounded-md text-white bg-gradient-to-t from-[#7166B2] to-[#867BCB] active:from-[#342592] active:to-[#5747B9] py-2 capitalize"
+          onClick={(e) => handleClick(e, authType)}
+        >
           {authType}
         </button>
       </form>
@@ -58,7 +81,6 @@ function Auth({ authType }: AuthType) {
           <>
             Don't have an account? Create a
             <Link href="/signup" className="text-blue-600">
-              {" "}
               new account
             </Link>
           </>
@@ -66,7 +88,6 @@ function Auth({ authType }: AuthType) {
           <>
             Already have an account?
             <Link href="/login" className="text-blue-600">
-              {" "}
               Log in
             </Link>
           </>
