@@ -26,13 +26,15 @@ export async function middleware(request: NextRequest) {
   // }
   if (request.nextUrl.pathname === "/login" && isAuth) {
     console.log("whatddodo");
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+    NextResponse.redirect(new URL("/dashboard", request.url));
+    return response;
   }
   if (request.nextUrl.pathname === "/login" && !isAuth) {
     return response;
   }
   if (!isAuth) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    NextResponse.redirect(new URL("/login", request.url));
+    return response;
   }
 
   return response;
