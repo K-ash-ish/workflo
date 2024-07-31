@@ -5,8 +5,7 @@ import { Credentials } from "@/types/credentials";
 
 import { useState } from "react";
 import useAuth from "@/hooks/useAuth";
-import { redirect } from "next/navigation";
-import { useRouter } from "next/router";
+import { redirect, useRouter } from "next/navigation";
 
 function Auth({ authType }: { authType: string }) {
   const router = useRouter();
