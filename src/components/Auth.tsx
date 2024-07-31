@@ -85,8 +85,7 @@ function Auth({ authType }: { authType: string }) {
             Don't have an account? Create a{" "}
             <button
               onClick={() => {
-                // router.push("/signup");
-                redirect("/signup");
+                router.push("/signup");
               }}
               className="text-blue-600"
             >
