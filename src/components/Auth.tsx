@@ -13,11 +13,11 @@ function Auth({ authType }: { authType: string }) {
     {} as Credentials
   );
 
-  if (success) {
-    console.log("redirecting");
-    setCredentials({} as Credentials);
-    redirect("/dashboard");
-  }
+  // if (success) {
+  //   console.log("redirecting");
+  //   setCredentials({} as Credentials);
+  //   redirect("/dashboard");
+  // }
   function handleInput(inputValue: string, valueToUpdate: string) {
     setCredentials((prevValue) => {
       return { ...prevValue, [valueToUpdate]: inputValue };
