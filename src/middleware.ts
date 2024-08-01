@@ -18,6 +18,8 @@ async function isAuthenticated(req: NextRequest) {
 export async function middleware(request: NextRequest) {
   const url = request.url;
   const isAuth = await isAuthenticated(request);
+  console.log("  isAuth: ", isAuth);
+  console.log("url: ", url);
   // if (!isAuth) {
   //   if (url.includes("login") || url.includes("signup")) {
   //     return NextResponse.next();
@@ -31,5 +33,5 @@ export async function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 export const config = {
-  matcher: "/((?!api|static|.*\\..*|_next).*)",
+  matcher: "/((?!static|.*\\..*|_next).*)",
 };

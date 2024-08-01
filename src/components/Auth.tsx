@@ -67,7 +67,6 @@ function Auth({ authType }: { authType: string }) {
         />
         {/* //change gradient when clicked */}
         <button
-          type="submit"
           className="rounded-md text-white bg-gradient-to-t from-[#7166B2] to-[#867BCB] active:from-[#342592] active:to-[#5747B9] py-2 capitalize"
           onClick={(e) => handleClick(e, authType)}
         >
