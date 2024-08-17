@@ -3,7 +3,6 @@ import { verify } from "./lib/jwt";
 
 async function isAuthenticated(req: NextRequest) {
   const accessToken = req?.cookies?.get("accessToken")?.value;
-
   if (!accessToken) {
     return false;
   }
@@ -18,8 +17,6 @@ async function isAuthenticated(req: NextRequest) {
 export async function middleware(request: NextRequest) {
   const url = request.url;
   const isAuth = await isAuthenticated(request);
-  console.log("  isAuth: ", isAuth);
-  console.log("url: ", url);
   if (!isAuth) {
     if (url.includes("login") || url.includes("signup")) {
       return NextResponse.next();
@@ -27,7 +24,7 @@ export async function middleware(request: NextRequest) {
 
     return NextResponse.redirect(new URL("/login", request.url));
   }
-  if (url.includes("login" || url.includes("signup"))) {
+  if (url.includes("login") || url.includes("signup")) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
   return NextResponse.next();

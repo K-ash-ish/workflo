@@ -65,7 +65,7 @@ function useAuth() {
         setSuccess(true);
       }
     } catch (error) {
-      console.log("Error while login ", error);
+      console.log("Error while logging out ", error);
     }
   };
   return { login, signup, logout, success };

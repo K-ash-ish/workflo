@@ -33,6 +33,10 @@ function Auth({ authType }: { authType: string }) {
     }
     setCredentials({} as Credentials);
   }
+
+  if (success) {
+    redirect("/dashboard");
+  }
   return (
     <div className="md:w-[480px] w-5/6 min-h-[360px] bg-white rounded-md border-2 flex flex-col justify-center gap-6 p-10 ">
       <h1 className=" text-2xl md:text-3xl font-semibold text-center ">
