@@ -2,10 +2,19 @@
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import TaskColumn from "./ui/TaskColumn";
-import { useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import useTask from "@/hooks/useTasks";
+import { useEffect } from "react";
+import { addTask, fetchTasks, getTasks } from "@/lib/features/taskSlice";
 
 function TaskBoard() {
-  const tasks = useAppSelector((state) => state.task);
+  const { tasks } = useAppSelector((state) => state.task);
+
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    console.log("called");
+    dispatch(getTasks());
+  }, []);
 
   return (
     <DndProvider backend={HTML5Backend}>

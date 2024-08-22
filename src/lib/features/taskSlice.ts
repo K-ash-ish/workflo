@@ -1,14 +1,25 @@
+import useTask from "@/hooks/useTasks";
 import { Tasks } from "@/types/taskdata";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState: Tasks[] = [];
+interface InitialState {
+  error: string;
+  loading: boolean;
+  tasks: Tasks[];
+}
+
+const initialState: InitialState = {
+  loading: false,
+  tasks: [],
+  error: "",
+};
 
 export const taskSlice = createSlice({
   name: "tasks",
   initialState,
   reducers: {
     addTask: (state, action: PayloadAction<Tasks>) => {
-      state.push(action.payload);
+      state.tasks.push(action.payload);
     },
     updateStatus: (
       state,
@@ -16,18 +27,27 @@ export const taskSlice = createSlice({
     ) => {
       const { id, changeStatusTo } = action.payload;
       console.log("TASK SLCE UPDATW : ", id, changeStatusTo);
-      state.map((task, index) => {
-        if (task.id === id) {
-          state[index].status = changeStatusTo;
+
+      state.tasks.map((task, index) => {
+        console.log(task.id, task._id);
+        if (task.id === id || task._id) {
+          state.tasks[index].status = changeStatusTo;
         }
       });
-      return state;
     },
-    renderTasks: (state, action: PayloadAction<Tasks[]>) => {
-      return action.payload;
+    fetchTasks: (state, action: PayloadAction<Tasks[]>) => {
+      state.tasks = action.payload;
     },
   },
 });
 
-export const { addTask, updateStatus, renderTasks } = taskSlice.actions;
+export function getTasks() {
+  return async function getTaskThunk(dispatch, getState) {
+    const { getAllTasks } = useTask();
+    const data = await getAllTasks();
+    dispatch(fetchTasks(data));
+  };
+}
+
+export const { addTask, updateStatus, fetchTasks } = taskSlice.actions;
 export default taskSlice.reducer;
