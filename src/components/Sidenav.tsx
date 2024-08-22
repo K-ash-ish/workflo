@@ -3,17 +3,19 @@ import { navElements } from "@/constant";
 import { useModal } from "@/context/ModalContext";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { LucideProps } from "lucide-react";
+import { redirect, usePathname } from "next/navigation";
+import { LucideProps, UserPlus } from "lucide-react";
 import { Button } from "./ui/button";
+import useAuth from "@/hooks/useAuth";
 
-function IconWrapper({ icon: Icon }: { icon: React.FC<LucideProps> }) {
+function Icon({ icon: Icon }: { icon: React.FC<LucideProps> }) {
   return <Icon className="text-[#797979] w-5 h-auto" />;
 }
 
 function Sidenav() {
   const pathname = usePathname();
   const { isOpen, openModal, closeModal } = useModal();
+  const { logout } = useAuth();
   return (
     <nav className="w-[280px] bg-white border-r border-[#DEDEDE] py-3 px-4 flex flex-col gap-3">
       <div className="flex items-center gap-2 ">
@@ -27,6 +29,14 @@ function Sidenav() {
         />
         <h3 className="font-medium">Joe Gardner</h3>
       </div>
+      <div className="flex justify-between items-center">
+        <button
+          className=" text-sm text-[#797979] px-2 py-2 bg-[#F4F4F4] rounded-md"
+          onClick={logout}
+        >
+          Logout
+        </button>
+      </div>
       <ul className="flex flex-col gap-2">
         {navElements?.map((navItem) => {
           return (
@@ -38,13 +48,14 @@ function Sidenav() {
                 }
                 `}
               >
-                <IconWrapper icon={navItem.icon} />
+                <Icon icon={navItem.icon} />
                 {navItem.name}
               </Link>
             </li>
           );
         })}
       </ul>
+
       <Button
         variant="default"
         className="flex gap-2 items-center justify-center text-white bg-gradient-to-t from-[#342592] to-[#5747B9] capitalize  "
