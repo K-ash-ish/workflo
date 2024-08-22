@@ -1,5 +1,6 @@
 "use client";
 import { Credentials } from "@/types/credentials";
+import { EyeIcon, EyeOff } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -23,13 +24,7 @@ export function AuthInputField({
       {type === "password" && (
         // TODO toggle password visibility
         <button>
-          <Image
-            src="/toggle-password.png"
-            width={18}
-            height={18}
-            alt="Toggle password visibility"
-            className="absolute right-2 top-3"
-          />
+          <EyeIcon className="w-4 h-4 absolute right-2 top-[calc(50%-0.5rem)] text-[#717171]" />
         </button>
       )}
       <input
