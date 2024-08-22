@@ -1,6 +1,6 @@
 import useTask from "@/hooks/useTasks";
 import { Tasks } from "@/types/taskdata";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, Dispatch, PayloadAction } from "@reduxjs/toolkit";
 
 interface InitialState {
   error: string;
@@ -42,7 +42,7 @@ export const taskSlice = createSlice({
 });
 
 export function getTasks() {
-  return async function getTaskThunk(dispatch, getState) {
+  return async function getTaskThunk(dispatch: Dispatch) {
     const { getAllTasks } = useTask();
     const data = await getAllTasks();
     dispatch(fetchTasks(data));
