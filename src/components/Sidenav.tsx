@@ -5,6 +5,11 @@ import useAuth from "@/hooks/useAuth";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect, usePathname } from "next/navigation";
+import { LucideProps, UserPlus } from "lucide-react";
+
+function Icon({ icon: Icon }: { icon: React.FC<LucideProps> }) {
+  return <Icon className="text-[#797979] w-5 h-auto" />;
+}
 
 function Sidenav() {
   const pathname = usePathname();
@@ -20,45 +25,11 @@ function Sidenav() {
           width={0}
           height={0}
           alt="Profile Picture"
-          unoptimized
           className="rounded-xl w-8 h-8 object-cover"
         />
         <h3 className="font-medium">Joe Gardner</h3>
       </div>
       <div className="flex justify-between items-center">
-        <ul className="flex gap-4">
-          <li>
-            <Image
-              src="/notification.png"
-              width={0}
-              height={0}
-              className="w-5 h-5 object-cover"
-              alt="HOME"
-              unoptimized
-            />
-          </li>
-          <li className="relative">
-            <Image
-              src="/loading.png"
-              width={0}
-              height={0}
-              className="w-5 h-5 object-cover"
-              alt="HOME"
-              unoptimized
-            />
-            <span className="bg-[#FFB800] w-2 h-2 absolute rounded-full top-0 right-0"></span>
-          </li>
-          <li>
-            <Image
-              src="/double-arrow.png"
-              width={0}
-              height={0}
-              className="w-5 h-5 object-cover"
-              alt="HOME"
-              unoptimized
-            />
-          </li>
-        </ul>
         <button
           className=" text-sm text-[#797979] px-2 py-2 bg-[#F4F4F4] rounded-md"
           onClick={logout}
@@ -77,14 +48,7 @@ function Sidenav() {
                 }
                 `}
               >
-                <Image
-                  src={navItem.icon}
-                  width={0}
-                  height={0}
-                  alt="HOME"
-                  className="object-cover h-5 w-5 "
-                  unoptimized
-                />
+                <Icon icon={navItem.icon} />
                 {navItem.name}
               </Link>
             </li>

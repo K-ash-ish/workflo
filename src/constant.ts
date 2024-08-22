@@ -1,3 +1,4 @@
+import { Home } from "lucide-react";
 import { Tasks } from "./types/taskdata";
 
 export const features = [
@@ -28,29 +29,29 @@ export const navElements = [
   {
     to: "/dashboard",
     name: "home",
-    icon: "/home.png",
+    icon: Home,
   },
-  {
-    to: "/dashboard/boards",
-    name: "boards",
+  // {
+  //   to: "/dashboard/boards",
+  //   name: "boards",
 
-    icon: "/chart.png",
-  },
-  {
-    to: "/dashboard/settings",
-    icon: "/settings.png",
-    name: "settings",
-  },
-  {
-    to: "/dashboard/teams",
-    name: "teams",
-    icon: "/teams.png",
-  },
-  {
-    to: "/dashboard/analytics",
-    icon: "/analytics.png",
-    name: "analytics",
-  },
+  //   icon: "/chart.png",
+  // },
+  // {
+  //   to: "/dashboard/settings",
+  //   icon: "/settings.png",
+  //   name: "settings",
+  // },
+  // {
+  //   to: "/dashboard/teams",
+  //   name: "teams",
+  //   icon: "/teams.png",
+  // },
+  // {
+  //   to: "/dashboard/analytics",
+  //   icon: "/analytics.png",
+  //   name: "analytics",
+  // },
 ];
 
 export const taskData: Tasks[] = [
