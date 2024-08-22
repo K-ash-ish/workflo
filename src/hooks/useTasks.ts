@@ -1,5 +1,4 @@
 import { Tasks } from "@/types/taskdata";
-import { useState } from "react";
 
 function useTask() {
   // const [success, setSuccess] = useState(false);
@@ -72,7 +71,7 @@ function useTask() {
       ).then((res) => res.json());
       console.log(response);
       if (response.success) {
-        setSuccess(true);
+        // setSuccess(true);
       }
     } catch (error) {
       console.log("Error while deleting task", error);
