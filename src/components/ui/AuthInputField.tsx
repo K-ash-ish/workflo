@@ -19,16 +19,15 @@ export function AuthInputField({
   credentials: Credentials;
   setCredentials: (credentials: Credentials) => void;
 }) {
+  const [showPassword, setShowPassword] = useState<Boolean>(false);
+  function checkShowPassword() {
+    if (showPassword) return "text";
+    return "password";
+  }
   return (
     <label htmlFor={id} className="relative">
-      {type === "password" && (
-        // TODO toggle password visibility
-        <button>
-          <EyeIcon className="w-4 h-4 absolute right-2 top-[calc(50%-0.5rem)] text-[#717171]" />
-        </button>
-      )}
       <input
-        type={type}
+        type={type === "password" ? checkShowPassword() : type}
         placeholder={placeholder}
         id={id}
         value={credentials[type] || ""}
@@ -38,6 +37,22 @@ export function AuthInputField({
         required
         className="py-2 px-3 bg-[#EBEBEB] rounded-md focus:outline-1 focus:border-none focus:outline-[#d2d2d2] w-full text-[#606060] placeholder-gray-400 placeholder:pl-1  caret-gray-400 "
       />
+      {type === "password" && (
+        <button
+          tabIndex={-1}
+          onClick={(e) => {
+            e.preventDefault();
+            setShowPassword(!showPassword);
+          }}
+          type="button"
+        >
+          {showPassword ? (
+            <EyeOff className="w-4 h-4 absolute right-2 top-[calc(50%-0.5rem)] text-[#717171]" />
+          ) : (
+            <EyeIcon className="w-4 h-4 absolute right-2 top-[calc(50%-0.5rem)] text-[#717171]" />
+          )}
+        </button>
+      )}
     </label>
   );
 }

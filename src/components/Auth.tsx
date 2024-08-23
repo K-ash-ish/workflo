@@ -20,12 +20,12 @@ function Auth({ authType }: { authType: string }) {
     });
   }
   function handleClick(
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    e: React.FormEvent<HTMLFormElement>,
+
     authType: string
   ) {
     e.preventDefault();
     if (authType === "login") {
-      console.log("login");
       login(credentials.email, credentials.password);
     } else {
       signup(credentials.email, credentials.password, credentials.text);
@@ -42,7 +42,10 @@ function Auth({ authType }: { authType: string }) {
       <h1 className=" text-2xl md:text-3xl font-semibold text-center ">
         Welcome to <span className="text-[#4534AC]">Workflo</span>!
       </h1>
-      <form className="flex flex-col gap-6 ">
+      <form
+        className="flex flex-col gap-6 "
+        onSubmit={(e) => handleClick(e, authType)}
+      >
         {authType === "signup" && (
           <AuthInputField
             type="text"
@@ -70,9 +73,10 @@ function Auth({ authType }: { authType: string }) {
           setCredentials={setCredentials}
         />
         {/* //change gradient when clicked */}
+
         <button
+          type="submit"
           className="rounded-md text-white bg-gradient-to-t from-[#7166B2] to-[#867BCB] active:from-[#342592] active:to-[#5747B9] py-2 capitalize"
-          onClick={(e) => handleClick(e, authType)}
         >
           {authType}
         </button>
