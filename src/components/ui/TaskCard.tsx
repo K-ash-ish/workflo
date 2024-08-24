@@ -6,11 +6,11 @@ import { useDrag } from "react-dnd";
 
 function TaskCard({ index, task }: { index: number; task: Tasks }) {
   const dragRef = useRef<HTMLDivElement | null>(null);
-  const { title, priority, description, deadline, id, status } = task;
+  const { title, priority, description, deadline, _id, status } = task;
 
   const [{ isDragging }, drag] = useDrag(() => ({
     type: "task",
-    item: { id: id, mvFrom: status },
+    item: { id: _id, mvFrom: status },
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),

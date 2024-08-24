@@ -19,10 +19,10 @@ function TaskBoard() {
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="bg-white w-full py-2 px-4 rounded-md flex gap-4  ">
-        <TaskColumn tasks={tasks} title="to do" />
-        <TaskColumn tasks={tasks} title="in progress" />
-        <TaskColumn tasks={tasks} title="under review" />
-        <TaskColumn tasks={tasks} title="finished" />
+        <TaskColumn tasks={tasks} taskStatus="to do" />
+        <TaskColumn tasks={tasks} taskStatus="in progress" />
+        <TaskColumn tasks={tasks} taskStatus="under review" />
+        <TaskColumn tasks={tasks} taskStatus="finished" />
       </div>
     </DndProvider>
   );

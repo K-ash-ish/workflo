@@ -26,11 +26,9 @@ export const taskSlice = createSlice({
       action: PayloadAction<{ id: number; changeStatusTo: string }>
     ) => {
       const { id, changeStatusTo } = action.payload;
-      console.log("TASK SLCE UPDATW : ", id, changeStatusTo);
 
       state.tasks.map((task, index) => {
-        console.log(task.id, task._id);
-        if (task.id === id || task._id) {
+        if (task._id === id) {
           state.tasks[index].status = changeStatusTo;
         }
       });

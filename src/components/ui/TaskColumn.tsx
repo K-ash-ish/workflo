@@ -8,34 +8,46 @@ import { filterTasks } from "@/utils/filterTasks";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { updateStatus } from "@/lib/features/taskSlice";
 import { useModal } from "@/context/ModalContext";
+import useTask from "@/hooks/useTasks";
 
-function TaskColumn({ title, tasks }: { title: string; tasks: Tasks[] }) {
+function TaskColumn({
+  taskStatus,
+  tasks,
+}: {
+  taskStatus: string;
+  tasks: Tasks[];
+}) {
   let taskList: Tasks[];
   const { openModal } = useModal();
   const dispatch = useAppDispatch();
   const { tasksToDo, tasksFinished, tasksInProgress, tasksUnderReview } =
     filterTasks(tasks);
   const dropRef = useRef<HTMLDivElement | null>(null);
+  const { updateTask } = useTask();
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "task",
-    drop: (item: { id: number; mvFrom: string }) =>
-      updateTaskStatus(item.id, item.mvFrom, tasks),
+    drop: ({ id, mvFrom }: { id: number; mvFrom: string }) => {
+      updateTaskStatus(id, mvFrom, tasks);
+    },
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
     }),
   }));
   drop(dropRef);
-  function updateTaskStatus(id: number, mvFrom: string, data: Tasks[]) {
-    if (mvFrom !== title) {
-      dispatch(updateStatus({ id, changeStatusTo: title }));
+  async function updateTaskStatus(id: number, mvFrom: string, data: Tasks[]) {
+    if (mvFrom !== taskStatus) {
+      const res = await updateTask({ id, status: taskStatus });
+      console.log(res);
+
+      dispatch(updateStatus({ id: res._id, changeStatusTo: res.status }));
     }
   }
-  if (title === "to do") {
+  if (taskStatus === "to do") {
     taskList = tasksToDo;
-  } else if (title === "under review") {
+  } else if (taskStatus === "under review") {
     taskList = tasksUnderReview;
-  } else if (title === "in progress") {
+  } else if (taskStatus === "in progress") {
     taskList = tasksInProgress;
   } else {
     taskList = tasksFinished;
@@ -43,7 +55,7 @@ function TaskColumn({ title, tasks }: { title: string; tasks: Tasks[] }) {
   return (
     <div ref={dropRef} className="w-full ">
       <div className="flex justify-between items-center my-2">
-        <h4 className="text-lg text-[#555555] capitalize">{title}</h4>
+        <h4 className="text-lg text-[#555555] capitalize">{taskStatus}</h4>
 
         <Image
           src="/horizontal-bar.png"
@@ -57,7 +69,7 @@ function TaskColumn({ title, tasks }: { title: string; tasks: Tasks[] }) {
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-4">
           {taskList?.map((task, index) => {
-            return <TaskCard key={task.id} task={task} index={index} />;
+            return <TaskCard key={task._id} task={task} index={index} />;
           })}
         </div>
         <button
