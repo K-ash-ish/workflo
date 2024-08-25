@@ -12,7 +12,6 @@ function TaskBoard() {
 
   const dispatch = useAppDispatch();
   useEffect(() => {
-    console.log("called");
     dispatch(getTasks());
   }, []);
 

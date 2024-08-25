@@ -20,7 +20,7 @@ export function Dropdown({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
-          variant="default"
+          variant="outline"
           role="combobox"
           aria-expanded={open}
           className=""
@@ -31,7 +31,7 @@ export function Dropdown({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
-        <Command>
+        <Command className=" ">
           <CommandList>
             <CommandGroup>
               {options &&
@@ -40,6 +40,7 @@ export function Dropdown({
                     <CommandItem
                       key={option}
                       value={option}
+                      className=""
                       onSelect={(currentValue) => {
                         if (currentValue !== value) {
                           handleDropDownValue(currentValue, title);

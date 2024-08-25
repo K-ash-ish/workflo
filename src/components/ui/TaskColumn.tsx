@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { updateStatus } from "@/lib/features/taskSlice";
 import { useModal } from "@/context/ModalContext";
 import useTask from "@/hooks/useTasks";
+import { BarChart } from "lucide-react";
 
 function TaskColumn({
   taskStatus,
@@ -56,15 +57,7 @@ function TaskColumn({
     <div ref={dropRef} className="w-full ">
       <div className="flex justify-between items-center my-2">
         <h4 className="text-lg text-[#555555] capitalize">{taskStatus}</h4>
-
-        <Image
-          src="/horizontal-bar.png"
-          width={0}
-          height={0}
-          alt="To do"
-          className="w-5 h-5 object-cover"
-          unoptimized
-        />
+        <BarChart className="w-6 h-auto rotate-90" />
       </div>
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-4">

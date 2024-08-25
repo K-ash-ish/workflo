@@ -1,4 +1,11 @@
-import { Home } from "lucide-react";
+import {
+  Calendar,
+  CircleAlert,
+  Home,
+  Loader,
+  LucideProps,
+  Pencil,
+} from "lucide-react";
 import { Tasks } from "./types/taskdata";
 
 export const features = [
@@ -96,31 +103,31 @@ export const priorityColors: Record<Priority, string> = {
 };
 
 type Field = {
-  icon?: string;
+  icon: React.FC<LucideProps>;
   title: string;
   type: "dropdown" | "text";
   options?: string[];
 };
 export const fields: Field[] = [
   {
-    icon: "/loading.png",
+    icon: Loader,
     title: "status",
     type: "dropdown",
     options: ["to do", "in progress", "finished", "under review"],
   },
   {
-    icon: "/priority.png",
+    icon: CircleAlert,
     title: "priority",
     type: "dropdown",
     options: ["urgent", "low", "medium"],
   },
   {
-    icon: "/calender.png",
+    icon: Calendar,
     title: "deadline",
     type: "text",
   },
   {
-    icon: "/pencil.png",
+    icon: Pencil,
     title: "description",
     type: "text",
   },

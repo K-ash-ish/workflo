@@ -6,12 +6,13 @@ import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import useAuth from "@/hooks/useAuth";
 import { redirect } from "next/navigation";
+import { createPortal } from "react-dom";
 
 function page() {
   const { isOpen, openModal } = useModal();
   const { logout, success } = useAuth();
-
   if (success) redirect("/login");
+
   return (
     <div className=" flex flex-col gap-2 py-2 px-2">
       <div className="flex justify-between items-center">
@@ -39,7 +40,8 @@ function page() {
         </Button>
       </div>
       <TaskBoard />
-      {isOpen && <TaskModal />}
+
+      {isOpen && createPortal(<TaskModal />, document.body)}
     </div>
   );
 }

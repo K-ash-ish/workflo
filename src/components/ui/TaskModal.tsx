@@ -1,14 +1,22 @@
 "use client";
 import { fields } from "@/constant";
-import Image from "next/image";
 import React, { useState } from "react";
-import { Button } from "./button";
 import { Dropdown } from "./dropdown";
 import { Tasks } from "@/types/taskdata";
 import { useAppDispatch } from "@/lib/hooks";
 import { addTask } from "@/lib/features/taskSlice";
 import { useModal } from "@/context/ModalContext";
 import useTask from "@/hooks/useTasks";
+import {
+  DiamondPlus,
+  LucideProps,
+  MoveDiagonal2,
+  Share2,
+  Star,
+  Trash2,
+  X,
+} from "lucide-react";
+import { IconWrapper } from "./IconWrapper";
 
 function ActionBtn({
   title,
@@ -16,7 +24,7 @@ function ActionBtn({
   handleClick,
 }: {
   title: string;
-  icon?: string;
+  icon?: React.FC<LucideProps>;
   handleClick?: () => void;
 }) {
   const style = {
@@ -27,9 +35,6 @@ function ActionBtn({
         ? "#1fae58"
         : "#797979"
     }`,
-    // textDecoration: `${
-    //   title === "delete" || title === "done" ? "underline" : ""
-    // }`,
   };
   return (
     <button
@@ -37,17 +42,7 @@ function ActionBtn({
       style={style}
       onClick={handleClick}
     >
-      {title}
-      {icon && (
-        <Image
-          src={icon}
-          width={0}
-          height={0}
-          className="w-5 h-5 object-contain"
-          alt="HOME"
-          unoptimized
-        />
-      )}
+      {icon && <IconWrapper style={style} icon={icon} />}
     </button>
   );
 }
@@ -62,7 +57,7 @@ function TaskModal() {
   }
   function deleteTask() {
     // dispatch()
-    console.log("delte");
+    console.log("delete");
   }
   function handleInput(
     e: React.ChangeEvent<HTMLInputElement>,
@@ -81,37 +76,26 @@ function TaskModal() {
   }
 
   return (
-    <div className="absolute top-0 right-0 bg-white/40 w-full h-full  flex  justify-center z-40 ">
-      <div className="flex flex-col gap-3 bg-white w-9/12 py-4  px-6 shadow-xl">
+    <div className="absolute top-0 right-0 bg-white/40 w-full h-full  md:flex  md:justify-center z-40 ">
+      <div className="flex flex-col gap-3 bg-white md:w-9/12 w-full h-full py-4  px-6 shadow-xl">
         <div className="flex items-center justify-between">
           <ul className="flex items-center gap-4">
             <li onClick={closeModal} className="cursor-pointer ">
-              <Image
-                src="/cross.png"
-                width={0}
-                height={0}
-                className="w-3 h-3 object-contain"
-                alt="HOME"
-                unoptimized
-              />
+              <X className="w-5 h-auto text-gray-500" />
             </li>
             <li>
-              <Image
-                src="/image.png"
-                width={0}
-                height={0}
-                className="w-3 h-3 object-contain"
-                alt="HOME"
-                unoptimized
-              />
+              <MoveDiagonal2 className="w-5 h-auto text-gray-500" />
             </li>
           </ul>
           <ul className="flex items-center gap-4 capitalize">
-            <ActionBtn title="delete" handleClick={deleteTask} />
-            <ActionBtn title="create" handleClick={createTask} />
-            <ActionBtn title="share" icon="/share.png" />
-
-            <ActionBtn title="favourite" icon="/star.png" />
+            <ActionBtn title="delete" icon={Trash2} handleClick={deleteTask} />
+            <ActionBtn
+              title="create"
+              icon={DiamondPlus}
+              handleClick={createTask}
+            />
+            <ActionBtn title="share" icon={Share2} />
+            <ActionBtn title="favourite" icon={Star} />
           </ul>
         </div>
         <div className="flex flex-col items-start gap-6 ">
@@ -125,27 +109,20 @@ function TaskModal() {
               className="text-5xl w-5/6  placeholder:text-[#CCCCCC] placeholder:font-barlow placeholder:font-semibold placeholder:pl-2 focus:outline-none focus:border-none font-barlow text-[#989898]"
             />
           </label>
-          <div className="flex flex-col items-start gap-4 w-3/5">
+          <div className="flex flex-col items-start gap-4 w-full md:w-3/5 ">
             {fields?.map((field, index) => (
               <div className="flex gap-4 w-full items-center" key={index}>
-                <Image
-                  src={field.icon ? field.icon : "+"}
-                  width={0}
-                  height={0}
-                  className="w-5 h-5 object-contain"
-                  alt="HOME"
-                  unoptimized
-                />
-                <div className="capitalize text-[#666666] flex gap-12 items-center w-full">
+                <IconWrapper icon={field.icon} />
+                <div className="capitalize text-[#666666] flex md:gap-12 justify-evenly items-center w-full ">
                   <p className="w-1/2">{field.title}</p>
-                  <div className="w-1/2  ">
+                  <div className="w-1/2 ">
                     {field.type === "text" ? (
                       <input
                         value={task?.[field.title] || ""}
                         type={field.type}
                         id={field.title}
                         onChange={(e) => handleInput(e, field.title)}
-                        placeholder="Not selected"
+                        placeholder={field.title}
                         className="capitalize placeholder:text-[#C1BDBD] w-28  text-sm  outline-none   "
                       />
                     ) : (

@@ -3,14 +3,11 @@ import { navElements } from "@/constant";
 import { useModal } from "@/context/ModalContext";
 import Image from "next/image";
 import Link from "next/link";
-import { redirect, usePathname } from "next/navigation";
-import { LucideProps, UserPlus } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { LucideProps } from "lucide-react";
 import { Button } from "./ui/button";
 import useAuth from "@/hooks/useAuth";
-
-function Icon({ icon: Icon }: { icon: React.FC<LucideProps> }) {
-  return <Icon className="text-[#797979] w-5 h-auto" />;
-}
+import { IconWrapper } from "./ui/IconWrapper";
 
 function Sidenav() {
   const pathname = usePathname();
@@ -29,14 +26,6 @@ function Sidenav() {
         />
         <h3 className="font-medium">Joe Gardner</h3>
       </div>
-      <div className="flex justify-between items-center">
-        <button
-          className=" text-sm text-[#797979] px-2 py-2 bg-[#F4F4F4] rounded-md"
-          onClick={logout}
-        >
-          Logout
-        </button>
-      </div>
       <ul className="flex flex-col gap-2">
         {navElements?.map((navItem) => {
           return (
@@ -48,7 +37,7 @@ function Sidenav() {
                 }
                 `}
               >
-                <Icon icon={navItem.icon} />
+                <IconWrapper icon={navItem.icon} />
                 {navItem.name}
               </Link>
             </li>
