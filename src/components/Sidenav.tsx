@@ -4,15 +4,15 @@ import { useModal } from "@/context/ModalContext";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LucideProps } from "lucide-react";
 import { Button } from "./ui/button";
-import useAuth from "@/hooks/useAuth";
 import { IconWrapper } from "./ui/IconWrapper";
+import { useAppSelector } from "@/lib/hooks";
+import { selectUser } from "@/lib/features/auth/authSlice";
 
 function Sidenav() {
   const pathname = usePathname();
   const { isOpen, openModal, closeModal } = useModal();
-  const { logout } = useAuth();
+  const user = useAppSelector(selectUser);
   return (
     <nav className="w-[280px] bg-white border-r border-[#DEDEDE] py-3 px-4 flex flex-col gap-3">
       <div className="flex items-center gap-2 ">
@@ -24,7 +24,7 @@ function Sidenav() {
           alt="Profile Picture"
           className="rounded-xl w-8 h-8 object-cover"
         />
-        <h3 className="font-medium">Joe Gardner</h3>
+        <h3 className="font-medium capitalize">{user.userName}</h3>
       </div>
       <ul className="flex flex-col gap-2">
         {navElements?.map((navItem) => {

@@ -1,15 +1,15 @@
 "use client";
-import Link from "next/link";
 import { AuthInputField } from "./ui/AuthInputField";
 import { Credentials } from "@/types/credentials";
 
 import { useState } from "react";
-import useAuth from "@/hooks/useAuth";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/lib/hooks";
+import { login, signup } from "@/lib/features/auth/authActions";
 
-function Auth({ authType }: { authType: string }) {
+function Auth({ authType }: Readonly<{ authType: string }>) {
   const router = useRouter();
-  const { login, signup, success } = useAuth();
+  const dispatch = useAppDispatch();
   const [credentials, setCredentials] = useState<Credentials>(
     {} as Credentials
   );
@@ -26,17 +26,24 @@ function Auth({ authType }: { authType: string }) {
   ) {
     e.preventDefault();
     if (authType === "login") {
-      login(credentials.email, credentials.password);
+      dispatch(
+        login({ email: credentials.email, password: credentials.password })
+      );
     } else {
-      signup(credentials.email, credentials.password, credentials.text);
-      console.log("signup");
+      dispatch(
+        signup({
+          email: credentials.email,
+          password: credentials.password,
+          name: credentials.name,
+        })
+      );
     }
     setCredentials({} as Credentials);
   }
 
-  if (success) {
-    redirect("/dashboard");
-  }
+  // if (success) {
+  //   redirect("/dashboard");
+  // }
   return (
     <div className="md:w-[480px] w-5/6 min-h-[360px] bg-white rounded-md border-2 flex flex-col justify-center gap-6 p-10 ">
       <h1 className=" text-2xl md:text-3xl font-semibold text-center ">

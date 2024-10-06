@@ -1,13 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import taskReducer from "../lib/features/taskSlice";
+import authReducer from "../lib/features/auth/authSlice";
 export const makeStore = () => {
   return configureStore({
     reducer: {
       task: taskReducer,
+      auth: authReducer,
     },
   });
 };
-
 export type AppStore = ReturnType<typeof makeStore>;
 export type RootState = ReturnType<AppStore["getState"]>;
 
