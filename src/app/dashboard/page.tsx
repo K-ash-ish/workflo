@@ -4,14 +4,17 @@ import TaskModal from "@/components/ui/TaskModal";
 import { useModal } from "@/context/ModalContext";
 import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import useAuth from "@/hooks/useAuth";
-import { redirect } from "next/navigation";
 import { createPortal } from "react-dom";
+import { useEffect } from "react";
+import { useAppDispatch } from "@/lib/hooks";
+import { fetchAllTasks } from "@/lib/features/taskSlice";
 
 function page() {
   const { isOpen, openModal } = useModal();
-  const { logout, success } = useAuth();
-  if (success) redirect("/login");
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(fetchAllTasks());
+  }, []);
 
   return (
     <div className=" flex flex-col gap-2 py-2 px-2">

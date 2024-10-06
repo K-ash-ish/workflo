@@ -1,7 +1,6 @@
 import { Tasks } from "@/types/taskdata";
 
 function useTask() {
-  // const [success, setSuccess] = useState(false);
   const create = async (task: Tasks) => {
     const { status, title, deadline, description, priority } = task;
     if (!status || !title) return;
@@ -26,7 +25,6 @@ function useTask() {
       ).then((res) => res.json());
 
       if (response.success) {
-        // setSuccess(true);
         return response.data;
       }
     } catch (error) {
@@ -47,11 +45,11 @@ function useTask() {
         }
       ).then((res) => res.json());
       if (response.success) {
-        // setSuccess(true);
         return response.data;
       }
     } catch (error) {
       console.log("Error while fetching all tasks", error);
+      throw error;
     }
   };
   const deleteTask = async (id: string) => {
@@ -71,7 +69,7 @@ function useTask() {
       ).then((res) => res.json());
       console.log(response);
       if (response.success) {
-        // setSuccess(true);
+        // todo
       }
     } catch (error) {
       console.log("Error while deleting task", error);
@@ -101,7 +99,6 @@ function useTask() {
       ).then((res) => res.json());
       console.log(response);
       if (response.success) {
-        // setSuccess(true);
         return response.data;
       }
     } catch (error) {

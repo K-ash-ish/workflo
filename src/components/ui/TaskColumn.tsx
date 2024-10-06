@@ -1,11 +1,10 @@
 "use client";
-import Image from "next/image";
 import TaskCard from "./TaskCard";
-import { TaskColumnProps, Tasks } from "@/types/taskdata";
-import { useEffect, useRef } from "react";
+import { Tasks } from "@/types/taskdata";
+import { useRef } from "react";
 import { useDrop } from "react-dnd";
 import { filterTasks } from "@/utils/filterTasks";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { useAppDispatch } from "@/lib/hooks";
 import { updateStatus } from "@/lib/features/taskSlice";
 import { useModal } from "@/context/ModalContext";
 import useTask from "@/hooks/useTasks";

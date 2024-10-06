@@ -1,15 +1,17 @@
 import useTask from "@/hooks/useTasks";
 import { Tasks } from "@/types/taskdata";
-import { createSlice, Dispatch, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../store";
+import { login } from "./auth/authActions";
 
 interface InitialState {
   error: string;
-  loading: boolean;
+  status: "idle" | "loading" | "failed";
   tasks: Tasks[];
 }
 
 const initialState: InitialState = {
-  loading: false,
+  status: "idle",
   tasks: [],
   error: "",
 };
@@ -27,25 +29,48 @@ export const taskSlice = createSlice({
     ) => {
       const { id, changeStatusTo } = action.payload;
 
-      state.tasks.map((task, index) => {
+      state.tasks.forEach((task, index) => {
         if (task._id === id) {
           state.tasks[index].status = changeStatusTo;
         }
       });
     },
-    fetchTasks: (state, action: PayloadAction<Tasks[]>) => {
+    setTasks: (state, action: PayloadAction<Tasks[]>) => {
       state.tasks = action.payload;
     },
+    setError: (state, action: PayloadAction<any>) => {
+      state.error = action.payload;
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchAllTasks.pending, (state) => {
+      state.status = "loading";
+    });
+    builder.addCase(fetchAllTasks.fulfilled, (state, action) => {
+      state.status = "idle";
+      state.tasks = action.payload;
+    });
+    builder.addCase(fetchAllTasks.rejected, (state, action) => {
+      state.status = "failed";
+      console.log("Acction here: ", action);
+    });
   },
 });
 
-export function getTasks() {
-  return async function getTaskThunk(dispatch: Dispatch) {
+export const fetchAllTasks = createAsyncThunk(
+  "tasks/fetchTasks",
+  async (_, { rejectWithValue }) => {
     const { getAllTasks } = useTask();
-    const data = await getAllTasks();
-    dispatch(fetchTasks(data));
-  };
-}
+    try {
+      const data = await getAllTasks();
+      return data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
 
-export const { addTask, updateStatus, fetchTasks } = taskSlice.actions;
+export const selectAllTasks = (state: RootState) => state.task.tasks;
+
+export const { addTask, updateStatus, setTasks, setError } = taskSlice.actions;
 export default taskSlice.reducer;

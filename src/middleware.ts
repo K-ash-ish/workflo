@@ -14,7 +14,8 @@ async function isAuthenticated(req: NextRequest) {
   return true;
 }
 
-export async function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest, response: NextResponse) {
+  // console.log("Response: ", request.body, request);
   const url = request.url;
   const isAuth = await isAuthenticated(request);
   if (!isAuth) {
@@ -25,6 +26,10 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
   if (url.includes("login") || url.includes("signup")) {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
+  }
+
+  if (request.nextUrl.pathname === "/") {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
   return NextResponse.next();
