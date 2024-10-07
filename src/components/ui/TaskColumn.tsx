@@ -5,25 +5,23 @@ import { useRef } from "react";
 import { useDrop } from "react-dnd";
 import { filterTasks } from "@/utils/filterTasks";
 import { useAppDispatch } from "@/lib/hooks";
-import { updateStatus } from "@/lib/features/taskSlice";
 import { useModal } from "@/context/ModalContext";
-import useTask from "@/hooks/useTasks";
 import { BarChart } from "lucide-react";
+import { updateTask } from "@/lib/features/task/taskActions";
 
 function TaskColumn({
   taskStatus,
   tasks,
-}: {
+}: Readonly<{
   taskStatus: string;
   tasks: Tasks[];
-}) {
+}>) {
   let taskList: Tasks[];
   const { openModal } = useModal();
   const dispatch = useAppDispatch();
   const { tasksToDo, tasksFinished, tasksInProgress, tasksUnderReview } =
     filterTasks(tasks);
   const dropRef = useRef<HTMLDivElement | null>(null);
-  const { updateTask } = useTask();
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "task",
@@ -37,10 +35,7 @@ function TaskColumn({
   drop(dropRef);
   async function updateTaskStatus(id: number, mvFrom: string, data: Tasks[]) {
     if (mvFrom !== taskStatus) {
-      const res = await updateTask({ id, status: taskStatus });
-      console.log(res);
-
-      dispatch(updateStatus({ id: res._id, changeStatusTo: res.status }));
+      dispatch(updateTask({ id, status: taskStatus }));
     }
   }
   if (taskStatus === "to do") {

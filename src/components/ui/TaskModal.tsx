@@ -4,9 +4,7 @@ import React, { useState } from "react";
 import { Dropdown } from "./dropdown";
 import { Tasks } from "@/types/taskdata";
 import { useAppDispatch } from "@/lib/hooks";
-import { addTask } from "@/lib/features/taskSlice";
 import { useModal } from "@/context/ModalContext";
-import useTask from "@/hooks/useTasks";
 import {
   DiamondPlus,
   LucideProps,
@@ -17,16 +15,17 @@ import {
   X,
 } from "lucide-react";
 import { IconWrapper } from "./IconWrapper";
+import { createTask } from "@/lib/features/task/taskActions";
 
 function ActionBtn({
   title,
   icon,
   handleClick,
-}: {
+}: Readonly<{
   title: string;
   icon?: React.FC<LucideProps>;
   handleClick?: () => void;
-}) {
+}>) {
   const style = {
     color: `${
       title === "delete"
@@ -49,11 +48,9 @@ function ActionBtn({
 function TaskModal() {
   const [task, setTask] = useState<Tasks>({} as Tasks);
   const dispatch = useAppDispatch();
-  const { create } = useTask();
   const { closeModal } = useModal();
-  async function createTask() {
-    const createdTask = await create({ ...task });
-    dispatch(addTask({ ...createdTask, id: createdTask._id }));
+  async function createNewTask() {
+    dispatch(createTask(task));
   }
   function deleteTask() {
     // dispatch()
@@ -92,7 +89,7 @@ function TaskModal() {
             <ActionBtn
               title="create"
               icon={DiamondPlus}
-              handleClick={createTask}
+              handleClick={createNewTask}
             />
             <ActionBtn title="share" icon={Share2} />
             <ActionBtn title="favourite" icon={Star} />

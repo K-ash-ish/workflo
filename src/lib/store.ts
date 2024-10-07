@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import taskReducer from "../lib/features/taskSlice";
+import taskReducer from "./features/task/taskSlice";
 import authReducer from "../lib/features/auth/authSlice";
 export const makeStore = () => {
   return configureStore({
