@@ -7,9 +7,9 @@ import { Button } from "@/components/ui/button";
 import { createPortal } from "react-dom";
 import { useEffect } from "react";
 import { useAppDispatch } from "@/lib/hooks";
-import { fetchAllTasks } from "@/lib/features/taskSlice";
+import { fetchAllTasks } from "@/lib/features/task/taskActions";
 
-function page() {
+function Page() {
   const { isOpen, openModal } = useModal();
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -49,4 +49,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;
