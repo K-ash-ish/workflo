@@ -19,31 +19,29 @@ function Auth({ authType }: Readonly<{ authType: string }>) {
       return { ...prevValue, [valueToUpdate]: inputValue };
     });
   }
-  function handleClick(
+  async function handleClick(
     e: React.FormEvent<HTMLFormElement>,
 
     authType: string
   ) {
     e.preventDefault();
-    if (authType === "login") {
-      dispatch(
-        login({ email: credentials.email, password: credentials.password })
-      );
-    } else {
-      dispatch(
-        signup({
-          email: credentials.email,
-          password: credentials.password,
-          name: credentials.name,
-        })
-      );
-    }
-    setCredentials({} as Credentials);
+    const { email, password, name } = credentials;
+    const action =
+      authType === "login"
+        ? login({ email, password })
+        : signup({
+            email,
+            password,
+            name,
+          });
+    dispatch(action).then((payload) => {
+      if (payload.payload.success) {
+        router.push("/");
+      } else {
+        console.log("Error authenticating", payload);
+      }
+    });
   }
-
-  // if (success) {
-  //   redirect("/dashboard");
-  // }
   return (
     <div className="md:w-[480px] w-5/6 min-h-[360px] bg-white rounded-md border-2 flex flex-col justify-center gap-6 p-10 ">
       <h1 className=" text-2xl md:text-3xl font-semibold text-center ">

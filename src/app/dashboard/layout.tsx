@@ -6,12 +6,14 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { logout, verifyToken } from "@/lib/features/auth/authActions";
 import { selectUser } from "@/lib/features/auth/authSlice";
+import { useRouter } from "next/navigation";
 
 export default function Layout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
+  const router = useRouter();
   useEffect(() => {
     dispatch(verifyToken());
   }, []);
@@ -29,7 +31,11 @@ export default function Layout({
               variant="outline"
               className="self-start text-red-500 font-semibold "
               onClick={() => {
-                dispatch(logout());
+                dispatch(logout()).then((data) => {
+                  if (data.payload.success) {
+                    router.push("/login");
+                  }
+                });
               }}
             >
               Logout
