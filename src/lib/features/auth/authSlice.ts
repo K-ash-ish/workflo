@@ -7,6 +7,7 @@ interface InitialState {
   userName: string;
   userPicture: string;
   status: "idle" | "loading" | "failed";
+  error: string;
 }
 
 const InitialState: InitialState = {
@@ -14,6 +15,7 @@ const InitialState: InitialState = {
   userName: "",
   userPicture: "",
   status: "idle",
+  error: "",
 };
 
 export const authSlice = createSlice({
@@ -34,7 +36,12 @@ export const authSlice = createSlice({
       isAnyOf(login.fulfilled, signup.fulfilled, verifyToken.fulfilled),
       (state, action) => {
         state.status = "idle";
-        if (action.payload) {
+        if (!action.payload.success) {
+          if (action.type === login.fulfilled.type)
+            state.error = "Incorrect email/ password";
+        } else if (action.type === signup.fulfilled.type) {
+          state.error = action.payload.message;
+        } else {
           state.userName = action.payload.data.name;
           state.isLoggedIn = true;
         }
@@ -44,7 +51,7 @@ export const authSlice = createSlice({
       isAnyOf(login.rejected, signup.rejected, logout.rejected),
       (state, action) => {
         state.status = "failed";
-        console.log("error from authslice: ", action.payload);
+        state.error = "Something went wrong";
       }
     );
   },

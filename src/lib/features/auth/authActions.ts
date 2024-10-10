@@ -15,7 +15,6 @@ export const login = createAsyncThunk(
         body: JSON.stringify({ email, password }),
       }).then((res) => res.json());
     } catch (error) {
-      console.log("Error while login ", error);
       return rejectWithValue(error);
     }
   }
@@ -35,7 +34,6 @@ export const signup = createAsyncThunk(
         body: JSON.stringify({ email, password, name }),
       }).then((res) => res.json());
     } catch (error) {
-      console.log("Error while login ", error);
       return rejectWithValue(error);
     }
   }
@@ -53,7 +51,6 @@ export const logout = createAsyncThunk(
         },
       }).then((res) => res.json());
     } catch (error) {
-      console.log("Error while logging out ", error);
       return rejectWithValue(error);
     }
   }

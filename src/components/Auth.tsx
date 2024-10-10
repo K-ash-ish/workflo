@@ -2,17 +2,39 @@
 import { AuthInputField } from "./ui/AuthInputField";
 import { Credentials } from "@/types/credentials";
 
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAppDispatch } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { login, signup } from "@/lib/features/auth/authActions";
 
+function ErrorEl({
+  error,
+  setShowError,
+  showError,
+}: {
+  error: string;
+  setShowError: Dispatch<SetStateAction<boolean>>;
+  showError: boolean;
+}) {
+  setTimeout(() => {
+    setShowError(false);
+  }, 5000);
+  const showErr = error.length > 0 && showError;
+  return (
+    showErr && (
+      <p className={`text-sm capitalize mb-2 text-red-400 `}>{error}</p>
+    )
+  );
+}
 function Auth({ authType }: Readonly<{ authType: string }>) {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [credentials, setCredentials] = useState<Credentials>(
     {} as Credentials
   );
+  const [showError, setShowError] = useState<boolean>(false);
+  const error = useAppSelector((state) => state.auth.error);
+  const status = useAppSelector((state) => state.auth.status);
 
   function handleInput(inputValue: string, valueToUpdate: string) {
     setCredentials((prevValue) => {
@@ -37,9 +59,8 @@ function Auth({ authType }: Readonly<{ authType: string }>) {
     dispatch(action).then((payload) => {
       if (payload.payload.success) {
         router.push("/");
-      } else {
-        console.log("Error authenticating", payload);
       }
+      setShowError(true);
     });
   }
   return (
@@ -81,13 +102,19 @@ function Auth({ authType }: Readonly<{ authType: string }>) {
 
         <button
           type="submit"
-          className="rounded-md text-white bg-gradient-to-t from-[#7166B2] to-[#867BCB] active:from-[#342592] active:to-[#5747B9] py-2 capitalize"
+          disabled={status === "loading"}
+          className={`rounded-md text-white bg-gradient-to-t from-[#7166B2] to-[#867BCB] active:from-[#342592] active:to-[#5747B9] py-2 capitalize`}
         >
-          {authType}
+          {status === "idle" ? authType : "loading"}
         </button>
       </form>
 
-      <p className="text-center text-[#606060] md:text-base text-sm">
+      <div className="text-center text-[#606060] md:text-base text-sm">
+        <ErrorEl
+          error={error}
+          setShowError={setShowError}
+          showError={showError}
+        />
         {authType === "login" ? (
           <>
             Don't have an account? Create a{" "}
@@ -102,19 +129,19 @@ function Auth({ authType }: Readonly<{ authType: string }>) {
           </>
         ) : (
           <>
-            Already have an account?
+            Already have an account?{" "}
             <button
-              className="text-blue-600"
               onClick={() => {
                 router.push("/login");
               }}
+              className="text-blue-600"
             >
               Log in
             </button>
           </>
         )}
         .
-      </p>
+      </div>
     </div>
   );
 }
