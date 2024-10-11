@@ -8,6 +8,7 @@ import { logout, verifyToken } from "@/lib/features/auth/authActions";
 import { selectUser } from "@/lib/features/auth/authSlice";
 import { useRouter } from "next/navigation";
 import { createPortal } from "react-dom";
+import { useToast } from "@/components/hooks/use-toast";
 
 function Loader() {
   return (
@@ -23,10 +24,12 @@ export default function Layout({
   const dispatch = useAppDispatch();
 
   const user = useAppSelector(selectUser);
+
   // const status = useAppSelector((state) => state.auth.status);
 
   const router = useRouter();
-  const loading = createPortal(<Loader />, document.body);
+  const { toast } = useToast();
+  // const loading = createPortal(<Loader />, document.body);
   useEffect(() => {
     dispatch(verifyToken());
   }, []);
@@ -34,7 +37,6 @@ export default function Layout({
   return (
     <ModalProvider>
       <section className="flex gap-4 bg-[#f7f7f7] min-h-screen w-full relative ">
-        <Loader />
         <Sidenav />
         <section className="my-2 mx-1 w-full flex flex-col gap-3 relative ">
           <div className="flex  items-center justify-between ">
@@ -47,7 +49,17 @@ export default function Layout({
               onClick={() => {
                 dispatch(logout()).then((data) => {
                   if (data.payload.success) {
+                    toast({
+                      title: "Success",
+                      description: "Logout successfull",
+                    });
                     router.push("/login");
+                  } else {
+                    toast({
+                      title: "uh! oh",
+                      description: data.payload.message,
+                      variant: "destructive",
+                    });
                   }
                 });
               }}

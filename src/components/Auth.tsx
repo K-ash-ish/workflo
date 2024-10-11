@@ -1,40 +1,22 @@
 "use client";
 import { AuthInputField } from "./ui/AuthInputField";
 import { Credentials } from "@/types/credentials";
-
-import { Dispatch, SetStateAction, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { login, signup } from "@/lib/features/auth/authActions";
+import { useToast } from "@/components/hooks/use-toast";
+import { useState } from "react";
 
-function ErrorEl({
-  error,
-  setShowError,
-  showError,
-}: {
-  error: string;
-  setShowError: Dispatch<SetStateAction<boolean>>;
-  showError: boolean;
-}) {
-  setTimeout(() => {
-    setShowError(false);
-  }, 5000);
-  const showErr = error.length > 0 && showError;
-  return (
-    showErr && (
-      <p className={`text-sm capitalize mb-2 text-red-400 `}>{error}</p>
-    )
-  );
-}
 function Auth({ authType }: Readonly<{ authType: string }>) {
   const router = useRouter();
   const dispatch = useAppDispatch();
+
   const [credentials, setCredentials] = useState<Credentials>(
     {} as Credentials
   );
-  const [showError, setShowError] = useState<boolean>(false);
   const error = useAppSelector((state) => state.auth.error);
   const status = useAppSelector((state) => state.auth.status);
+  const { toast } = useToast();
 
   function handleInput(inputValue: string, valueToUpdate: string) {
     setCredentials((prevValue) => {
@@ -58,9 +40,19 @@ function Auth({ authType }: Readonly<{ authType: string }>) {
           });
     dispatch(action).then((payload) => {
       if (payload.payload.success) {
+        toast({
+          title: "Success",
+          description: payload.payload.message,
+          variant: "default",
+        });
         router.push("/");
+      } else {
+        toast({
+          title: "Uh oh!",
+          description: payload.payload.message,
+          variant: "destructive",
+        });
       }
-      setShowError(true);
     });
   }
   return (
@@ -110,11 +102,6 @@ function Auth({ authType }: Readonly<{ authType: string }>) {
       </form>
 
       <div className="text-center text-[#606060] md:text-base text-sm">
-        <ErrorEl
-          error={error}
-          setShowError={setShowError}
-          showError={showError}
-        />
         {authType === "login" ? (
           <>
             Don't have an account? Create a{" "}
