@@ -76,7 +76,7 @@ function Auth({ authType }: Readonly<{ authType: string }>) {
           <AuthInputField
             type="text"
             placeholder="Full name"
-            id="fullname"
+            id="name"
             handleInput={handleInput}
             credentials={credentials}
             setCredentials={setCredentials}

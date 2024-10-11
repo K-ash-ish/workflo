@@ -37,12 +37,10 @@ export const authSlice = createSlice({
       (state, action) => {
         state.status = "idle";
         if (!action.payload.success) {
-          if (action.type === login.fulfilled.type)
-            state.error = "Incorrect email/ password";
-        } else if (action.type === signup.fulfilled.type) {
           state.error = action.payload.message;
         } else {
           state.userName = action.payload.data.name;
+          state.error = "";
           state.isLoggedIn = true;
         }
       }

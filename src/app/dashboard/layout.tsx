@@ -7,13 +7,26 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { logout, verifyToken } from "@/lib/features/auth/authActions";
 import { selectUser } from "@/lib/features/auth/authSlice";
 import { useRouter } from "next/navigation";
+import { createPortal } from "react-dom";
+
+function Loader() {
+  return (
+    <div className="absolute top-0 right-0 bg-white/40 w-full h-full  flex  justify-center items-center z-40 cursor-not-allowed ">
+      <h1>Loading...</h1>
+    </div>
+  );
+}
 
 export default function Layout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const dispatch = useAppDispatch();
+
   const user = useAppSelector(selectUser);
+  // const status = useAppSelector((state) => state.auth.status);
+
   const router = useRouter();
+  const loading = createPortal(<Loader />, document.body);
   useEffect(() => {
     dispatch(verifyToken());
   }, []);
@@ -21,6 +34,7 @@ export default function Layout({
   return (
     <ModalProvider>
       <section className="flex gap-4 bg-[#f7f7f7] min-h-screen w-full relative ">
+        <Loader />
         <Sidenav />
         <section className="my-2 mx-1 w-full flex flex-col gap-3 relative ">
           <div className="flex  items-center justify-between ">

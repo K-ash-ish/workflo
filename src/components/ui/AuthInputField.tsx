@@ -11,14 +11,14 @@ export function AuthInputField({
   handleInput,
   credentials,
   setCredentials,
-}: {
+}: Readonly<{
   type: string;
   placeholder: string;
   id: string;
   handleInput: (inputValue: string, valueToUpdate: string) => void;
   credentials: Credentials;
   setCredentials: (credentials: Credentials) => void;
-}) {
+}>) {
   const [showPassword, setShowPassword] = useState<Boolean>(false);
   function checkShowPassword() {
     if (showPassword) return "text";
@@ -27,17 +27,17 @@ export function AuthInputField({
   return (
     <label htmlFor={id} className="relative">
       <input
-        type={type === "password" ? checkShowPassword() : type}
+        type={id === "password" ? checkShowPassword() : id}
         placeholder={placeholder}
         id={id}
-        value={credentials[type] || ""}
+        value={credentials[id] || ""}
         onChange={(e) => {
-          handleInput(e.target.value, type);
+          handleInput(e.target.value, id);
         }}
         required
         className="py-2 px-3 bg-[#EBEBEB] rounded-md focus:outline-1 focus:border-none focus:outline-[#d2d2d2] w-full text-[#606060] placeholder-gray-400 placeholder:pl-1  caret-gray-400 "
       />
-      {type === "password" && (
+      {id === "password" && (
         <button
           tabIndex={-1}
           onClick={(e) => {
