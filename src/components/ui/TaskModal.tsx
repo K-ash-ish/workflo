@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { IconWrapper } from "./IconWrapper";
 import { createTask } from "@/lib/features/task/taskActions";
+import { useToast } from "../hooks/use-toast";
 
 function ActionBtn({
   title,
@@ -49,8 +50,23 @@ function TaskModal() {
   const [task, setTask] = useState<Tasks>({} as Tasks);
   const dispatch = useAppDispatch();
   const { closeModal } = useModal();
+  const { toast } = useToast();
   async function createNewTask() {
-    dispatch(createTask(task));
+    dispatch(createTask(task)).then((payload) => {
+      if (payload.payload.success) {
+        toast({
+          title: "Success",
+          description: payload.payload.message,
+          variant: "default",
+        });
+      } else {
+        toast({
+          title: "Uh oh!",
+          description: payload.payload,
+          variant: "destructive",
+        });
+      }
+    });
   }
   function deleteTask() {
     // dispatch()

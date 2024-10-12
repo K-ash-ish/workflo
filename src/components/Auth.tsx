@@ -14,7 +14,6 @@ function Auth({ authType }: Readonly<{ authType: string }>) {
   const [credentials, setCredentials] = useState<Credentials>(
     {} as Credentials
   );
-  const error = useAppSelector((state) => state.auth.error);
   const status = useAppSelector((state) => state.auth.status);
   const { toast } = useToast();
 
