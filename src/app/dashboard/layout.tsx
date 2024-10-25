@@ -7,7 +7,6 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { logout, verifyToken } from "@/lib/features/auth/authActions";
 import { selectUser } from "@/lib/features/auth/authSlice";
 import { useRouter } from "next/navigation";
-import { createPortal } from "react-dom";
 import { useToast } from "@/components/hooks/use-toast";
 
 function Loader() {
