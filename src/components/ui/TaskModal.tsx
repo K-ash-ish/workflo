@@ -55,7 +55,6 @@ function TaskModal() {
     dispatch(createTask(task)).then((payload) => {
       if (payload.payload.success) {
         toast({
-          title: "Success",
           description: payload.payload.message,
           variant: "default",
         });

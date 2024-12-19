@@ -39,7 +39,6 @@ export default function Home() {
             dispatch(logout()).then((data) => {
               if (data.payload.success) {
                 toast({
-                  title: "Success",
                   description: "Logout successfull",
                 });
                 router.push("/login");
