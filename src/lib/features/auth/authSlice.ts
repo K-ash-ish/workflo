@@ -27,7 +27,12 @@ export const authSlice = createSlice({
       return InitialState;
     });
     builder.addMatcher(
-      isAnyOf(login.pending, signup.pending, logout.pending),
+      isAnyOf(
+        login.pending,
+        signup.pending,
+        logout.pending,
+        verifyToken.pending
+      ),
       (state) => {
         state.status = "loading";
       }
@@ -46,7 +51,12 @@ export const authSlice = createSlice({
       }
     );
     builder.addMatcher(
-      isAnyOf(login.rejected, signup.rejected, logout.rejected),
+      isAnyOf(
+        login.rejected,
+        signup.rejected,
+        logout.rejected,
+        verifyToken.rejected
+      ),
       (state, action) => {
         state.status = "failed";
         state.error = "Something went wrong";

@@ -8,17 +8,23 @@ import {
   fetchAllTasks,
   updateTask,
 } from "./taskActions";
-
+type Status = "idle" | "loading" | "failed";
 interface InitialState {
   error: string;
-  status: "idle" | "loading" | "failed";
+  status: Status;
   tasks: Tasks[];
+  fetchAllTasksStatus: Status;
+  createTaskStatus: Status;
+  updateTaskStatus: Status;
 }
 
 const initialState: InitialState = {
   status: "idle",
   tasks: [],
   error: "",
+  fetchAllTasksStatus: "idle",
+  createTaskStatus: "idle",
+  updateTaskStatus: "idle",
 };
 
 export const taskSlice = createSlice({
@@ -26,16 +32,26 @@ export const taskSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    builder.addCase(fetchAllTasks.pending, (state) => {
+      state.fetchAllTasksStatus = "loading";
+    });
     builder.addCase(fetchAllTasks.fulfilled, (state, action) => {
-      state.status = "idle";
+      state.fetchAllTasksStatus = "idle";
       state.tasks = action.payload.data;
     });
+    builder.addCase(createTask.pending, (state) => {
+      state.createTaskStatus = "loading";
+    });
     builder.addCase(createTask.fulfilled, (state, action) => {
+      state.createTaskStatus = "idle";
       state.tasks.push(action.payload.data);
     });
+    builder.addCase(updateTask.pending, (state) => {
+      state.updateTaskStatus = "loading";
+    });
     builder.addCase(updateTask.fulfilled, (state, action) => {
+      state.createTaskStatus = "idle";
       const { _id: id, status: changeStatusTo } = action.payload.data;
-
       state.tasks.forEach((task, index) => {
         if (task._id === id) {
           state.tasks[index].status = changeStatusTo;
@@ -45,29 +61,6 @@ export const taskSlice = createSlice({
     builder.addCase(logout.fulfilled, () => {
       return initialState;
     });
-    builder.addMatcher(
-      isAnyOf(
-        fetchAllTasks.pending,
-        createTask.pending,
-        deleteTask.pending,
-        updateTask.pending
-      ),
-      (state) => {
-        state.status = "loading";
-      }
-    );
-    builder.addMatcher(
-      isAnyOf(
-        fetchAllTasks.rejected,
-        createTask.rejected,
-        deleteTask.rejected,
-        updateTask.rejected
-      ),
-      (state, action) => {
-        state.status = "failed";
-        console.log("Error:  ", action);
-      }
-    );
   },
 });
 

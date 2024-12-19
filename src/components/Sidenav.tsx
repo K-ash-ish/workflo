@@ -8,22 +8,31 @@ import { Button } from "./ui/button";
 import { IconWrapper } from "./ui/IconWrapper";
 import { useAppSelector } from "@/lib/hooks";
 import { selectUser } from "@/lib/features/auth/authSlice";
+import { ProfilePicLoader } from "./ui/Loader";
 
 function Sidenav() {
   const pathname = usePathname();
   const { isOpen, openModal, closeModal } = useModal();
+  const status = useAppSelector((state) => state.auth.status);
   const user = useAppSelector(selectUser);
+
+  const profilePicture =
+    status === "loading" ? (
+      <ProfilePicLoader />
+    ) : (
+      <Image
+        src="/profile-picture.png"
+        width={0}
+        height={0}
+        alt="Profile Picture"
+        className="rounded-xl w-8 h-8 object-cover"
+      />
+    );
   return (
     <nav className="w-[280px] bg-white border-r border-[#DEDEDE] py-3 px-4 flex flex-col gap-3">
       <div className="flex items-center gap-2 ">
         {/* TODO adjust picture */}
-        <Image
-          src="/profile-picture.png"
-          width={0}
-          height={0}
-          alt="Profile Picture"
-          className="rounded-xl w-8 h-8 object-cover"
-        />
+        {profilePicture}
         <h3 className="font-medium capitalize">{user.userName}</h3>
       </div>
       <ul className="flex flex-col gap-2">

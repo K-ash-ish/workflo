@@ -6,12 +6,16 @@ import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { createPortal } from "react-dom";
 import { useEffect } from "react";
-import { useAppDispatch } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { fetchAllTasks } from "@/lib/features/task/taskActions";
+import { TaskBoardLoader } from "@/components/ui/Loader";
 
 function Page() {
   const { isOpen, openModal } = useModal();
   const dispatch = useAppDispatch();
+  const fetchAllTasksStatus = useAppSelector(
+    (state) => state.task.fetchAllTasksStatus
+  );
   useEffect(() => {
     dispatch(fetchAllTasks());
   }, []);
@@ -42,7 +46,7 @@ function Page() {
           </span>
         </Button>
       </div>
-      <TaskBoard />
+      {fetchAllTasksStatus === "loading" ? <TaskBoardLoader /> : <TaskBoard />}
 
       {isOpen && createPortal(<TaskModal />, document.body)}
     </div>

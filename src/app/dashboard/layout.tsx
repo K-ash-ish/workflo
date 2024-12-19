@@ -8,27 +8,25 @@ import { logout, verifyToken } from "@/lib/features/auth/authActions";
 import { selectUser } from "@/lib/features/auth/authSlice";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/hooks/use-toast";
-
-function Loader() {
-  return (
-    <div className="absolute top-0 right-0 bg-white/40 w-full h-full  flex  justify-center items-center z-40 cursor-not-allowed ">
-      <h1>Loading...</h1>
-    </div>
-  );
-}
+import { UserNameLoader } from "@/components/ui/Loader";
 
 export default function Layout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const dispatch = useAppDispatch();
-
-  const user = useAppSelector(selectUser);
-
-  // const status = useAppSelector((state) => state.auth.status);
-
   const router = useRouter();
+  const user = useAppSelector(selectUser);
+  const status = useAppSelector((state) => state.auth.status);
   const { toast } = useToast();
-  // const loading = createPortal(<Loader />, document.body);
+
+  const userName =
+    status === "loading" ? (
+      <UserNameLoader />
+    ) : (
+      <h2 className="font-barlow font-semibold text-3xl capitalize">
+        Good morning, {user.userName}!
+      </h2>
+    );
   useEffect(() => {
     dispatch(verifyToken());
   }, []);
@@ -39,9 +37,7 @@ export default function Layout({
         <Sidenav />
         <section className="my-2 mx-1 w-full flex flex-col gap-3 relative ">
           <div className="flex  items-center justify-between ">
-            <h2 className="font-barlow font-semibold text-3xl capitalize">
-              Good morning, {user.userName}!
-            </h2>
+            {userName}
             <Button
               variant="outline"
               className="self-start text-red-500 font-semibold "
