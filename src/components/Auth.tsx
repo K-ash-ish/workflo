@@ -40,11 +40,11 @@ function Auth({ authType }: Readonly<{ authType: string }>) {
     dispatch(action).then((payload) => {
       if (payload.payload.success) {
         toast({
-          title: "Success",
           description: payload.payload.message,
           variant: "default",
         });
-        router.push("/");
+        router.refresh();
+        router.push("/dashboard");
       } else {
         toast({
           title: "Uh oh!",

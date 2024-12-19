@@ -41,6 +41,7 @@ export default function Home() {
                 toast({
                   description: "Logout successfull",
                 });
+                router.refresh();
                 router.push("/login");
               } else {
                 toast({
