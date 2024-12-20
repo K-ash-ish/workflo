@@ -20,7 +20,7 @@ function TaskCard({ index, task }: { index: number; task: Tasks }) {
   return (
     <div
       ref={dragRef}
-      className="bg-[#F9F9F9] border border-[#DEDEDE] p-3  rounded-md cursor-pointer hover:bg-[#efefef] duration-300 "
+      className="bg-white shadow-md p-3   rounded-md cursor-pointer hover:bg-[#efefef] duration-300 "
     >
       <div className="flex flex-col items-start gap-3">
         <h6 className="font-medium capitalize text-[#606060 ]">{title}</h6>
