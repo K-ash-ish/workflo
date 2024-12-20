@@ -1,10 +1,14 @@
 import {
   Calendar,
   CircleAlert,
-  Home,
   Loader,
   LucideProps,
   Pencil,
+  ChartNoAxesColumnIncreasing,
+  List,
+  LogOut,
+  PanelsTopLeft,
+  User,
 } from "lucide-react";
 import { Tasks } from "./types/taskdata";
 
@@ -35,30 +39,19 @@ export const features = [
 export const navElements = [
   {
     to: "/dashboard",
-    name: "home",
-    icon: Home,
+    name: "Dashboard",
+    icon: PanelsTopLeft,
   },
-  // {
-  //   to: "/dashboard/boards",
-  //   name: "boards",
-
-  //   icon: "/chart.png",
-  // },
-  // {
-  //   to: "/dashboard/settings",
-  //   icon: "/settings.png",
-  //   name: "settings",
-  // },
-  // {
-  //   to: "/dashboard/teams",
-  //   name: "teams",
-  //   icon: "/teams.png",
-  // },
-  // {
-  //   to: "/dashboard/analytics",
-  //   icon: "/analytics.png",
-  //   name: "analytics",
-  // },
+  {
+    to: "/analytics",
+    name: "Analytics",
+    icon: ChartNoAxesColumnIncreasing,
+  },
+  {
+    to: "/all-tasks",
+    name: "All Tasks",
+    icon: List,
+  }
 ];
 
 export const taskData: Tasks[] = [
