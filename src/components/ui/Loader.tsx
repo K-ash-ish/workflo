@@ -1,5 +1,5 @@
 export function UserNameLoader() {
-  return <div className="bg-gray-200 w-36 h-6 animate-pulse"></div>;
+  return <div className="bg-gray-200 w-16 h-6 animate-pulse"></div>;
 }
 export function ProfilePicLoader() {
   return (
