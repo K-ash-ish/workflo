@@ -1,5 +1,6 @@
 import { priorityColors } from "@/constant";
 import { Tasks } from "@/types/taskdata";
+import { Clock } from "lucide-react";
 import Image from "next/image";
 import { useRef } from "react";
 import { useDrag } from "react-dnd";
@@ -8,9 +9,11 @@ export function TaskContent({ task }: { task: Tasks }) {
   const { title, description, priority, deadline, priorityColors } = task;
   return (
     <>
-      <div className="flex flex-col items-start gap-3">
-        <h6 className="font-medium capitalize text-[#606060 ]">{title}</h6>
-        <p className="text-sm text-gray-400">{description}</p>
+      <div className="flex flex-col md:items-start md:gap-3">
+        <h6 className="md:text-base text-[12px] font-normal md:font-medium capitalize text-[#606060 ]">
+          {title}
+        </h6>
+        <p className="md:text-sm text-[10px] text-gray-400">{description}</p>
         {priority && (
           <span
             className={`text-white text-xs p-2 rounded-xl`}
@@ -20,20 +23,14 @@ export function TaskContent({ task }: { task: Tasks }) {
           </span>
         )}
 
-        <p className="flex gap-2 text-[#606060] font-medium text-sm">
-          {deadline && (
-            <Image
-              src="/clock.png"
-              width={20}
-              height={20}
-              alt="Deadline"
-              className="object-contain"
-            />
-          )}
+        {/* <div className="flex flex-row gap-2 text-[#606060] md:font-medium text-xs md:text-sm">
+          <Clock size={20} />
           <span className="">{deadline}</span>
-        </p>
+        </div> */}
       </div>
-      <p className="text-[#797979]  my-2 text-sm">1 hr ago</p>
+      <p className="text-[#797979]  md:my-2 my-1 text-xs md:text-sm">
+        1 hr ago
+      </p>
     </>
   );
 }
@@ -57,7 +54,7 @@ function TaskCard({ index, task }: { index: number; task: Tasks }) {
   return (
     <div
       ref={dragRef}
-      className="bg-white shadow-md p-3  rounded-md cursor-pointer hover:bg-gray-100 duration-300 "
+      className="w-[80px] bg-white shadow-md md:p-3 p-2  rounded-md cursor-pointer hover:bg-gray-100 duration-300 "
     >
       <TaskContent task={task} />
     </div>
