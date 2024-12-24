@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { fetchAllTasks } from "@/lib/features/task/taskActions";
 import { TaskBoardLoader, UserNameLoader } from "@/components/ui/Loader";
 import { selectUser } from "@/lib/features/auth/authSlice";
-export function trimUsername(username: string) {
+function trimUsername(username: string) {
   return username.trim().split(" ")[0];
 }
 function Page() {
