@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { login, signup } from "@/lib/features/auth/authActions";
 import { useToast } from "@/components/hooks/use-toast";
 import { useState } from "react";
+import { Button } from "./ui/button";
 
 function Auth({ authType }: Readonly<{ authType: string }>) {
   const router = useRouter();
@@ -55,7 +56,7 @@ function Auth({ authType }: Readonly<{ authType: string }>) {
     });
   }
   return (
-    <div className="md:w-[480px] w-5/6 min-h-[360px] bg-white rounded-md border-2 flex flex-col justify-center gap-6 p-10 ">
+    <div className="md:w-[480px] w-11/12 min-h-[360px] bg-white rounded-md shadow-sm flex flex-col justify-center gap-6 p-10 ">
       <h1 className=" text-2xl md:text-3xl font-semibold text-center ">
         Welcome to <span className="text-[#4534AC]">Workflo</span>!
       </h1>
@@ -90,14 +91,13 @@ function Auth({ authType }: Readonly<{ authType: string }>) {
           setCredentials={setCredentials}
         />
         {/* //change gradient when clicked */}
-
-        <button
+        <Button
           type="submit"
           disabled={status === "loading"}
-          className={`rounded-md text-white bg-gradient-to-t from-[#7166B2] to-[#867BCB] active:from-[#342592] active:to-[#5747B9] py-2 capitalize`}
+          className={`rounded-md   py-2 capitalize bg-[#4534AC] text-white hover:bg-[#4634acc6]  transition-colors duration-500`}
         >
           {status === "idle" ? authType : "loading"}
-        </button>
+        </Button>
       </form>
 
       <div className="text-center text-[#606060] md:text-base text-sm">
