@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { fetchAllTasks } from "@/lib/features/task/taskActions";
 import { TaskBoardLoader, UserNameLoader } from "@/components/ui/Loader";
 import { selectUser } from "@/lib/features/auth/authSlice";
+import TaskModal from "@/components/ui/TaskModal";
 
 function trimUsername(username: string) {
   return username.trim().split(" ")[0];
@@ -51,6 +52,7 @@ function Page() {
         {userName()}
       </div>
       {fetchAllTasksStatus === "loading" ? <TaskBoardLoader /> : <TaskBoard />}
+      <TaskModal />
     </section>
   );
 }

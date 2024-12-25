@@ -6,7 +6,8 @@ import { useRef } from "react";
 import { useDrag } from "react-dnd";
 
 export function TaskContent({ task }: { task: Tasks }) {
-  const { title, description, priority, deadline, priorityColors } = task;
+  const { title, description, priority, deadline } = task;
+
   return (
     <>
       <div className="flex flex-col md:items-start md:gap-3">
@@ -18,7 +19,7 @@ export function TaskContent({ task }: { task: Tasks }) {
         </p>
         {priority && (
           <span
-            className={`text-white text-xs p-2 rounded-xl`}
+            className={`text-white md:text-xs text-[10px]  p-2 rounded-xl self-start`}
             style={{ backgroundColor: `${priorityColors[priority]}` }}
           >
             {priority}

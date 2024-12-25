@@ -9,11 +9,8 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { selectUser } from "@/lib/features/auth/authSlice";
 import { ProfilePicLoader } from "./ui/Loader";
 import {
-  ChevronRight,
   ChevronRightCircle,
   LogOut,
-  Menu,
-  Plus,
 } from "lucide-react";
 import { logout } from "@/lib/features/auth/authActions";
 import { useToast } from "./hooks/use-toast";

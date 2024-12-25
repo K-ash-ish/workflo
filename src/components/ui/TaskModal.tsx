@@ -49,7 +49,7 @@ function ActionBtn({
 function TaskModal() {
   const [task, setTask] = useState<Tasks>({} as Tasks);
   const dispatch = useAppDispatch();
-  const { closeModal } = useModal();
+  const { closeModal, isOpen } = useModal();
   const { toast } = useToast();
   async function createNewTask() {
     dispatch(createTask(task)).then((payload) => {
@@ -88,13 +88,17 @@ function TaskModal() {
   }
 
   return (
-    <div className="absolute top-0 right-0 bg-white/40 w-full h-full  md:flex  md:justify-center z-40 ">
+    <div
+      className={`absolute top-0 left-0 z-50 h-dvh  transition-transform duration-500 ease-in-out  
+   ${isOpen ? "translate-y-0" : "-translate-y-full"} 
+    `}
+    >
       <div className="flex flex-col gap-3 bg-white md:w-9/12 w-full h-full py-4  px-6 shadow-xl">
         <div className="flex items-center justify-between">
           <ul className="flex items-center gap-4">
-            <li onClick={closeModal} className="cursor-pointer ">
+            <button onClick={closeModal} className="cursor-pointer ">
               <X className="w-5 h-auto text-gray-500" />
-            </li>
+            </button>
             <li>
               <MoveDiagonal2 className="w-5 h-auto text-gray-500" />
             </li>
