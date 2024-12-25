@@ -13,7 +13,9 @@ export function TaskContent({ task }: { task: Tasks }) {
         <h6 className="md:text-base text-[12px] font-normal md:font-medium capitalize text-[#606060 ]">
           {title}
         </h6>
-        <p className="md:text-sm text-[10px] text-gray-400">{description}</p>
+        <p className="md:text-sm text-[10px] text-gray-400  truncate  text-wrap ">
+          {description}
+        </p>
         {priority && (
           <span
             className={`text-white text-xs p-2 rounded-xl`}
@@ -54,7 +56,7 @@ function TaskCard({ index, task }: { index: number; task: Tasks }) {
   return (
     <div
       ref={dragRef}
-      className="w-[80px] bg-white shadow-md md:p-3 p-2  rounded-md cursor-pointer hover:bg-gray-100 duration-300 "
+      className=" w-11/12 bg-white shadow-md md:p-3 p-2  rounded-md cursor-pointer hover:bg-gray-100 duration-300 "
     >
       <TaskContent task={task} />
     </div>

@@ -23,23 +23,15 @@ export default function Layout({
 
   return (
     <ModalProvider>
-      <div className="flex relative min-h-screen ">
-        {/* <button
-          className={`absolute   top-4 left-1 ${
-            isSidebarOpen ? "block" : ""
-          } md:hidden `}
-          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        >
-          <Menu />
-        </button> */}
+      <div className=" md:bg-yellow-300 min-h-dvh w-full flex bg-red-300 flex-row  gap-2 md:gap-0">
         <Sidenav
           isSidebarOpen={isSidebarOpen}
           setIsSidebarOpen={setIsSidebarOpen}
         />
         <div
-          className={`flex-1 transition-[margin] duration-500 ease-in-out  ${
-            isSidebarOpen ? "ml-0" : "ml-[70px]"
-          }`}
+          className={`flex-1 transition-[margin] duration-500 ease-in-out  
+          
+          `}
         >
           {children}
         </div>

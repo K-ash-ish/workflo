@@ -44,35 +44,33 @@ function TaskColumn({
   if (taskStatus === "to do") {
     taskList = tasksToDo;
     taskColumnColor = "bg-red-100";
-    taskIcon = <Clipboard className="md:w-6 hidden h-auto " />;
+    taskIcon = <Clipboard className="w-4 h-auto hidden md:block" />;
   } else if (taskStatus === "under review") {
     taskColumnColor = "bg-cyan-100";
     taskList = tasksUnderReview;
-    taskIcon = <TargetIcon className="md:w-6 h-auto hidden" />;
+    taskIcon = <TargetIcon className="w-4 h-auto  hidden md:block" />;
   } else if (taskStatus === "in progress") {
     taskList = tasksInProgress;
     taskColumnColor = "bg-yellow-100";
-    taskIcon = <Clock className="md:w-6 h-auto hidden " />;
+    taskIcon = <Clock className="w-4 h-auto  hidden md:block" />;
   } else {
     taskList = tasksFinished;
     taskColumnColor = "bg-green-100";
-    taskIcon = <ClipboardCheck className="md:w-6 h-auto hidden " />;
+    taskIcon = <ClipboardCheck className="w-4 h-auto  hidden md:block" />;
   }
   return (
     <div
       ref={dropRef}
-      className={`w-[100px] md:w-full min-h-[250px] ${taskColumnColor} transition-all duration-500 ease-in-out rounded-md ${
+      className={`w-full min-h-[250px] ${taskColumnColor} transition-all duration-500 ease-in-out rounded-md ${
         isOver ? "transform scale-105" : "transform scale-100"
       }`}
     >
-      <div className="flex justify-center  md:justify-between items-center border-b py-4 px-2 border-black border-dashed">
-        <h4 className="text-[#555555] text-xs whitespace-nowrap capitalize font-semibold ">
-          {taskStatus}
-        </h4>
+      <div className="flex justify-center  md:justify-between  items-center text-[12px] truncate md:text-base capitalize font-semibold border-b p-2  border-black border-dashed ">
+        <span className="md:truncate ">{taskStatus}</span>
         {taskIcon}
       </div>
       <div
-        className={`flex flex-col items-center my-3   p-2   gap-4 transition-all duration-700 ease-in-out `}
+        className={`flex flex-col items-center    p-2   gap-2 transition-all duration-700 ease-in-out `}
       >
         {taskList?.map((task, index) => {
           return <TaskCard key={task._id} task={task} index={index} />;
