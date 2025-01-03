@@ -54,9 +54,20 @@ export const taskSlice = createSlice({
       const { _id: id, status: changeStatusTo } = action.payload.data;
       state.tasks.forEach((task, index) => {
         if (task._id === id) {
-          state.tasks[index].status = changeStatusTo;
+          if (changeStatusTo) {
+            state.tasks[index].status = changeStatusTo;
+          }
         }
       });
+    });
+    builder.addCase(deleteTask.pending, (state) => {
+      state.status = "loading";
+    });
+    builder.addCase(deleteTask.fulfilled, (state, action) => {
+      state.status = "idle";
+      state.tasks = state.tasks.filter(
+        (task) => task._id !== action.payload.data._id
+      );
     });
     builder.addCase(logout.fulfilled, () => {
       return initialState;
