@@ -3,10 +3,10 @@ import TaskCard from "./TaskCard";
 import { Tasks } from "@/types/taskdata";
 import { useRef } from "react";
 import { useDrop } from "react-dnd";
-import { filterTasks } from "@/utils/filterTasks";
 import { useAppDispatch } from "@/lib/hooks";
 import { Clipboard, ClipboardCheck, Clock, TargetIcon } from "lucide-react";
 import { updateTask } from "@/lib/features/task/taskActions";
+import { filterTasks } from "@/utils";
 
 function TaskColumn({
   taskStatus,

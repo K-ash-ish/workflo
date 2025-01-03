@@ -6,9 +6,7 @@ import {
   Pencil,
   ChartNoAxesColumnIncreasing,
   List,
-  LogOut,
   PanelsTopLeft,
-  User,
 } from "lucide-react";
 import { Tasks } from "./types/taskdata";
 
@@ -43,15 +41,21 @@ export const navElements = [
     icon: PanelsTopLeft,
   },
   {
-    to: "/analytics",
+    to: "/dashboard/analytics",
     name: "Analytics",
     icon: ChartNoAxesColumnIncreasing,
   },
   {
-    to: "/all-tasks",
+    to: "/dashboard/alltasks",
     name: "All Tasks",
     icon: List,
-  }
+  },
+];
+export const quickStatsEl = [
+  { title: "Total Tasks", color: "bg-blue-100 text-blue-600" },
+  { title: "In Progress", color: "bg-yellow-100 text-yellow-600" },
+  { title: "Completed", color: "bg-green-100 text-green-600" },
+  { title: "Overdue", color: "bg-red-100 text-red-600" },
 ];
 
 export const taskData: Tasks[] = [
@@ -98,7 +102,7 @@ export const priorityColors: Record<Priority, string> = {
 type Field = {
   icon: React.FC<LucideProps>;
   title: string;
-  type: "dropdown" | "text";
+  type: "dropdown" | "text" | "calendar";
   options?: string[];
 };
 export const fields: Field[] = [
@@ -117,7 +121,7 @@ export const fields: Field[] = [
   {
     icon: Calendar,
     title: "deadline",
-    type: "text",
+    type: "calendar",
   },
   {
     icon: Pencil,
