@@ -8,10 +8,7 @@ import { IconWrapper } from "./ui/IconWrapper";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { selectUser } from "@/lib/features/auth/authSlice";
 import { ProfilePicLoader } from "./ui/Loader";
-import {
-  ChevronRightCircle,
-  LogOut,
-} from "lucide-react";
+import { ChevronRightCircle, LogOut } from "lucide-react";
 import { logout } from "@/lib/features/auth/authActions";
 import { useToast } from "./hooks/use-toast";
 import { Button } from "./ui/button";
@@ -44,7 +41,7 @@ function Sidenav({
     );
   return (
     <nav
-      className={`md:relative  md:translate-x-0  fixed top-0 left-0 bg-white  w-11/12 md:w-[250px] lg:w-[220px] z-20 h-full md:min-h-dvh   border-r border-[#DEDEDE]  py-2 px-2 md:p-3 flex flex-col   md:items-stretch gap-2 transition-all duration-700 ease-in-out
+      className={`md:relative  md:translate-x-0  fixed top-0 left-0 bg-white  w-11/12 md:max-w-[260px]  z-20 min-h-full    border-r border-[#DEDEDE]  py-2 px-2 md:p-3 flex flex-col   md:items-stretch gap-2 transition-all duration-700 ease-in-out
       ${
         isSidebarOpen
           ? "transform translate-x-0"

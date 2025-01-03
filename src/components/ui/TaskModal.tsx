@@ -6,6 +6,7 @@ import { Tasks } from "@/types/taskdata";
 import { useAppDispatch } from "@/lib/hooks";
 import { useModal } from "@/context/ModalContext";
 import {
+  CalendarRangeIcon,
   DiamondPlus,
   LucideProps,
   MoveDiagonal2,
@@ -17,6 +18,9 @@ import {
 import { IconWrapper } from "./IconWrapper";
 import { createTask } from "@/lib/features/task/taskActions";
 import { useToast } from "../hooks/use-toast";
+import { Calendar } from "./calendar";
+import { Popover, PopoverContent } from "./popover";
+import { PopoverTrigger } from "@radix-ui/react-popover";
 
 function ActionBtn({
   title,
@@ -48,6 +52,7 @@ function ActionBtn({
 }
 function TaskModal() {
   const [task, setTask] = useState<Tasks>({} as Tasks);
+  const [date, setDate] = useState<Date | undefined>(new Date());
   const dispatch = useAppDispatch();
   const { closeModal, isOpen } = useModal();
   const { toast } = useToast();
@@ -58,6 +63,8 @@ function TaskModal() {
           description: payload.payload.message,
           variant: "default",
         });
+        setTask({} as Tasks);
+        closeModal();
       } else {
         toast({
           title: "Uh oh!",
@@ -96,7 +103,13 @@ function TaskModal() {
       <div className="flex flex-col gap-3 bg-white md:w-9/12 w-full h-full py-4  px-6 shadow-xl">
         <div className="flex items-center justify-between">
           <ul className="flex items-center gap-4">
-            <button onClick={closeModal} className="cursor-pointer ">
+            <button
+              onClick={() => {
+                closeModal();
+                setTask({} as Tasks);
+              }}
+              className="cursor-pointer "
+            >
               <X className="w-5 h-auto text-gray-500" />
             </button>
             <li>
@@ -125,13 +138,13 @@ function TaskModal() {
               className="text-5xl w-5/6  placeholder:text-[#CCCCCC] placeholder:font-barlow placeholder:font-semibold placeholder:pl-2 focus:outline-none focus:border-none font-barlow text-[#989898]"
             />
           </label>
-          <div className="flex flex-col items-start gap-4 w-full md:w-3/5 ">
+          <div className="flex flex-col items-start gap-4 w-full   ">
             {fields?.map((field, index) => (
-              <div className="flex gap-4 w-full items-center" key={index}>
+              <div className="flex gap-4  w-full items-center  " key={index}>
                 <IconWrapper icon={field.icon} />
-                <div className="capitalize text-[#666666] flex md:gap-12 justify-evenly items-center w-full ">
-                  <p className="w-1/2">{field.title}</p>
-                  <div className="w-1/2 ">
+                <div className="capitalize text-[#666666] grid grid-cols-2 items-center  w-full ">
+                  <p className="">{field.title}</p>
+                  <div className=" ">
                     {field.type === "text" ? (
                       <input
                         value={task?.[field.title] || ""}
@@ -139,8 +152,25 @@ function TaskModal() {
                         id={field.title}
                         onChange={(e) => handleInput(e, field.title)}
                         placeholder={field.title}
-                        className="capitalize placeholder:text-[#C1BDBD] w-28  text-sm  outline-none   "
+                        className="placeholder:text-[#C1BDBD] w-28  text-sm  outline-none   "
                       />
+                    ) : field.type === "calendar" ? (
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <button className="flex items-center gap-2 text-xs">
+                            <CalendarRangeIcon size={20} strokeWidth={1.2} />
+                            {date?.toDateString()}
+                          </button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0">
+                          <Calendar
+                            mode="single"
+                            selected={date}
+                            onSelect={setDate}
+                            className="rounded-md border"
+                          />
+                        </PopoverContent>
+                      </Popover>
                     ) : (
                       <Dropdown
                         options={field?.options}

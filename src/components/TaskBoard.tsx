@@ -37,7 +37,7 @@ const generatePreview = ({
 }: PreviewState<{ task: Tasks }, Element>) => {
   return (
     <div
-      className="bg-white shadow-md p-3 rounded-md cursor-pointer hover:bg-gray-100 duration-300 opacity-50"
+      className="bg-white shadow-md p-3 rounded-md cursor-pointer hover:bg-gray-100 duration-300 opacity-50 w-[150px] overflow-hidden"
       style={style}
     >
       <TaskContent task={task} />
@@ -49,7 +49,7 @@ function TaskBoard() {
 
   return (
     <DndProvider options={HTML5toTouch}>
-      <div className="shadow-md md:shadow-none min-h-[400px] w-full grid grid-cols-4 items-start  gap-2 p-2 ">
+      <div className="max-h-[480px] shadow-md md:shadow-none min-h-[400px] w-full grid grid-cols-4 items-start  gap-2 p-2 overflow-y-scroll ">
         <TaskColumn tasks={tasks} taskStatus="to do" />
         <TaskColumn tasks={tasks} taskStatus="in progress" />
         <TaskColumn tasks={tasks} taskStatus="under review" />
