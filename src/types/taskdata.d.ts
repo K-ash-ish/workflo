@@ -1,7 +1,7 @@
 export type Priority = "low" | "medium" | "urgent";
 
 export type Tasks = {
-  id: number;
+    _id: string;
   title: string;
   status: string;
   deadline?: string;
