@@ -84,7 +84,7 @@ export const taskData: Tasks[] = [
     title: "integrate cloud storage",
   },
   {
-    _id: 412,
+    _id: "412",
     status: "finished",
     priority: "low",
     deadline: "2024-08-15",
