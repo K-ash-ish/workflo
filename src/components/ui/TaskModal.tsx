@@ -29,7 +29,6 @@ function TaskModal() {
   const { closeModal, isOpen, modalData: initialTask } = useModal();
   const [task, setTask] = useState<Tasks>({} as Tasks);
   const [date, setDate] = useState<Date | undefined>();
-  const [isUpdated, setIsUpdated] = useState(false);
   const dispatch = useAppDispatch();
   const { toast } = useToast();
   useEffect(() => {
@@ -129,11 +128,11 @@ function TaskModal() {
 
   return (
     <div
-      className={`absolute top-0 left-0 z-50 h-dvh  transition-transform duration-500 ease-in-out  
+      className={`absolute top-0 left-0 z-50 h-dvh md:w-auto w-full  transition-transform duration-500 ease-in-out  
    ${isOpen ? "translate-y-0" : "-translate-y-full"} 
     `}
     >
-      <div className="relative flex flex-col gap-3 bg-white md:w-9/12 w-full h-full py-4  px-6 shadow-xl">
+      <div className="relative flex flex-col gap-3 bg-white md:w-9/12 w-full h-full md:py-4 py-2 px-4  md:px-6 shadow-xl">
         <div className="flex items-center justify-between">
           <ul className="flex items-center gap-4">
             <button
@@ -172,7 +171,7 @@ function TaskModal() {
               type="text"
               id="title"
               placeholder="Title"
-              className="text-5xl w-5/6  placeholder:text-[#CCCCCC] placeholder:font-barlow placeholder:font-semibold placeholder:pl-1 focus:outline-none focus:border-none font-barlow text-[#989898]"
+              className="md:text-5xl text-3xl  w-5/6  placeholder:text-[#CCCCCC] placeholder:font-barlow placeholder:font-semibold placeholder:pl-1 focus:outline-none focus:border-none font-barlow text-[#989898]"
             />
           </label>
 

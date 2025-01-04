@@ -5,7 +5,6 @@ import { Tasks } from "@/types/taskdata";
 import { Trash } from "lucide-react";
 import { useRef } from "react";
 import { useDrag } from "react-dnd";
-import TaskModal from "./TaskModal";
 import { useModal } from "@/context/ModalContext";
 
 export function TaskContent({ task }: { task: Tasks }) {
@@ -26,18 +25,18 @@ export function TaskContent({ task }: { task: Tasks }) {
           className="md:group-hover/trash:fill-red-400 fill-transparent transition-all duration-500 "
         />
       </button>
-      <h6 className="  md:text-base text-[12px] font-normal md:font-medium capitalize text-[#606060 ] ">
+      <h6 className="  md:text-base text-[10px] font-normal md:font-medium w-full break-words line-clamp-1 capitalize text-[#606060 ] ">
         {title}
       </h6>
       {description && (
-        <p className="md:text-sm text-[10px] text-gray-400 line-clamp-1 md:line-clamp-none ">
+        <p className="md:text-sm text-[8px] text-gray-400 break-words w-full line-clamp-1  md:line-clamp-none ">
           {description}
         </p>
       )}
 
       {priority && (
         <span
-          className={`text-white md:text-xs text-[10px]  md:p-2 p-1  rounded-md md:rounded-xl self-start`}
+          className={`text-white md:text-xs text-[8px]  md:p-2 p-1  rounded-md md:rounded-xl self-start`}
           style={{ backgroundColor: `${priorityColors[priority]}` }}
         >
           {priority}
@@ -48,7 +47,7 @@ export function TaskContent({ task }: { task: Tasks }) {
           <Clock size={20} />
           <span className="">{deadline}</span>
         </div> */}
-      <p className="text-[#797979]  md:my-2 my-1 text-xs md:text-sm">
+      <p className="text-[#797979]  md:my-2 my-1  text-[10px] md:text-sm">
         1 hr ago
       </p>
     </>
@@ -75,7 +74,7 @@ function TaskCard({ index, task }: { index: number; task: Tasks }) {
   return (
     <div
       ref={dragRef}
-      className="group relative overflow-hidden flex flex-col md:gap-3 flex-wrap w-11/12 bg-white shadow-md md:p-3 p-2  rounded-md cursor-pointer hover:bg-gray-100 duration-300 "
+      className="group relative overflow-hidden flex flex-col md:gap-3 gap-1 flex-wrap w-11/12 bg-white shadow-md md:p-3 p-2  rounded-md cursor-pointer hover:bg-gray-100 duration-300 "
       onClick={() => {
         setModalData(task);
         openModal();
