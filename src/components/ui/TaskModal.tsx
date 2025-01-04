@@ -51,11 +51,12 @@ function ActionBtn({
   );
 }
 function TaskModal() {
-  const [task, setTask] = useState<Tasks>({} as Tasks);
+  const { closeModal, isOpen, modalData: initialTask } = useModal();
+  const [task, setTask] = useState<Tasks>(initialTask || ({} as Tasks));
   const [date, setDate] = useState<Date | undefined>(new Date());
   const dispatch = useAppDispatch();
-  const { closeModal, isOpen } = useModal();
   const { toast } = useToast();
+
   async function createNewTask() {
     dispatch(createTask(task)).then((payload) => {
       if (payload.payload.success) {
@@ -79,7 +80,9 @@ function TaskModal() {
     console.log("delete");
   }
   function handleInput(
-    e: React.ChangeEvent<HTMLInputElement>,
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>,
     valueToUpdate: string
   ) {
     setTask((prevValue) => {
@@ -100,33 +103,16 @@ function TaskModal() {
    ${isOpen ? "translate-y-0" : "-translate-y-full"} 
     `}
     >
-      <div className="flex flex-col gap-3 bg-white md:w-9/12 w-full h-full py-4  px-6 shadow-xl">
-        <div className="flex items-center justify-between">
-          <ul className="flex items-center gap-4">
-            <button
-              onClick={() => {
-                closeModal();
-                setTask({} as Tasks);
-              }}
-              className="cursor-pointer "
-            >
-              <X className="w-5 h-auto text-gray-500" />
-            </button>
-            <li>
-              <MoveDiagonal2 className="w-5 h-auto text-gray-500" />
-            </li>
-          </ul>
-          <ul className="flex items-center gap-4 capitalize">
-            <ActionBtn title="delete" icon={Trash2} handleClick={deleteTask} />
-            <ActionBtn
-              title="create"
-              icon={DiamondPlus}
-              handleClick={createNewTask}
-            />
-            <ActionBtn title="share" icon={Share2} />
-            <ActionBtn title="favourite" icon={Star} />
-          </ul>
-        </div>
+      <div className="relative flex flex-col gap-3 bg-white md:w-9/12 w-full h-full py-4  px-6 shadow-xl">
+        <button
+          onClick={() => {
+            closeModal();
+            setTask({} as Tasks);
+          }}
+          className="cursor-pointer absolute right-4 top-4"
+        >
+          <X className="w-5 h-auto text-gray-500" />
+        </button>
         <div className="flex flex-col items-start gap-6 ">
           <label htmlFor="title">
             <input
@@ -135,9 +121,10 @@ function TaskModal() {
               type="text"
               id="title"
               placeholder="Title"
-              className="text-5xl w-5/6  placeholder:text-[#CCCCCC] placeholder:font-barlow placeholder:font-semibold placeholder:pl-2 focus:outline-none focus:border-none font-barlow text-[#989898]"
+              className="text-5xl w-5/6  placeholder:text-[#CCCCCC] placeholder:font-barlow placeholder:font-semibold placeholder:pl-1 focus:outline-none focus:border-none font-barlow text-[#989898]"
             />
           </label>
+
           <div className="flex flex-col items-start gap-4 w-full   ">
             {fields?.map((field, index) => (
               <div className="flex gap-4  w-full items-center  " key={index}>
@@ -183,18 +170,18 @@ function TaskModal() {
               </div>
             ))}
           </div>
-          <button className="flex items-center gap-6 py-2 ">
+          {/* <button className="flex items-center gap-6 py-2 ">
             <span>+</span> Add custom property
-          </button>
+          </button> */}
         </div>
         <div className="border-2 my-3"></div>
-        <label htmlFor="usertext">
-          <textarea
-            id="usertext"
-            className="focus:outline-none w-full "
-            placeholder="Start writing, or drag your own files here."
-          />
-        </label>
+        <textarea
+          value={task?.description ?? ""}
+          onChange={(e) => handleInput(e, "description")}
+          id="description"
+          placeholder="Description"
+          className="focus:outline-none  w-full  text-xl placeholder:text-[#CCCCCC] placeholder:font-barlow placeholder:pl-1  focus:border-none font-barlow text-[#989898] "
+        />
       </div>
     </div>
   );

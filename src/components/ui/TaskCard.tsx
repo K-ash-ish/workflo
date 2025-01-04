@@ -5,6 +5,8 @@ import { Tasks } from "@/types/taskdata";
 import { Trash } from "lucide-react";
 import { useRef } from "react";
 import { useDrag } from "react-dnd";
+import TaskModal from "./TaskModal";
+import { useModal } from "@/context/ModalContext";
 
 export function TaskContent({ task }: { task: Tasks }) {
   let { title, description, priority, deadline } = task;
@@ -52,6 +54,7 @@ export function TaskContent({ task }: { task: Tasks }) {
 
 function TaskCard({ index, task }: { index: number; task: Tasks }) {
   const dragRef = useRef<HTMLDivElement | null>(null);
+  const { openModal, setModalData } = useModal();
   const { _id, status } = task;
 
   const [{ isDragging }, drag] = useDrag(() => ({
@@ -70,6 +73,10 @@ function TaskCard({ index, task }: { index: number; task: Tasks }) {
     <div
       ref={dragRef}
       className="group relative overflow-hidden flex flex-col md:gap-3 flex-wrap w-11/12 bg-white shadow-md md:p-3 p-2  rounded-md cursor-pointer hover:bg-gray-100 duration-300 "
+      onClick={() => {
+        setModalData(task);
+        openModal();
+      }}
     >
       <TaskContent task={task} />
     </div>

@@ -123,9 +123,4 @@ export const fields: Field[] = [
     title: "deadline",
     type: "calendar",
   },
-  {
-    icon: Pencil,
-    title: "description",
-    type: "text",
-  },
 ];
