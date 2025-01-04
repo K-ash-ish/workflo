@@ -60,7 +60,7 @@ export const quickStatsEl = [
 
 export const taskData: Tasks[] = [
   {
-    id: 187,
+    _id: "187",
     status: "to do",
     priority: "low",
     deadline: "2024-08-15",
@@ -68,7 +68,7 @@ export const taskData: Tasks[] = [
     title: "integrate cloud storage",
   },
   {
-    id: 234,
+    _id: "234",
     status: "to do",
     priority: "urgent",
     deadline: "2024-08-15",
@@ -76,7 +76,7 @@ export const taskData: Tasks[] = [
     title: "integrate cloud storage",
   },
   {
-    id: 334,
+    _id: "334",
     status: "under review",
     priority: "medium",
     deadline: "2024-08-15",
@@ -84,7 +84,7 @@ export const taskData: Tasks[] = [
     title: "integrate cloud storage",
   },
   {
-    id: 412,
+    _id: 412,
     status: "finished",
     priority: "low",
     deadline: "2024-08-15",
