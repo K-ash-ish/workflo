@@ -51,17 +51,17 @@ export const taskSlice = createSlice({
     });
     builder.addCase(updateTask.fulfilled, (state, action) => {
       state.createTaskStatus = "idle";
-      const { _id: id, status: changeStatusTo } = action.payload.data;
+      const { _id, status: changeStatusTo } = action.payload.data;
 
       state.tasks.forEach((task, index) => {
-        if (task._id === id) {
+        if (task._id === _id) {
           state.tasks[index] = action.payload.data;
         }
       });
 
-      // const { id, status: changeStatusTo } = action.payload.data;
+      // const { _id, status: changeStatusTo } = action.payload.data;
       // state.tasks.forEach((task, index) => {
-      //   if (task._id === id) {
+      //   if (task._id === _id) {
       //     if (changeStatusTo) {
       //       state.tasks[index].status = changeStatusTo;
       //     }
