@@ -15,7 +15,10 @@ export function TaskContent({ task }: { task: Tasks }) {
     <>
       <button
         className="group/trash absolute bottom-2 right-2 hover:shadow-xl p-1 hover:bg-gray-200    rounded-md md:group-hover:block hidden text-red-500  transition-all duration-500"
-        onClick={() => dispatch(deleteTask(task._id))}
+        onClick={(e) => {
+          e.stopPropagation();
+          dispatch(deleteTask(task._id));
+        }}
       >
         <Trash
           strokeWidth={1.2}

@@ -1,63 +1,57 @@
 "use client";
 import { fields } from "@/constant";
-import React, { useState } from "react";
-import { Dropdown } from "./dropdown";
+import React, { useEffect, useState } from "react";
 import { Tasks } from "@/types/taskdata";
 import { useAppDispatch } from "@/lib/hooks";
 import { useModal } from "@/context/ModalContext";
-import {
-  CalendarRangeIcon,
-  DiamondPlus,
-  LucideProps,
-  MoveDiagonal2,
-  Share2,
-  Star,
-  Trash2,
-  X,
-} from "lucide-react";
+import { CalendarRangeIcon, X } from "lucide-react";
 import { IconWrapper } from "./IconWrapper";
-import { createTask } from "@/lib/features/task/taskActions";
+import {
+  createTask,
+  deleteTask,
+  updateTask,
+} from "@/lib/features/task/taskActions";
 import { useToast } from "../hooks/use-toast";
 import { Calendar } from "./calendar";
 import { Popover, PopoverContent } from "./popover";
 import { PopoverTrigger } from "@radix-ui/react-popover";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./select";
+import { Button } from "./button";
 
-function ActionBtn({
-  title,
-  icon,
-  handleClick,
-}: Readonly<{
-  title: string;
-  icon?: React.FC<LucideProps>;
-  handleClick?: () => void;
-}>) {
-  const style = {
-    color: `${
-      title === "delete"
-        ? "#fc5f5f"
-        : title === "create"
-        ? "#1fae58"
-        : "#797979"
-    }`,
-  };
-  return (
-    <button
-      className={`flex items-center gap-2  p-2 rounded capitalize underline-offset-2`}
-      style={style}
-      onClick={handleClick}
-    >
-      {icon && <IconWrapper style={style} icon={icon} />}
-    </button>
-  );
-}
 function TaskModal() {
   const { closeModal, isOpen, modalData: initialTask } = useModal();
-  const [task, setTask] = useState<Tasks>(initialTask || ({} as Tasks));
-  const [date, setDate] = useState<Date | undefined>(new Date());
+  const [task, setTask] = useState<Tasks>({} as Tasks);
+  const [date, setDate] = useState<Date | undefined>();
+  const [isUpdated, setIsUpdated] = useState(false);
   const dispatch = useAppDispatch();
   const { toast } = useToast();
-
-  async function createNewTask() {
+  useEffect(() => {
+    if (initialTask) {
+      setTask(initialTask);
+      setDate(initialTask.deadline && new Date(initialTask.deadline));
+    }
+  }, [initialTask]);
+  const button = initialTask ? "Update" : "Create";
+  function checkUpdatedFields() {
+    const updatedFields = Object.keys(task).reduce(
+      (acc: Partial<Tasks>, key) => {
+        if (task[key] !== initialTask[key]) {
+          acc[key] = task[key];
+        }
+        return acc;
+      },
+      {}
+    );
+    return updatedFields;
+  }
+  async function handleCreateTask() {
     dispatch(createTask(task)).then((payload) => {
       if (payload.payload.success) {
         toast({
@@ -75,9 +69,45 @@ function TaskModal() {
       }
     });
   }
-  function deleteTask() {
-    // dispatch()
-    console.log("delete");
+  async function handleUpdateTask() {
+    const updatedFields = checkUpdatedFields();
+    if (Object.keys(updatedFields).length === 0) {
+      toast({
+        description: "No changes made",
+        variant: "default",
+      });
+      return;
+    }
+    updatedFields.id = task._id;
+    dispatch(updateTask(updatedFields)).then((payload) => {
+      if (payload.payload.success) {
+        toast({
+          description: payload.payload.message,
+          variant: "default",
+        });
+        setTask({} as Tasks);
+        closeModal();
+      } else {
+        toast({
+          title: "Uh oh!",
+          description: payload.payload,
+          variant: "destructive",
+        });
+      }
+    });
+  }
+
+  function deleteCurrentTask() {
+    dispatch(deleteTask(task._id)).then((payload) => {
+      if (payload.payload.success) {
+        toast({
+          description: payload.payload.message,
+          variant: "default",
+        });
+        setTask({} as Tasks);
+        closeModal();
+      }
+    });
   }
   function handleInput(
     e:
@@ -104,15 +134,36 @@ function TaskModal() {
     `}
     >
       <div className="relative flex flex-col gap-3 bg-white md:w-9/12 w-full h-full py-4  px-6 shadow-xl">
-        <button
-          onClick={() => {
-            closeModal();
-            setTask({} as Tasks);
-          }}
-          className="cursor-pointer absolute right-4 top-4"
-        >
-          <X className="w-5 h-auto text-gray-500" />
-        </button>
+        <div className="flex items-center justify-between">
+          <ul className="flex items-center gap-4">
+            <button
+              onClick={() => {
+                closeModal();
+                setTask({} as Tasks);
+              }}
+              className="cursor-pointer "
+            >
+              <X className="w-5 h-auto text-gray-500" />
+            </button>
+          </ul>
+
+          <ul className="flex items-center gap-4 capitalize">
+            <Button
+              className="bg-green-200 text-green-950 font-semibold hover:bg-green-300 "
+              onClick={
+                button === "Create" ? handleCreateTask : handleUpdateTask
+              }
+            >
+              {button}
+            </Button>
+            <Button
+              className="bg-red-200 text-red-950 hover:bg-red-300"
+              onClick={deleteCurrentTask}
+            >
+              Delete
+            </Button>
+          </ul>
+        </div>
         <div className="flex flex-col items-start gap-6 ">
           <label htmlFor="title">
             <input
@@ -132,16 +183,7 @@ function TaskModal() {
                 <div className="capitalize text-[#666666] grid grid-cols-2 items-center  w-full ">
                   <p className="">{field.title}</p>
                   <div className=" ">
-                    {field.type === "text" ? (
-                      <input
-                        value={task?.[field.title] || ""}
-                        type={field.type}
-                        id={field.title}
-                        onChange={(e) => handleInput(e, field.title)}
-                        placeholder={field.title}
-                        className="placeholder:text-[#C1BDBD] w-28  text-sm  outline-none   "
-                      />
-                    ) : field.type === "calendar" ? (
+                    {field.type === "calendar" ? (
                       <Popover>
                         <PopoverTrigger asChild>
                           <button className="flex items-center gap-2 text-xs">
@@ -159,20 +201,36 @@ function TaskModal() {
                         </PopoverContent>
                       </Popover>
                     ) : (
-                      <Dropdown
-                        options={field?.options}
-                        title={field.title}
-                        handleDropDownValue={handleDropDownValue}
-                      />
+                      <div className=" ">
+                        <Select
+                          onValueChange={(value) => {
+                            handleDropDownValue(value, field.title);
+                          }}
+                        >
+                          <SelectTrigger className="w-[150px]">
+                            <SelectValue
+                              placeholder={task?.[field?.title] ?? field.title}
+                            />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              {field.options?.map((option, index) => {
+                                return (
+                                  <SelectItem key={index} value={option}>
+                                    {option}
+                                  </SelectItem>
+                                );
+                              })}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      </div>
                     )}
                   </div>
                 </div>
               </div>
             ))}
           </div>
-          {/* <button className="flex items-center gap-6 py-2 ">
-            <span>+</span> Add custom property
-          </button> */}
         </div>
         <div className="border-2 my-3"></div>
         <textarea

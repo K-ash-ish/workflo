@@ -54,9 +54,7 @@ export const taskSlice = createSlice({
       const { _id: id, status: changeStatusTo } = action.payload.data;
       state.tasks.forEach((task, index) => {
         if (task._id === id) {
-          if (changeStatusTo) {
-            state.tasks[index].status = changeStatusTo;
-          }
+          state.tasks[index] = action.payload.data;
         }
       });
     });
