@@ -2,13 +2,26 @@ import { priorityColors } from "@/constant";
 import { deleteTask } from "@/lib/features/task/taskActions";
 import { useAppDispatch } from "@/lib/hooks";
 import { Tasks } from "@/types/taskdata";
-import { Trash } from "lucide-react";
+import { Clock, Trash } from "lucide-react";
 import { useRef } from "react";
 import { useDrag } from "react-dnd";
 import { useModal } from "@/context/ModalContext";
+import {
+  convertISODate,
+  formatRelativeTime,
+  isTimeOverDue,
+} from "@/utils/dateTime";
 
-export function TaskContent({ task }: { task: Tasks }) {
-  let { title, description, priority, deadline } = task;
+export function TaskContent({
+  task,
+  isOverDue,
+}: {
+  task: Tasks;
+  isOverdue: boolean;
+}) {
+  let { title, description, priority, deadline, createdAt } = task;
+  const formatCreatedAt = createdAt && formatRelativeTime(createdAt);
+  const formatDeadline = deadline && convertISODate(new Date(deadline));
   const dispatch = useAppDispatch();
   return (
     <>
@@ -43,12 +56,23 @@ export function TaskContent({ task }: { task: Tasks }) {
         </span>
       )}
 
-      {/* <div className="flex flex-row gap-2 text-[#606060] md:font-medium text-xs md:text-sm">
-          <Clock size={20} />
-          <span className="">{deadline}</span>
-        </div> */}
-      <p className="text-[#797979]  md:my-2 my-1  text-[10px] md:text-sm">
-        1 hr ago
+      {deadline && (
+        <div className="flex flex-row items-center gap-1 md:gap-2 text-[#606060] md:text-xs text-[10px]">
+          <div
+            className={`flex w-4 h-auto text-red-600 ${
+              isOverDue
+                ? "animate-pulse duration-1000 ease-in-out "
+                : "animate-none"
+            }`}
+          >
+            <Clock strokeWidth={2} />
+          </div>
+          <span className=" font-medium ">{formatDeadline}</span>
+        </div>
+      )}
+
+      <p className="text-[#797979]   text-[10px] md:text-sm">
+        {formatCreatedAt}
       </p>
     </>
   );
@@ -57,8 +81,8 @@ export function TaskContent({ task }: { task: Tasks }) {
 function TaskCard({ index, task }: { index: number; task: Tasks }) {
   const dragRef = useRef<HTMLDivElement | null>(null);
   const { openModal, setModalData } = useModal();
-  const { _id, status } = task;
-
+  const { _id, status, deadline } = task;
+  const isOverdue = !!deadline && isTimeOverDue(deadline);
   const [{ isDragging }, drag] = useDrag(() => ({
     type: "task",
     item: {
@@ -74,13 +98,15 @@ function TaskCard({ index, task }: { index: number; task: Tasks }) {
   return (
     <div
       ref={dragRef}
-      className="group relative overflow-hidden flex flex-col md:gap-3 gap-1 flex-wrap w-11/12 bg-white shadow-md md:p-3 p-2  rounded-md cursor-pointer hover:bg-gray-100 duration-300 "
+      className={`group relative overflow-hidden flex flex-col md:gap-3 gap-1 flex-wrap w-11/12 bg-white shadow-md shadow-gray-200 md:p-3 p-2  rounded-md cursor-pointer hover:bg-gray-100 duration-300 last:mb-6 only:mb-0 ${
+        isOverdue ? " shadow-red-400" : "border-none"
+      }`}
       onClick={() => {
         setModalData(task);
         openModal();
       }}
     >
-      <TaskContent task={task} />
+      <TaskContent task={task} isOverdue={isOverdue} />
     </div>
   );
 }

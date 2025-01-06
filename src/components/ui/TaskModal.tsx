@@ -24,19 +24,22 @@ import {
   SelectValue,
 } from "./select";
 import { Button } from "./button";
+import { convertISODate } from "@/utils/dateTime";
 
 function TaskModal() {
   const { closeModal, isOpen, modalData: initialTask } = useModal();
+  const [date, setDate] = useState<Date | undefined>(new Date());
   const [task, setTask] = useState<Tasks>({} as Tasks);
-  const [date, setDate] = useState<Date | undefined>();
   const dispatch = useAppDispatch();
   const { toast } = useToast();
+
   useEffect(() => {
     if (initialTask) {
       setTask(initialTask);
-      setDate(initialTask.deadline && new Date(initialTask.deadline));
+      setDate(initialTask?.deadline);
     }
   }, [initialTask]);
+
   const button = initialTask ? "Update" : "Create";
   function checkUpdatedFields() {
     const updatedFields = Object.keys(task).reduce(
@@ -51,6 +54,7 @@ function TaskModal() {
     return updatedFields;
   }
   async function handleCreateTask() {
+    task.deadline = date?.toISOString();
     dispatch(createTask(task)).then((payload) => {
       if (payload.payload.success) {
         toast({
@@ -128,11 +132,12 @@ function TaskModal() {
 
   return (
     <div
-      className={`absolute top-0 left-0 z-50 h-dvh md:w-auto w-full  transition-transform duration-500 ease-in-out  
+      className={`absolute top-0 left-0 z-50 h-dvh md:w-1/3 w-full  transition-transform duration-500 ease-in-out bg-red-300  
    ${isOpen ? "translate-y-0" : "-translate-y-full"} 
     `}
+      onClick={(e) => e.stopPropagation()}
     >
-      <div className="relative flex flex-col gap-3 bg-white md:w-9/12 w-full h-full md:py-4 py-2 px-4  md:px-6 shadow-xl">
+      <div className="relative flex flex-col gap-3 bg-white w-full h-full md:py-4 py-2 px-4  md:px-6 shadow-xl">
         <div className="flex items-center justify-between">
           <ul className="flex items-center gap-4">
             <button
@@ -187,7 +192,7 @@ function TaskModal() {
                         <PopoverTrigger asChild>
                           <button className="flex items-center gap-2 text-xs">
                             <CalendarRangeIcon size={20} strokeWidth={1.2} />
-                            {date?.toDateString()}
+                            {date && convertISODate(date)}
                           </button>
                         </PopoverTrigger>
                         <PopoverContent className="w-auto p-0">

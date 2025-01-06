@@ -7,8 +7,10 @@ import { verifyToken } from "@/lib/features/auth/authActions";
 import { Search } from "lucide-react";
 import { selectUser } from "@/lib/features/auth/authSlice";
 import { UserNameLoader } from "@/components/ui/Loader";
-import { trimUsername } from "@/utils";
+import { filterTasks, trimUsername } from "@/utils";
 import { quickStatsEl } from "@/constant";
+import TaskModal from "@/components/ui/TaskModal";
+import Sheet from "@/components/ui/Sheet";
 
 export default function Layout({
   children,
@@ -59,17 +61,35 @@ export default function Layout({
             </label>
             {userName()}
           </div>
-          <div className="grid grid-cols-4  gap-2  p-2 font-semibold ">
-            {quickStatsEl?.map((statEl, i) => {
-              const getStats = "";
+          <div className="grid grid-cols-5  gap-2  p-2 font-semibold ">
+            {quickStatsEl?.map(({ title, color }, i) => {
+              const {
+                totalTasksFinished,
+                totalTasksInProgress,
+                totalTasksUnderReview,
+                totalTasks,
+                totalOverDueTasks,
+              } = filterTasks();
+              let total = 0;
+              if (title === "total tasks") {
+                total = totalTasks;
+              } else if (title === "in progress") {
+                total = totalTasksInProgress;
+              } else if (title === "completed") {
+                total = totalTasksFinished;
+              } else if (title === "overdue") {
+                total = totalOverDueTasks;
+              } else if (title === "under review") {
+                total = totalTasksUnderReview;
+              }
               return (
                 <div
-                  key={i + statEl.title}
-                  className={`${statEl.color} md:text-base text-xs  flex  justify-between shadow-md  rounded-md px-2 py-4 `}
+                  key={i + title}
+                  className={`${color} md:text-base text-xs  flex  justify-between shadow-md  rounded-md px-2 py-4 `}
                 >
                   <div className="flex flex-col justify-center items-start md:gap-0 gap-2 ">
-                    <h4 className=" ">{statEl.title}</h4>
-                    <p className="text-gray-400">123</p>
+                    <h4 className=" ">{title}</h4>
+                    <p className="text-gray-400">{total}</p>
                   </div>
                   <div className="hidden md:block"></div>
                 </div>
@@ -79,6 +99,9 @@ export default function Layout({
           {children}
         </div>
       </div>
+      <Sheet>
+        <TaskModal />
+      </Sheet>
     </ModalProvider>
   );
 }

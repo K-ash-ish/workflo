@@ -2,58 +2,21 @@
 import TaskColumn from "./ui/TaskColumn";
 import { useAppSelector } from "@/lib/hooks";
 import { selectAllTasks } from "@/lib/features/task/taskSlice";
-import {
-  DndProvider,
-  MouseTransition,
-  Preview,
-  PreviewState,
-  TouchTransition,
-} from "react-dnd-multi-backend";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { TouchBackend } from "react-dnd-touch-backend";
-import { TaskContent } from "./ui/TaskCard";
-import { Tasks } from "@/types/taskdata";
+import { DndProvider, Preview } from "react-dnd-multi-backend";
+import { generatePreview, HTML5toTouch } from "@/utils/DndConfig";
+import { filterTasks } from "@/utils";
 
-export const HTML5toTouch = {
-  backends: [
-    {
-      id: "html5",
-      backend: HTML5Backend,
-      transition: MouseTransition,
-    },
-    {
-      id: "touch",
-      backend: TouchBackend,
-      options: { enableMouseEvents: true },
-      preview: true,
-      transition: TouchTransition,
-    },
-  ],
-};
-const generatePreview = ({
-  itemType,
-  item: { task },
-  style,
-}: PreviewState<{ task: Tasks }, Element>) => {
-  return (
-    <div
-      className="bg-white shadow-md p-3 rounded-md cursor-pointer hover:bg-gray-100 duration-300 opacity-50 w-[150px] overflow-hidden"
-      style={style}
-    >
-      <TaskContent task={task} />
-    </div>
-  );
-};
 function TaskBoard() {
-  const tasks = useAppSelector(selectAllTasks);
+  const { tasksFinished, tasksToDo, tasksInProgress, tasksUnderReview } =
+    filterTasks();
 
   return (
     <DndProvider options={HTML5toTouch}>
       <div className="max-h-[480px] shadow-md md:shadow-none min-h-[400px] w-full grid grid-cols-4 items-start  gap-2 p-2 overflow-y-scroll ">
-        <TaskColumn tasks={tasks} taskStatus="to do" />
-        <TaskColumn tasks={tasks} taskStatus="in progress" />
-        <TaskColumn tasks={tasks} taskStatus="under review" />
-        <TaskColumn tasks={tasks} taskStatus="finished" />
+        <TaskColumn tasks={tasksToDo} taskStatus="to do" />
+        <TaskColumn tasks={tasksInProgress} taskStatus="in progress" />
+        <TaskColumn tasks={tasksUnderReview} taskStatus="under review" />
+        <TaskColumn tasks={tasksFinished} taskStatus="finished" />
         <Preview generator={generatePreview} />
       </div>
     </DndProvider>

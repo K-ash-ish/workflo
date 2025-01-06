@@ -15,13 +15,11 @@ function TaskColumn({
   taskStatus: string;
   tasks: Tasks[];
 }>) {
-  let taskList: Tasks[];
   let taskColumnColor = "";
   let taskIcon: JSX.Element;
 
   const dispatch = useAppDispatch();
-  const { tasksToDo, tasksFinished, tasksInProgress, tasksUnderReview } =
-    filterTasks(tasks);
+
   const dropRef = useRef<HTMLDivElement | null>(null);
 
   const [{ isOver }, drop] = useDrop(() => ({
@@ -42,19 +40,15 @@ function TaskColumn({
   }
 
   if (taskStatus === "to do") {
-    taskList = tasksToDo;
     taskColumnColor = "bg-red-100";
     taskIcon = <Clipboard className="w-4 h-auto hidden md:block" />;
   } else if (taskStatus === "under review") {
     taskColumnColor = "bg-cyan-100";
-    taskList = tasksUnderReview;
     taskIcon = <TargetIcon className="w-4 h-auto  hidden md:block" />;
   } else if (taskStatus === "in progress") {
-    taskList = tasksInProgress;
     taskColumnColor = "bg-yellow-100";
     taskIcon = <Clock className="w-4 h-auto  hidden md:block" />;
   } else {
-    taskList = tasksFinished;
     taskColumnColor = "bg-green-100";
     taskIcon = <ClipboardCheck className="w-4 h-auto  hidden md:block" />;
   }
@@ -72,7 +66,7 @@ function TaskColumn({
       <div
         className={`flex flex-col items-center    p-2   gap-2 transition-all duration-700 ease-in-out `}
       >
-        {taskList?.map((task, index) => {
+        {tasks?.map((task, index) => {
           return <TaskCard key={task._id} task={task} index={index} />;
         })}
       </div>

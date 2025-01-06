@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { fetchAllTasks } from "@/lib/features/task/taskActions";
 import { TaskBoardLoader } from "@/components/ui/Loader";
-import TaskModal from "@/components/ui/TaskModal";
 
 function Page() {
   const dispatch = useAppDispatch();
@@ -19,7 +18,6 @@ function Page() {
   return (
     <section className=" bg-gray-50 px-2 py-3  ">
       {fetchAllTasksStatus === "loading" ? <TaskBoardLoader /> : <TaskBoard />}
-      <TaskModal />
     </section>
   );
 }

@@ -3,7 +3,6 @@ import {
   CircleAlert,
   Loader,
   LucideProps,
-  Pencil,
   ChartNoAxesColumnIncreasing,
   List,
   PanelsTopLeft,
@@ -52,10 +51,11 @@ export const navElements = [
   },
 ];
 export const quickStatsEl = [
-  { title: "Total Tasks", color: "bg-blue-100 text-blue-600" },
-  { title: "In Progress", color: "bg-yellow-100 text-yellow-600" },
-  { title: "Completed", color: "bg-green-100 text-green-600" },
-  { title: "Overdue", color: "bg-red-100 text-red-600" },
+  { title: "total tasks", color: "bg-blue-100 text-blue-600" },
+  { title: "in progress", color: "bg-yellow-100 text-yellow-600" },
+  { title: "under review", color: "bg-blue-100 text-blue-600" },
+  { title: "completed", color: "bg-green-100 text-green-600" },
+  { title: "overdue", color: "bg-red-100 text-red-600" },
 ];
 
 export const taskData: Tasks[] = [
@@ -110,13 +110,13 @@ export const fields: Field[] = [
     icon: Loader,
     title: "status",
     type: "dropdown",
-    options: ["to do", "in progress", "finished", "under review"],
+    options: ["to do", "in progress", "under review", "finished"],
   },
   {
     icon: CircleAlert,
     title: "priority",
     type: "dropdown",
-    options: ["urgent", "low", "medium"],
+    options: ["low", "medium", "urgent"],
   },
   {
     icon: Calendar,
