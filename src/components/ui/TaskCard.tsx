@@ -14,7 +14,7 @@ import {
 
 export function TaskContent({
   task,
-  isOverDue,
+  isOverdue,
 }: {
   task: Tasks;
   isOverdue: boolean;
@@ -60,7 +60,7 @@ export function TaskContent({
         <div className="flex flex-row items-center gap-1 md:gap-2 text-[#606060] md:text-xs text-[10px]">
           <div
             className={`flex w-4 h-auto text-red-600 ${
-              isOverDue
+              isOverdue
                 ? "animate-pulse duration-1000 ease-in-out "
                 : "animate-none"
             }`}
