@@ -1,6 +1,6 @@
 import { useModal } from "@/context/ModalContext";
 
-function Sheet({ children }) {
+function Sheet({ children }: { children: React.ReactNode }) {
   const { isOpen, closeModal } = useModal();
   return (
     <div
