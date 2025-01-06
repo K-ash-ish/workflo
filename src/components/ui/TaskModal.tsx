@@ -27,11 +27,14 @@ import { Button } from "./button";
 import { convertISODate } from "@/utils/dateTime";
 
 function TaskModal() {
-  const { closeModal, isOpen, modalData: initialTask } = useModal();
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [task, setTask] = useState<Tasks>({} as Tasks);
+
+  const { closeModal, isOpen, modalData: initialTask } = useModal();
   const dispatch = useAppDispatch();
   const { toast } = useToast();
+
+  const button = initialTask ? "Update" : "Create";
 
   useEffect(() => {
     if (initialTask) {
@@ -40,7 +43,6 @@ function TaskModal() {
     }
   }, [initialTask]);
 
-  const button = initialTask ? "Update" : "Create";
   function checkUpdatedFields() {
     const updatedFields = Object.keys(task).reduce(
       (acc: Partial<Tasks>, key) => {
@@ -53,49 +55,45 @@ function TaskModal() {
     );
     return updatedFields;
   }
+  function handleSuccess(message: string) {
+    toast({
+      description: message,
+      variant: "default",
+    });
+  }
+  function handleError(message: string) {
+    toast({
+      title: "Uh oh!",
+      description: message,
+      variant: "destructive",
+    });
+  }
   async function handleCreateTask() {
     task.deadline = date?.toISOString();
     dispatch(createTask(task)).then((payload) => {
       if (payload.payload.success) {
-        toast({
-          description: payload.payload.message,
-          variant: "default",
-        });
+        handleSuccess(payload.payload.message);
         setTask({} as Tasks);
         closeModal();
       } else {
-        toast({
-          title: "Uh oh!",
-          description: payload.payload,
-          variant: "destructive",
-        });
+        handleError(payload.payload);
       }
     });
   }
   async function handleUpdateTask() {
     const updatedFields = checkUpdatedFields();
     if (Object.keys(updatedFields).length === 0) {
-      toast({
-        description: "No changes made",
-        variant: "default",
-      });
+      handleSuccess("No changes made");
       return;
     }
     updatedFields.id = task._id;
     dispatch(updateTask(updatedFields)).then((payload) => {
       if (payload.payload.success) {
-        toast({
-          description: payload.payload.message,
-          variant: "default",
-        });
+        handleSuccess(payload.payload.message);
         setTask({} as Tasks);
         closeModal();
       } else {
-        toast({
-          title: "Uh oh!",
-          description: payload.payload,
-          variant: "destructive",
-        });
+        handleError(payload.payload);
       }
     });
   }
@@ -103,10 +101,7 @@ function TaskModal() {
   function deleteCurrentTask() {
     dispatch(deleteTask(task._id)).then((payload) => {
       if (payload.payload.success) {
-        toast({
-          description: payload.payload.message,
-          variant: "default",
-        });
+        handleSuccess(payload.payload.message);
         setTask({} as Tasks);
         closeModal();
       }
@@ -132,12 +127,12 @@ function TaskModal() {
 
   return (
     <div
-      className={`absolute top-0 left-0 z-50 h-dvh md:w-1/3 w-full  transition-transform duration-500 ease-in-out bg-red-300  
+      className={`absolute top-0 left-0 z-50 h-dvh md:w-auto  w-full bg-red-400  transition-transform duration-500 ease-in-out 
    ${isOpen ? "translate-y-0" : "-translate-y-full"} 
     `}
       onClick={(e) => e.stopPropagation()}
     >
-      <div className="relative flex flex-col gap-3 bg-white w-full h-full md:py-4 py-2 px-4  md:px-6 shadow-xl">
+      <div className="relative flex flex-col gap-3 md:w-auto  bg-white w-full h-full md:py-4 py-2 px-4  md:px-6 shadow-xl">
         <div className="flex items-center justify-between">
           <ul className="flex items-center gap-4">
             <button
