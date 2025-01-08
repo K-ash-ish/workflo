@@ -27,27 +27,24 @@ import { Button } from "./button";
 import { convertISODate } from "@/utils/dateTime";
 
 function TaskModal() {
-  const [date, setDate] = useState<string>(new Date().toISOString());
-  const [task, setTask] = useState<Tasks>({} as Tasks);
-
   const { closeModal, isOpen, modalData: initialTask } = useModal();
+
+  const [date, setDate] = useState<Date | undefined>(new Date());
+  const [task, setTask] = useState<Tasks>(initialTask || ({} as Tasks));
+
   const dispatch = useAppDispatch();
   const { toast } = useToast();
 
   const button = initialTask ? "Update" : "Create";
-
   useEffect(() => {
     if (initialTask) {
       setTask(initialTask);
-      setDate(initialTask?.deadline);
+      setDate(new Date(initialTask?.deadline));
     }
   }, [initialTask]);
-
   useEffect(() => {
-    setTask((prevValue) => {
-      return { ...prevValue, deadline: date };
-    });
-  }, [date]);
+    if (!isOpen) handleModalClose();
+  }, [isOpen]);
 
   function checkUpdatedFields() {
     const updatedFields = Object.keys(task).reduce(
@@ -74,17 +71,24 @@ function TaskModal() {
       variant: "destructive",
     });
   }
+  function handleModalClose() {
+    closeModal();
+    setTask({} as Tasks);
+    setDate(new Date());
+  }
+  function handleDateChange(date: Date) {
+    setDate(date);
+    setTask((prevValue) => ({ ...prevValue, deadline: date?.toISOString() }));
+  }
   async function handleCreateTask() {
-    console.log(task);
-    // dispatch(createTask(task)).then((payload) => {
-    //   if (payload.payload.success) {
-    //     handleSuccess(payload.payload.message);
-    //     setTask({} as Tasks);
-    //     closeModal();
-    //   } else {
-    //     handleError(payload.payload);
-    //   }
-    // });
+    dispatch(createTask(task)).then((payload) => {
+      if (payload.payload.success) {
+        handleSuccess(payload.payload.message);
+        handleModalClose();
+      } else {
+        handleError(payload.payload);
+      }
+    });
   }
   async function handleUpdateTask() {
     const updatedFields = checkUpdatedFields();
@@ -96,8 +100,7 @@ function TaskModal() {
     dispatch(updateTask(updatedFields)).then((payload) => {
       if (payload.payload.success) {
         handleSuccess(payload.payload.message);
-        setTask({} as Tasks);
-        closeModal();
+        handleModalClose();
       } else {
         handleError(payload.payload);
       }
@@ -108,8 +111,7 @@ function TaskModal() {
     dispatch(deleteTask(task._id)).then((payload) => {
       if (payload.payload.success) {
         handleSuccess(payload.payload.message);
-        setTask({} as Tasks);
-        closeModal();
+        handleModalClose();
       }
     });
   }
@@ -141,13 +143,7 @@ function TaskModal() {
       <div className="relative flex flex-col gap-3 md:w-auto  bg-white w-full h-full md:py-4 py-2 px-4  md:px-6 shadow-xl">
         <div className="flex items-center justify-between">
           <ul className="flex items-center gap-4">
-            <button
-              onClick={() => {
-                closeModal();
-                setTask({} as Tasks);
-              }}
-              className="cursor-pointer "
-            >
+            <button onClick={handleModalClose} className="cursor-pointer ">
               <X className="w-5 h-auto text-gray-500" />
             </button>
           </ul>
@@ -200,7 +196,9 @@ function TaskModal() {
                           <Calendar
                             mode="single"
                             selected={date}
-                            onSelect={setDate}
+                            onSelect={(selectedDate) => {
+                              selectedDate && handleDateChange(selectedDate);
+                            }}
                             className="rounded-md border"
                           />
                         </PopoverContent>
