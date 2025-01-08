@@ -32,6 +32,41 @@ export default function Layout({
       </div>
     );
   };
+  const taskStats = () => {
+    return quickStatsEl?.map(({ title, color }, i) => {
+      const {
+        totalTasksFinished,
+        totalTasksInProgress,
+        totalTasksUnderReview,
+        totalTasks,
+        totalOverDueTasks,
+      } = filterTasks();
+      let total = 0;
+      if (title === "total tasks") {
+        total = totalTasks;
+      } else if (title === "in progress") {
+        total = totalTasksInProgress;
+      } else if (title === "completed") {
+        total = totalTasksFinished;
+      } else if (title === "overdue") {
+        total = totalOverDueTasks;
+      } else if (title === "under review") {
+        total = totalTasksUnderReview;
+      }
+      return (
+        <div
+          key={i + title}
+          className={`${color}   p-1  flex-1 md:px-2 md:py-3  rounded-md`}
+        >
+          <div className="flex flex-col md:gap-2 justify-between h-full  ">
+            <h4 className=" text-[10px] md:text-base ">{title}</h4>
+            <p className="text-gray-400 text-sm md:text-lg">{total}</p>
+          </div>
+          <div className="hidden md:block"></div>
+        </div>
+      );
+    });
+  };
   useEffect(() => {
     dispatch(verifyToken());
   }, []);
@@ -47,7 +82,7 @@ export default function Layout({
           className={`flex-1 transition-[margin] duration-500 ease-in-out            
           `}
         >
-          <div className="w-full flex md:flex-row flex-col-reverse items-center md:justify-between md:items-center md:gap-4 gap-1 py-3 px-2">
+          <div className=" w-full flex md:flex-row flex-col-reverse items-center md:justify-between md:items-center md:gap-4 gap-1 py-3 px-2">
             <label htmlFor="search" className="relative ">
               <div className="absolute right-[0.75rem]  top-[calc(50%-0.5rem)]  ">
                 <Search color="#797979" className="w-4 h-4 " />
@@ -61,40 +96,8 @@ export default function Layout({
             </label>
             {userName()}
           </div>
-          <div className="grid grid-cols-5  gap-2  p-2 font-semibold ">
-            {quickStatsEl?.map(({ title, color }, i) => {
-              const {
-                totalTasksFinished,
-                totalTasksInProgress,
-                totalTasksUnderReview,
-                totalTasks,
-                totalOverDueTasks,
-              } = filterTasks();
-              let total = 0;
-              if (title === "total tasks") {
-                total = totalTasks;
-              } else if (title === "in progress") {
-                total = totalTasksInProgress;
-              } else if (title === "completed") {
-                total = totalTasksFinished;
-              } else if (title === "overdue") {
-                total = totalOverDueTasks;
-              } else if (title === "under review") {
-                total = totalTasksUnderReview;
-              }
-              return (
-                <div
-                  key={i + title}
-                  className={`${color} md:text-base text-xs  flex  justify-between shadow-md  rounded-md px-2 py-4 `}
-                >
-                  <div className="flex flex-col justify-center items-start md:gap-0 gap-2 ">
-                    <h4 className=" ">{title}</h4>
-                    <p className="text-gray-400">{total}</p>
-                  </div>
-                  <div className="hidden md:block"></div>
-                </div>
-              );
-            })}
+          <div className=" flex gap-1 md:gap-2 font-semibold capitalize px-2 ">
+            {taskStats()}
           </div>
           {children}
         </div>

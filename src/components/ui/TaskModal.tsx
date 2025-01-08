@@ -27,7 +27,7 @@ import { Button } from "./button";
 import { convertISODate } from "@/utils/dateTime";
 
 function TaskModal() {
-  const [date, setDate] = useState<Date | undefined>(new Date());
+  const [date, setDate] = useState<string>(new Date().toISOString());
   const [task, setTask] = useState<Tasks>({} as Tasks);
 
   const { closeModal, isOpen, modalData: initialTask } = useModal();
@@ -42,6 +42,12 @@ function TaskModal() {
       setDate(initialTask?.deadline);
     }
   }, [initialTask]);
+
+  useEffect(() => {
+    setTask((prevValue) => {
+      return { ...prevValue, deadline: date };
+    });
+  }, [date]);
 
   function checkUpdatedFields() {
     const updatedFields = Object.keys(task).reduce(
@@ -69,16 +75,16 @@ function TaskModal() {
     });
   }
   async function handleCreateTask() {
-    task.deadline = date?.toISOString();
-    dispatch(createTask(task)).then((payload) => {
-      if (payload.payload.success) {
-        handleSuccess(payload.payload.message);
-        setTask({} as Tasks);
-        closeModal();
-      } else {
-        handleError(payload.payload);
-      }
-    });
+    console.log(task);
+    // dispatch(createTask(task)).then((payload) => {
+    //   if (payload.payload.success) {
+    //     handleSuccess(payload.payload.message);
+    //     setTask({} as Tasks);
+    //     closeModal();
+    //   } else {
+    //     handleError(payload.payload);
+    //   }
+    // });
   }
   async function handleUpdateTask() {
     const updatedFields = checkUpdatedFields();

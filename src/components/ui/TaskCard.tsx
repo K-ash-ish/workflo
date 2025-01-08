@@ -57,9 +57,9 @@ export function TaskContent({
       )}
 
       {deadline && (
-        <div className="flex flex-row items-center gap-1 md:gap-2 text-[#606060] md:text-xs text-[10px]">
+        <div className="flex flex-row items-center  gap-1 md:gap-2 text-[#606060] md:text-xs text-[6px]   ">
           <div
-            className={`flex w-4 h-auto text-red-600 ${
+            className={`flex md:w-4 w-3 h-auto text-red-600 ${
               isOverdue
                 ? "animate-pulse duration-1000 ease-in-out "
                 : "animate-none"
@@ -67,11 +67,11 @@ export function TaskContent({
           >
             <Clock strokeWidth={2} />
           </div>
-          <span className=" font-medium ">{formatDeadline}</span>
+          <span className=" font-medium  ">{formatDeadline}</span>
         </div>
       )}
 
-      <p className="text-[#797979]   text-[10px] md:text-sm">
+      <p className="text-[#797979]   text-[8px] md:text-sm">
         {formatCreatedAt}
       </p>
     </>
