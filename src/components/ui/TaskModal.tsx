@@ -31,7 +31,6 @@ function TaskModal() {
 
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [task, setTask] = useState<Tasks>(initialTask || ({} as Tasks));
-
   const dispatch = useAppDispatch();
   const { toast } = useToast();
 
@@ -39,7 +38,7 @@ function TaskModal() {
   useEffect(() => {
     if (initialTask) {
       setTask(initialTask);
-      setDate(new Date(initialTask?.deadline));
+      initialTask?.deadline && setDate(initialTask?.deadline);
     }
   }, [initialTask]);
   useEffect(() => {
@@ -157,12 +156,14 @@ function TaskModal() {
             >
               {button}
             </Button>
-            <Button
-              className="bg-red-200 text-red-950 hover:bg-red-300"
-              onClick={deleteCurrentTask}
-            >
-              Delete
-            </Button>
+            {initialTask && (
+              <Button
+                className="bg-red-200 text-red-950 hover:bg-red-300"
+                onClick={deleteCurrentTask}
+              >
+                Delete
+              </Button>
+            )}
           </ul>
         </div>
         <div className="flex flex-col items-start gap-6 ">
