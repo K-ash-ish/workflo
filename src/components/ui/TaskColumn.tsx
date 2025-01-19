@@ -56,7 +56,7 @@ function TaskColumn({
     <div
       ref={dropRef}
       className={`w-full min-h-[250px] ${taskColumnColor} transition-all duration-500 ease-in-out rounded-md ${
-        isOver ? "transform scale-105" : "transform scale-100"
+        isOver ? "transform scale-105 shadow-xl" : "transform scale-100"
       }`}
     >
       <div className="flex justify-center  md:justify-between  items-center text-[12px] truncate md:text-base capitalize font-semibold border-b p-2  border-black border-dashed ">
