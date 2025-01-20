@@ -1,5 +1,18 @@
 import { quickStatsEl } from "@/constant";
-
+import Sheet from "./Sheet";
+import { LoaderCircle } from "lucide-react";
+export function LoadingSpinner() {
+  return (
+    <div
+      className="w-full bg-black/40  h-full absolute top-0 left-0 z-[100] border flex items-center  justify-center   "
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
+    >
+      <LoaderCircle className="animate-spin" />
+    </div>
+  );
+}
 export function UserNameLoader() {
   return (
     <div className="bg-gray-200 w-16 h-6 animate-pulse mx-1 rounded-md"></div>

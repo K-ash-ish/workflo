@@ -60,7 +60,7 @@ function TaskBoard() {
   return (
     <div
       ref={dndContainer}
-      className="max-h-[480px]  shadow-md md:shadow-none min-h-[400px] w-full grid grid-cols-4 items-start  gap-2 p-2 overflow-y-scroll "
+      className="md:max-h-[480px] h-full  shadow-md md:shadow-none md:min-h-[400px] w-full grid grid-cols-4 items-start  gap-2 p-2 overflow-y-scroll "
     >
       <TaskColumn tasks={tasksToDo} taskStatus="to do" />
       <TaskColumn tasks={tasksInProgress} taskStatus="in progress" />

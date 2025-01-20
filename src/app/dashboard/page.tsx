@@ -18,7 +18,7 @@ function Page() {
   }, []);
 
   return (
-    <section className=" bg-gray-50 px-2 py-3  ">
+    <section className=" bg-gray-50 px-2 py-3 h-5/6 ">
       {fetchAllTasksStatus === "loading" ? (
         <TaskBoardLoader />
       ) : (

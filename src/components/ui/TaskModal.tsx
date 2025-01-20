@@ -2,7 +2,7 @@
 import { fields } from "@/constant";
 import React, { useEffect, useState } from "react";
 import { Tasks } from "@/types/taskdata";
-import { useAppDispatch } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { useModal } from "@/context/ModalContext";
 import { CalendarRangeIcon, X } from "lucide-react";
 import { IconWrapper } from "./IconWrapper";
@@ -25,6 +25,7 @@ import {
 } from "./select";
 import { Button } from "./button";
 import { convertISODate } from "@/utils/dateTime";
+import { LoadingSpinner } from "./Loader";
 
 function TaskModal() {
   const { closeModal, isOpen, modalData: initialTask } = useModal();
@@ -32,9 +33,12 @@ function TaskModal() {
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [task, setTask] = useState<Tasks>(initialTask || ({} as Tasks));
   const dispatch = useAppDispatch();
-  const { toast } = useToast();
+  const { createTaskStatus, updateTaskStatus } = useAppSelector(
+    (state) => state.task
+  );
 
-  const button = initialTask ? "Update" : "Create";
+  const { toast } = useToast();
+  const button = initialTask?.id ? "Update" : "Create";
   useEffect(() => {
     if (initialTask) {
       setTask(initialTask);
@@ -131,121 +135,128 @@ function TaskModal() {
       });
     }
   }
+  const isLoading =
+    createTaskStatus === "loading" || updateTaskStatus === "loading";
 
   return (
-    <div
-      className={`absolute top-0 left-0 z-50 h-dvh md:w-auto  w-full bg-red-400  transition-transform duration-500 ease-in-out 
+    <>
+      {isLoading && <LoadingSpinner />}
+      <div
+        className={`absolute top-0 left-0 z-50 h-dvh md:w-auto  w-full  transition-transform duration-500 ease-in-out 
    ${isOpen ? "translate-y-0" : "-translate-y-full"} 
     `}
-      onClick={(e) => e.stopPropagation()}
-    >
-      <div className="relative flex flex-col gap-3 md:w-auto  bg-white w-full h-full md:py-4 py-2 px-4  md:px-6 shadow-xl">
-        <div className="flex items-center justify-between">
-          <ul className="flex items-center gap-4">
-            <button onClick={handleModalClose} className="cursor-pointer ">
-              <X className="w-5 h-auto text-gray-500" />
-            </button>
-          </ul>
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="relative flex flex-col gap-3 md:w-auto  bg-white w-full h-full md:py-4 py-2 px-4  md:px-6 shadow-xl">
+          <div className="flex items-center justify-between">
+            <ul className="flex items-center gap-4">
+              <button onClick={handleModalClose} className="cursor-pointer ">
+                <X className="w-5 h-auto text-gray-500" />
+              </button>
+            </ul>
 
-          <ul className="flex items-center gap-4 capitalize">
-            <Button
-              className="bg-green-200 text-green-950 font-semibold hover:bg-green-300 "
-              onClick={
-                button === "Create" ? handleCreateTask : handleUpdateTask
-              }
-            >
-              {button}
-            </Button>
-            {initialTask && (
+            <ul className="flex items-center gap-4 capitalize">
               <Button
-                className="bg-red-200 text-red-950 hover:bg-red-300"
-                onClick={deleteCurrentTask}
+                className="bg-green-200 text-green-950 font-semibold hover:bg-green-300 "
+                onClick={
+                  button === "Create" ? handleCreateTask : handleUpdateTask
+                }
               >
-                Delete
+                {button}
               </Button>
-            )}
-          </ul>
-        </div>
-        <div className="flex flex-col items-start gap-6 ">
-          <label htmlFor="title">
-            <input
-              value={task.title || ""}
-              onChange={(e) => handleInput(e, "title")}
-              type="text"
-              id="title"
-              placeholder="Title"
-              className="md:text-5xl text-3xl  w-5/6  placeholder:text-[#CCCCCC] placeholder:font-barlow placeholder:font-semibold placeholder:pl-1 focus:outline-none focus:border-none font-barlow text-[#989898]"
-            />
-          </label>
+              {initialTask?.id && (
+                <Button
+                  className="bg-red-200 text-red-950 hover:bg-red-300"
+                  onClick={deleteCurrentTask}
+                >
+                  Delete
+                </Button>
+              )}
+            </ul>
+          </div>
+          <div className="flex flex-col items-start gap-6 ">
+            <label htmlFor="title">
+              <input
+                value={task.title || ""}
+                onChange={(e) => handleInput(e, "title")}
+                type="text"
+                id="title"
+                placeholder="Title"
+                className="md:text-5xl text-3xl  w-5/6  placeholder:text-[#CCCCCC] placeholder:font-barlow placeholder:font-semibold placeholder:pl-1 focus:outline-none focus:border-none font-barlow text-[#989898]"
+              />
+            </label>
 
-          <div className="flex flex-col items-start gap-4 w-full   ">
-            {fields?.map((field, index) => (
-              <div className="flex gap-4  w-full items-center  " key={index}>
-                <IconWrapper icon={field.icon} />
-                <div className="capitalize text-[#666666] grid grid-cols-2 items-center  w-full ">
-                  <p className="">{field.title}</p>
-                  <div className=" ">
-                    {field.type === "calendar" ? (
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <button className="flex items-center gap-2 text-xs">
-                            <CalendarRangeIcon size={20} strokeWidth={1.2} />
-                            {date && convertISODate(date)}
-                          </button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0">
-                          <Calendar
-                            mode="single"
-                            selected={date}
-                            onSelect={(selectedDate) => {
-                              selectedDate && handleDateChange(selectedDate);
-                            }}
-                            className="rounded-md border"
-                          />
-                        </PopoverContent>
-                      </Popover>
-                    ) : (
-                      <div className=" ">
-                        <Select
-                          onValueChange={(value) => {
-                            handleDropDownValue(value, field.title);
-                          }}
-                        >
-                          <SelectTrigger className="w-[150px]">
-                            <SelectValue
-                              placeholder={task?.[field?.title] ?? field.title}
+            <div className="flex flex-col items-start gap-4 w-full   ">
+              {fields?.map((field, index) => (
+                <div className="flex gap-4  w-full items-center  " key={index}>
+                  <IconWrapper icon={field.icon} />
+                  <div className="capitalize text-[#666666] grid grid-cols-2 items-center  w-full ">
+                    <p className="">{field.title}</p>
+                    <div className=" ">
+                      {field.type === "calendar" ? (
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <button className="flex items-center gap-2 text-xs">
+                              <CalendarRangeIcon size={20} strokeWidth={1.2} />
+                              {date && convertISODate(date)}
+                            </button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0">
+                            <Calendar
+                              mode="single"
+                              selected={date}
+                              onSelect={(selectedDate) => {
+                                selectedDate && handleDateChange(selectedDate);
+                              }}
+                              className="rounded-md border"
                             />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectGroup>
-                              {field.options?.map((option, index) => {
-                                return (
-                                  <SelectItem key={index} value={option}>
-                                    {option}
-                                  </SelectItem>
-                                );
-                              })}
-                            </SelectGroup>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    )}
+                          </PopoverContent>
+                        </Popover>
+                      ) : (
+                        <div className=" ">
+                          <Select
+                            onValueChange={(value) => {
+                              handleDropDownValue(value, field.title);
+                            }}
+                          >
+                            <SelectTrigger className="w-[150px]">
+                              <SelectValue
+                                placeholder={
+                                  task?.[field?.title] ?? field.title
+                                }
+                              />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectGroup>
+                                {field.options?.map((option, index) => {
+                                  return (
+                                    <SelectItem key={index} value={option}>
+                                      {option}
+                                    </SelectItem>
+                                  );
+                                })}
+                              </SelectGroup>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
+          <div className="border-2 my-3"></div>
+          <textarea
+            value={task?.description ?? ""}
+            onChange={(e) => handleInput(e, "description")}
+            id="description"
+            placeholder="Description"
+            className="w-full h-3/5 focus:outline outline-gray-400 p-2 rounded-md  text-xl placeholder:text-[#CCCCCC] placeholder:font-barlow placeholder:pl-1  focus:border-none font-barlow text-[#989898] "
+          />
         </div>
-        <div className="border-2 my-3"></div>
-        <textarea
-          value={task?.description ?? ""}
-          onChange={(e) => handleInput(e, "description")}
-          id="description"
-          placeholder="Description"
-          className="focus:outline-none  w-full  text-xl placeholder:text-[#CCCCCC] placeholder:font-barlow placeholder:pl-1  focus:border-none font-barlow text-[#989898] "
-        />
       </div>
-    </div>
+    </>
   );
 }
 
