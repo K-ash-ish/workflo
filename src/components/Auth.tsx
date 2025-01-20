@@ -45,7 +45,7 @@ function Auth({ authType }: Readonly<{ authType: string }>) {
           variant: "default",
         });
         router.refresh();
-        router.push("/dashboard");
+        router.push("/");
       } else {
         toast({
           title: "Uh oh!",
