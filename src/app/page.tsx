@@ -15,10 +15,9 @@ import TaskBoardAnimation from "@/components/ui/TaskBoardAnimation";
 const homeNavItem = ["home", "features", "about"];
 
 export default function Home() {
-  const user = useAppSelector(selectUser);
+  const { isLoggedIn, status: isUserLoading } = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
   const { toast } = useToast();
-
   const router = useRouter();
 
   const scrollToSection = useCallback((sectionId: string) => {
@@ -29,10 +28,6 @@ export default function Home() {
         block: "start",
       });
     }
-  }, []);
-
-  useEffect(() => {
-    dispatch(verifyToken());
   }, []);
 
   const userLogout = async () => {
@@ -52,6 +47,44 @@ export default function Home() {
       }
     });
   };
+
+  const user = () => {
+    if (isUserLoading === "loading" || isUserLoading === "idle") {
+      return (
+        <Button
+          variant="outline"
+          className="bg-slate-200 animate-pulse px-9"
+        ></Button>
+      );
+    }
+    if (isUserLoading === "succeeded") {
+      if (isLoggedIn) {
+        return (
+          <Button
+            variant="outline"
+            className="text-gray-500"
+            onClick={userLogout}
+          >
+            Logout
+          </Button>
+        );
+      }
+      return (
+        <Button variant="outline" className="ml-auto ">
+          <Link
+            href={"/login"}
+            className="flex items-center justify-center gap-1 font-light"
+          >
+            <User2 size={18} strokeWidth={1} /> Login
+          </Link>
+        </Button>
+      );
+    }
+  };
+  useEffect(() => {
+    dispatch(verifyToken());
+  }, []);
+
   return (
     <div className="h-dvh w-full scroll-smooth bg-gray-100 ">
       <div className="h-14 md:h-16 z-10 shadow  backdrop-blur-lg rounded-b-xl fixed top-0 left-0 right-0  bg-transparent w-full flex justify-between items-center px-4  ">
@@ -66,24 +99,7 @@ export default function Home() {
             </button>
           ))}
         </div>
-        {user.isLoggedIn ? (
-          <Button
-            variant="outline"
-            className="text-gray-500"
-            onClick={userLogout}
-          >
-            Logout
-          </Button>
-        ) : (
-          <Button variant="outline" className="ml-auto ">
-            <Link
-              href={"/login"}
-              className="flex items-center justify-center gap-1 font-light"
-            >
-              <User2 size={18} strokeWidth={1} /> Login
-            </Link>
-          </Button>
-        )}
+        {user()}
       </div>
       <section
         id="home"

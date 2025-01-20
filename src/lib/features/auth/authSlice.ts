@@ -6,7 +6,7 @@ interface InitialState {
   isLoggedIn: boolean;
   userName: string;
   userPicture: string;
-  status: "idle" | "loading" | "failed";
+  status: "idle" | "loading" | "failed" | "succeeded";
   error: string;
 }
 
@@ -40,7 +40,7 @@ export const authSlice = createSlice({
     builder.addMatcher(
       isAnyOf(login.fulfilled, signup.fulfilled, verifyToken.fulfilled),
       (state, action) => {
-        state.status = "idle";
+        state.status = "succeeded";
         if (!action.payload.success) {
           state.error = action.payload.message;
         } else {
