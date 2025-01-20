@@ -96,7 +96,7 @@ function Auth({ authType }: Readonly<{ authType: string }>) {
           disabled={status === "loading"}
           className={`rounded-md   py-2 capitalize bg-[#4534AC] text-white hover:bg-[#4634acc6]  transition-colors duration-500`}
         >
-          {status === "idle" ? authType : "loading"}
+          {status === "idle" || status === "succeeded" ? authType : "loading"}
         </Button>
       </form>
 
