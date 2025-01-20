@@ -1,170 +1,127 @@
 "use client";
 import { useToast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { verifyToken } from "@/lib/features/auth/authActions";
+import { logout, verifyToken } from "@/lib/features/auth/authActions";
 import { selectUser } from "@/lib/features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { motion } from "motion/react";
+import { useCallback, useEffect } from "react";
+import { User2 } from "lucide-react";
+import { Footer } from "@/components/Footer";
+import { Features } from "@/components/Features";
+import TaskBoardAnimation from "@/components/ui/TaskBoardAnimation";
+
+const homeNavItem = ["home", "features", "about"];
+
 export default function Home() {
   const user = useAppSelector(selectUser);
-
-  const router = useRouter();
+  const dispatch = useAppDispatch();
   const { toast } = useToast();
 
-  const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  const scrollToSection = useCallback((sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  }, []);
+
   useEffect(() => {
     dispatch(verifyToken());
   }, []);
+
+  const userLogout = async () => {
+    dispatch(logout()).then((data) => {
+      if (data.payload.success) {
+        toast({
+          description: "Logout successfull",
+        });
+        router.refresh();
+        router.push("/login");
+      } else {
+        toast({
+          title: "uh! oh",
+          description: data.payload.message,
+          variant: "destructive",
+        });
+      }
+    });
+  };
+  console.log(user);
   return (
-    <div className="h-dvh w-full  ">
-      {/* <div className="flex justify-between md:justify-end md:gap-4 items-center">
-        <Image
-          src="/profile-picture.png"
-          width={0}
-          height={0}
-          alt="Profile Picture"
-          className="rounded-xl w-8 h-8 object-cover"
-        />
-        <h4 className="text-xl capitalize">
-          Hello <span className="animate-wiggle">👋</span> {user.userName}!
-        </h4>
-      </div> */}
-      <section className=" h-screen w-full flex flex-col justify-center bg-gray-100 ">
-        <div className="flex flex-col items-center justify-center   md:flex-row  md:items-center md:justify-around text-center w-11/12 h-5/6  rounded-xl shadow-md shadow-gray-200 mx-auto px-4 py-4 bg-white  ">
-          <div className="  flex flex-col items-center justify-center  gap-6 ">
-            <h1 className="font-bold md:text-5xl text-3xl text-center  animate-fade-up-300 opacity-0 text-nowrap ">
-              Welcome to Work<span className="text-[#AFA3FF]">Flo</span>
-            </h1>
-            <p className="md:font-thin font-extralight text-[#5A5A5A] md:text-2xl text-xl md:w-3/4 animate-fade-up-500  opacity-0">
-              Your go-to Kanban board for individual and team projects.
-            </p>
-            <div className=" flex md:flex-row flex-col md:gap-10 gap-6 items-center justify-center animate-fade-up-700 opacity-0">
-              <Button className="bg-white border border-black text-black hover:bg-gray-100 font-light md:text-lg text-sm p-4 md:p-6 md:h-6">
+    <div className="h-dvh w-full scroll-smooth bg-gray-100 ">
+      <div className="h-14 md:h-16 z-10 shadow  backdrop-blur-lg rounded-b-xl fixed top-0 left-0 right-0  bg-transparent w-full flex justify-between items-center px-4  ">
+        <div className=" flex gap-2 md:gap-4 md:text-lg text-sm font-medium text-gray-500">
+          {homeNavItem.map((item) => (
+            <button
+              key={item}
+              className="capitalize"
+              onClick={() => scrollToSection(item)}
+            >
+              {item}
+            </button>
+          ))}
+        </div>
+        {user.isLoggedIn ? (
+          <Button
+            variant="outline"
+            className="text-gray-500"
+            onClick={userLogout}
+          >
+            Logout
+          </Button>
+        ) : (
+          <Button variant="outline" className="ml-auto ">
+            <Link
+              href={"/login"}
+              className="flex items-center justify-center gap-1 font-light"
+            >
+              <User2 size={18} strokeWidth={1} /> Login
+            </Link>
+          </Button>
+        )}
+      </div>
+      <section
+        id="home"
+        className=" h-dvh w-full flex flex-col justify-center md:mt-4 "
+      >
+        <div className="flex flex-col items-center justify-center   md:flex-row  md:items-center md:justify-around text-center w-11/12 lg:h-5/6 sm:h-[70%] h-5/6  rounded-xl shadow-md shadow-gray-200 mx-auto px-4 py-4 bg-white  ">
+          <div className="  flex flex-col items-center justify-center gap-8  md:h-full">
+            <div className=" flex flex-col gap-4 items-center">
+              <h1 className="w-full font-bold lg:text-5xl text-[2rem] text-center  animate-fade-up-300 opacity-0 text-nowrap ">
+                Welcome to Work<span className="text-[#AFA3FF]">Flo</span>
+              </h1>
+              <p className="w-full md:font-thin font-extralight text-[#5A5A5A] lg:text-3xl text-xl md:w-3/4 animate-fade-up-500  opacity-0">
+                Your go-to Kanban board for individual and team projects.
+              </p>
+            </div>
+            <div className=" flex flex-row gap-6 items-center justify-center animate-fade-up-700 opacity-0">
+              <Button className="bg-white border text-black hover:bg-gray-100 font-light lg:text-lg text-sm p-4 lg:py-6 ">
                 <Link href={"/dashboard"}>Create for Individual</Link>
               </Button>
 
-              <Button className="bg-[#AFA3FF] border border-black text-black hover:bg-[#AFA3FF]/[0.9] font-light md:text-lg text-sm p-4 md:p-6 md:h-6">
+              <Button className="bg-[#AFA3FF] border text-gray-900 hover:bg-[#AFA3FF]/[0.9] font-light lg:text-lg text-sm p-4 lg:py-6">
                 <Link href={"/"}>Create for a Team</Link>
               </Button>
             </div>
           </div>
-
-          <div className="  md:w-1/2 md:h-full ">
-            <svg
-              width="100%"
-              height="100%"
-              viewBox="0 0 514 384"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className=""
-              preserveAspectRatio="xMidYMid meet"
-            >
-              <g id="TaskBoard">
-                <rect width="514" height="384" fill="none" />
-                <g id="TaskColumn" className="animate--up ">
-                  <rect
-                    id="Completed"
-                    x="385.375"
-                    y="96"
-                    width="104.625"
-                    height="215"
-                    rx="4"
-                    fill="#DCFCE7"
-                  />
-                  <rect
-                    id="UnderReview"
-                    x="262.365"
-                    y="96"
-                    width="104.625"
-                    height="215"
-                    rx="4"
-                    fill="#CFFAFE"
-                  />
-                  <rect
-                    id="InProgress"
-                    x="139.799"
-                    y="96"
-                    width="104.625"
-                    height="215"
-                    rx="4"
-                    fill="#FEF9C3"
-                  />
-                  <rect
-                    id="ToDo"
-                    x="23"
-                    y="96"
-                    width="104.625"
-                    height="215"
-                    rx="4"
-                    fill="#FEE2E2"
-                  />
-                </g>
-                <g id="TaskCards">
-                  <rect
-                    id="Task1"
-                    x="43"
-                    y="126"
-                    width="64"
-                    height="38.0282"
-                    rx="4"
-                    fill="white"
-                  />
-
-                  <motion.rect
-                    id="Task2"
-                    x="43"
-                    y="177.972"
-                    width="64"
-                    height="38.0282"
-                    rx="4"
-                    fill="white"
-                    initial={{ x: 0, y: 0 }}
-                    animate={{
-                      scale: [1, 1.2, 1.2, 1.2, 1.2, 1.2, 1],
-                      x: [
-                        0, 0, 118.4865, 118.4865, 241.0525, 364.0625, 364.0625,
-                      ],
-                      y: [0, 0, -51.972, -51.972, -51.972],
-                    }}
-                    transition={{
-                      duration: 6,
-                      ease: "easeInOut",
-                      times: [0, 0.2, 0.4, 0.6, 0.8, 1],
-                    }}
-                  />
-                </g>
-              </g>
-            </svg>
-          </div>
+          <TaskBoardAnimation />
         </div>
+      </section>
+      <section className="py-16  min-h-5/6 md:h-dvh   " id="features">
+        <Features />
+      </section>
+      <section
+        id="about"
+        className="bg-gray-800 w-full mx-auto py-6 px-4 sm:px-6 lg:py-16 lg:px-8 "
+      >
+        <Footer />
       </section>
     </div>
   );
 }
-// <Button
-//   variant="outline"
-//   className="text-red-500 font-semibold "
-//   onClick={() => {
-//     dispatch(logout()).then((data) => {
-//       if (data.payload.success) {
-//         toast({
-//           description: "Logout successfull",
-//         });
-//         router.refresh();
-//         router.push("/login");
-//       } else {
-//         toast({
-//           title: "uh! oh",
-//           description: data.payload.message,
-//           variant: "destructive",
-//         });
-//       }
-//     });
-//   }}
-// >
-//   Logout
-// </Button>
