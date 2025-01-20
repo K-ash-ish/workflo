@@ -77,15 +77,15 @@ function TaskColumn({
         {tasks?.map((task, index) => {
           return <TaskCard key={task._id} task={task} index={index} />;
         })}
-        <Button
-          className={` my-2 w-full bg-white ${taskTextColor} hover:bg-slate-50`}
+        <button
+          className={`md:text-base text-[10px] px-1 py-2 rounded-md  my-2 w-full bg-white ${taskTextColor} hover:bg-slate-50`}
           onClick={() => {
             setModalData({ status: taskStatus });
             openModal();
           }}
         >
           Create Task
-        </Button>
+        </button>
       </div>
     </div>
   );

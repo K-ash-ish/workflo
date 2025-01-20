@@ -33,18 +33,26 @@ function TaskModal() {
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [task, setTask] = useState<Tasks>(initialTask || ({} as Tasks));
   const dispatch = useAppDispatch();
-  const { createTaskStatus, updateTaskStatus } = useAppSelector(
-    (state) => state.task
-  );
+  const {
+    createTaskStatus,
+    updateTaskStatus,
+    status: deleteTaskStatus,
+  } = useAppSelector((state) => state.task);
 
   const { toast } = useToast();
-  const button = initialTask?.id ? "Update" : "Create";
+  const button = initialTask?._id ? "Update" : "Create";
+  const isLoading =
+    createTaskStatus === "loading" ||
+    updateTaskStatus === "loading" ||
+    deleteTaskStatus === "loading";
+
   useEffect(() => {
     if (initialTask) {
       setTask(initialTask);
       initialTask?.deadline && setDate(initialTask?.deadline);
     }
   }, [initialTask]);
+
   useEffect(() => {
     if (!isOpen) handleModalClose();
   }, [isOpen]);
@@ -135,9 +143,6 @@ function TaskModal() {
       });
     }
   }
-  const isLoading =
-    createTaskStatus === "loading" || updateTaskStatus === "loading";
-
   return (
     <>
       {isLoading && <LoadingSpinner />}
@@ -164,7 +169,7 @@ function TaskModal() {
               >
                 {button}
               </Button>
-              {initialTask?.id && (
+              {initialTask?._id && (
                 <Button
                   className="bg-red-200 text-red-950 hover:bg-red-300"
                   onClick={deleteCurrentTask}

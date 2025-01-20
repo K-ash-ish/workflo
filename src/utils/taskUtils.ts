@@ -81,7 +81,11 @@ export function filterTasks() {
   const totalTasksFinished = tasksFinished.length;
 
   const totalOverDueTasks = tasks?.filter((task) => {
-    if (task.deadline && isTimeOverDue(task?.deadline)) {
+    if (
+      task.deadline &&
+      isTimeOverDue(task?.deadline) &&
+      task.status !== "finished"
+    ) {
       return task;
     }
   })?.length;

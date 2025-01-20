@@ -89,6 +89,7 @@ function Sidenav({
                 className={`capitalize  rounded flex md:flex-row md:justify-start md:items-center gap-2 p-2  text-black transition-all duration-700 ease-in-out md:relative
                 ${pathname === navItem.to ? "bg-[#f4f4f4] shadow " : ""}
                 `}
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
               >
                 <div className="flex-shrink-0 w-6 h-6 flex items-center justify-center ">
                   <IconWrapper
@@ -115,6 +116,7 @@ function Sidenav({
                 toast({
                   description: "Logout successfull",
                 });
+                setIsSidebarOpen(!isSidebarOpen);
                 router.refresh();
                 router.push("/login");
               } else {
