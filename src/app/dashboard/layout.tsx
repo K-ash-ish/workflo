@@ -81,10 +81,7 @@ export default function Layout({
           isSidebarOpen={isSidebarOpen}
           setIsSidebarOpen={setIsSidebarOpen}
         />
-        <div
-          className={`flex-1 transition-[margin] duration-500 ease-in-out            
-          `}
-        >
+        <div className={`flex-1 transition-[margin] duration-500 ease-in-out`}>
           <div className=" w-full flex md:flex-row flex-col-reverse items-center md:justify-between md:items-center md:gap-4 gap-1 py-3 px-2">
             <label htmlFor="search" className="relative ">
               <div className="absolute right-[0.75rem]  top-[calc(50%-0.5rem)]  ">

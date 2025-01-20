@@ -52,7 +52,6 @@ export default function Home() {
       }
     });
   };
-  console.log(user);
   return (
     <div className="h-dvh w-full scroll-smooth bg-gray-100 ">
       <div className="h-14 md:h-16 z-10 shadow  backdrop-blur-lg rounded-b-xl fixed top-0 left-0 right-0  bg-transparent w-full flex justify-between items-center px-4  ">
