@@ -1,5 +1,12 @@
 import { createSlice, isAnyOf } from "@reduxjs/toolkit";
-import { login, logout, signup, verifyToken } from "./authActions";
+import {
+  login,
+  logout,
+  resendOTP,
+  signup,
+  verifyOTP,
+  verifyToken,
+} from "./authActions";
 import { RootState } from "@/lib/store";
 
 interface InitialState {
@@ -26,12 +33,20 @@ export const authSlice = createSlice({
     builder.addCase(logout.fulfilled, () => {
       return InitialState;
     });
+    builder.addCase(verifyOTP.fulfilled, (state, action) => {
+      state.status = "succeeded";
+    });
+    builder.addCase(resendOTP.fulfilled, (state, action) => {
+      state.status = "succeeded";
+    });
     builder.addMatcher(
       isAnyOf(
         login.pending,
         signup.pending,
         logout.pending,
-        verifyToken.pending
+        verifyToken.pending,
+        verifyOTP.pending,
+        resendOTP.pending
       ),
       (state) => {
         state.status = "loading";
@@ -55,7 +70,9 @@ export const authSlice = createSlice({
         login.rejected,
         signup.rejected,
         logout.rejected,
-        verifyToken.rejected
+        verifyToken.rejected,
+        verifyOTP.rejected,
+        resendOTP.rejected
       ),
       (state, action) => {
         state.status = "failed";

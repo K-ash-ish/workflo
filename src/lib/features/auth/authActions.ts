@@ -19,7 +19,46 @@ export const login = createAsyncThunk(
     }
   }
 );
+export const verifyOTP = createAsyncThunk(
+  "auth/verifyOtp",
+  async ({ otp }: { otp: string }, { rejectWithValue }) => {
+    try {
+      return await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}api/user/verify-otp`,
+        {
+          method: "POST",
+          credentials: "include",
 
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ otp }),
+        }
+      ).then((res) => res.json());
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+export const resendOTP = createAsyncThunk(
+  "auth/resendOtp",
+  async (_, { rejectWithValue }) => {
+    try {
+      return await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}api/user/resend-otp`,
+        {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      ).then((res) => res.json());
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
 export const signup = createAsyncThunk(
   "auth/signup",
   async ({ email, password, name }: Credentials, { rejectWithValue }) => {
