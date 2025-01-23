@@ -11,7 +11,7 @@ async function isAuthenticated(req: NextRequest) {
   if (!isVerified) {
     return false;
   }
-  return true;
+  return isVerified;
 }
 
 export async function middleware(request: NextRequest, response: NextResponse) {
@@ -26,6 +26,15 @@ export async function middleware(request: NextRequest, response: NextResponse) {
   }
   if (url.includes("login") || url.includes("signup")) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
+  }
+  if (!isAuth.payload.active) {
+    if (url.includes("verify-otp")) {
+      return NextResponse.next();
+    }
+    return NextResponse.redirect(new URL("/user/verify-otp", request.url));
+  }
+  if (url.includes("verify-otp")) {
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
   return NextResponse.next();
