@@ -5,7 +5,7 @@ import { logout, resendOTP, verifyOTP } from "@/lib/features/auth/authActions";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { SyntheticEvent, useRef, useState } from "react";
+import React, { SyntheticEvent, useEffect, useRef, useState } from "react";
 
 function Page() {
   const [otp, setOtp] = useState<string[]>(Array(6).fill(""));
@@ -15,8 +15,14 @@ function Page() {
   const { toast } = useToast();
   const status = useAppSelector((state) => state.auth.status);
   const dispatch = useAppDispatch();
+  useEffect(() => {
+    inputRef.current[0].focus();
+  }, []);
 
   function handleChange(input: string, index: number) {
+    if (isNaN(Number(input))) {
+      return;
+    }
     const newPin = [...otp];
     newPin[index] = input;
     setOtp(newPin);
@@ -24,11 +30,23 @@ function Page() {
     if (input.length === 1 && index < 5) {
       inputRef.current[index + 1]?.focus();
     }
-    if (input.length === 0 && index > 0) {
-      inputRef.current[index - 1]?.focus();
+  }
+
+  async function handleBackspace(
+    e: React.KeyboardEvent<HTMLElement>,
+    index: number
+  ) {
+    const newPin = [...otp];
+    if (e.key === "Backspace") {
+      if (index > 0) {
+        inputRef.current[index - 1]?.focus();
+        inputRef.current[index - 1].select();
+        newPin[index] = "";
+        setOtp(newPin);
+      }
     }
   }
-  function handleClick(e: SyntheticEvent) {
+  function handleClick(e: React.MouseEvent) {
     e.preventDefault();
     dispatch(verifyOTP({ otp: otp.join("") })).then((payload) => {
       if (payload.payload.success) {
@@ -96,11 +114,14 @@ function Page() {
                     }}
                     maxLength={1}
                     key={i}
-                    type="text"
-                    className=" active:outline-1 focus:outline-1 text-center outline-none p-2"
+                    inputMode="numeric"
+                    className=" active:outline-1 focus:outline-1 text-center outline-none p-2 selection:bg-gray-200"
                     value={otp[i]}
                     onChange={(e) => {
                       handleChange(e.target.value, i);
+                    }}
+                    onKeyUp={(e) => {
+                      handleBackspace(e, i);
                     }}
                   />
                 );

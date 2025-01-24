@@ -41,6 +41,7 @@ function TaskModal() {
 
   const { toast } = useToast();
   const button = initialTask?._id ? "Update" : "Create";
+
   const isLoading =
     createTaskStatus === "loading" ||
     updateTaskStatus === "loading" ||
@@ -257,7 +258,7 @@ function TaskModal() {
             onChange={(e) => handleInput(e, "description")}
             id="description"
             placeholder="Description"
-            className="w-full h-3/5 focus:outline outline-gray-400 p-2 rounded-md  text-xl placeholder:text-[#CCCCCC] placeholder:font-barlow placeholder:pl-1  focus:border-none font-barlow text-[#989898] "
+            className="w-full md:h-3/5 h-2/6  focus:outline outline-gray-400 p-2 rounded-md  text-xl placeholder:text-[#CCCCCC] placeholder:font-barlow placeholder:pl-1  focus:border-none font-barlow text-[#989898] "
           />
         </div>
       </div>

@@ -50,7 +50,7 @@ export const taskSlice = createSlice({
       state.updateTaskStatus = "loading";
     });
     builder.addCase(updateTask.fulfilled, (state, action) => {
-      state.createTaskStatus = "idle";
+      state.updateTaskStatus = "idle";
       const { _id, status: changeStatusTo } = action.payload.data;
 
       state.tasks.forEach((task, index) => {
@@ -76,7 +76,7 @@ export const taskSlice = createSlice({
       const filteredTask = state.tasks.filter(
         (task) => task._id !== action.payload.data._id
       );
-      state.tasks = filteredTask;
+      state.tasks = [...filteredTask];
     });
     builder.addCase(logout.fulfilled, () => {
       return initialState;
